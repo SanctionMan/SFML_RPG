@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "ImageManager.h"
 
 class Game 
 {
@@ -12,6 +13,7 @@ public:
 	sf::RenderWindow* GetWindow();
 private:
 
+	void Init();
 	void HandleInput();
 	void Update(sf::Time ElapsedTime);
 	void Render();
@@ -21,7 +23,13 @@ private:
 private:
 
 	sf::RenderWindow m_Window;
+
+	sf::Time ElapsedTime;
+	float FrameTime = 1.0f / 60.0f;
+
 	sf::CircleShape m_Player;
+	sf::RectangleShape m_Player2;
+	sf::Sprite texture;
 
 	bool m_IsMovingUp;
 	bool m_IsMovingDown;

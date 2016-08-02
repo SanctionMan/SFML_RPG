@@ -2,11 +2,15 @@
 
 Game::Game()
 	: m_Window(sf::VideoMode(640, 480), "SFML_RPG"),
-	m_Player()
+	m_Player(),
+	m_Player2()
 {
 	m_Player.setRadius(40.f);
 	m_Player.setPosition(50.f, 50.f);
 	m_Player.setFillColor(sf::Color::Cyan);
+
+	m_Player2.setPosition(50.f, 50.f);
+
 }
 
 Game::~Game()
@@ -16,8 +20,7 @@ Game::~Game()
 void Game::Run()
 {
 	sf::Clock clock;
-	sf::Time ElapsedTime = clock.getElapsedTime();
-	float FrameTime = 1.0f / 60.0f;
+	ElapsedTime = clock.getElapsedTime();
 	while (m_Window.isOpen())
 	{
 		ElapsedTime += clock.restart();
@@ -34,6 +37,15 @@ void Game::Run()
 sf::RenderWindow* Game::GetWindow()
 {
 	return &m_Window;
+}
+
+void Game::Init()
+{
+	ImageManager imageManager;
+	imageManager.Add_Resource_Directory("Resoruces/Textures/");
+
+	//texture.loadFromImage(imageManager.GetImage("Mushroom.png"));
+	m_Player2.SetImage(imageManager.GetImage("Mushroom.png"))
 }
 
 void Game::HandleInput()
