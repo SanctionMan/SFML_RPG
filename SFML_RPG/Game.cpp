@@ -41,11 +41,11 @@ sf::RenderWindow* Game::GetWindow()
 
 void Game::Init()
 {
-	ImageManager imageManager;
-	imageManager.Add_Resource_Directory("Resoruces/Textures/");
+	
+	//imageManager.Add_Resource_Directory("Resoruces/Textures/");
 
 	//texture.loadFromImage(imageManager.GetImage("Mushroom.png"));
-	m_Player2.SetImage(imageManager.GetImage("Mushroom.png"))
+	//m_Player2.SetImage(imageManager.GetImage("Mushroom.png"))
 }
 
 void Game::HandleInput()
