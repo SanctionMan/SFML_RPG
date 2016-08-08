@@ -1,22 +1,36 @@
 #pragma once
 
-#include "SFML\Graphics.hpp"
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <string>
+#include <map>
+
+using namespace std;
 
 class TextureManager
 {
+	// The textures that are loaded
+	static map<string, sf::Texture*> textures;
+
+	// Manually keep track of the order in which textures were loaded, so you can get by index.
+	static std::vector<string> order;
+
 public:
-
+	// Destructor which deletes the textures previously loaded
 	TextureManager();
+	~TextureManager();
 
-	static int AddTexture(std::string filepath);
-	static void RemoveTexture(int textureID);
-	static sf::Texture& GetTexture(int textureID);
+	static int getLength();
+	void showTexturesList();
 
-private:
+	// Get texutre by name specified in loadTexture, or return null
+	static sf::Texture *getTexture(string name);
 
-	static std::map<std::string, std::pair<int, std::unique_ptr<sf::Texture>>> m_textures;
+	// Get texutre by index in map, or return null
+	static sf::Texture *getTexture(int index);
 
-
-
-
+	// Loads the texture and returns a pointer to it
+	// If it is already loaded, this function just returns it
+	// If it cannot find the file, returns NULL
+	static sf::Texture *loadTexture(string name, string path);
 };

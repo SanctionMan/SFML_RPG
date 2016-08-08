@@ -7,10 +7,9 @@ Game::Game()
 {
 	m_Player.setRadius(40.f);
 	m_Player.setPosition(50.f, 50.f);
-	m_Player.setFillColor(sf::Color::Cyan);
+	//m_Player.setFillColor(sf::Color::Cyan);
 
 	m_Player2.setPosition(50.f, 50.f);
-
 }
 
 Game::~Game()
@@ -19,6 +18,9 @@ Game::~Game()
 
 void Game::Run()
 {
+	//Manager Setup:
+	Init();
+
 	sf::Clock clock;
 	ElapsedTime = clock.getElapsedTime();
 	while (m_Window.isOpen())
@@ -41,11 +43,15 @@ sf::RenderWindow* Game::GetWindow()
 
 void Game::Init()
 {
-	
-	//imageManager.Add_Resource_Directory("Resoruces/Textures/");
 
+	//imageManager.Add_Resource_Directory("Resoruces/Textures/");
+	TextureManager.loadTexture("Mushroom.png", "Resources/Textures/Mushroom.png");
+	m_Player2.setTexture(*TextureManager.getTexture("Mushroom.png"));
+	m_Player.setTexture(TextureManager.getTexture("Mushroom.png"));
 	//texture.loadFromImage(imageManager.GetImage("Mushroom.png"));
 	//m_Player2.SetImage(imageManager.GetImage("Mushroom.png"))
+
+	TextureManager.showTexturesList();
 }
 
 void Game::HandleInput()
@@ -86,6 +92,7 @@ void Game::Render()
 {
 	m_Window.clear();
 	m_Window.draw(m_Player);
+	m_Window.draw(m_Player2);
 	m_Window.display();
 }
 

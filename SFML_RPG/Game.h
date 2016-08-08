@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-
+#include "TextureManager.h"
 
 class Game 
 {
@@ -30,6 +30,7 @@ private:
 	sf::CircleShape m_Player;
 	sf::Sprite m_Player2;
 	sf::Texture texture;
+	TextureManager TextureManager;
 
 	bool m_IsMovingUp;
 	bool m_IsMovingDown;
