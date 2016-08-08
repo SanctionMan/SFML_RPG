@@ -41,11 +41,11 @@ sf::RenderWindow* Game::GetWindow()
 
 void Game::Init()
 {
-	ImageManager imageManager;
-	imageManager.Add_Resource_Directory("Resoruces/Textures/");
-	size_t area = 5;
-	texture.loadFromMemory(&imageManager.GetImage("Mushroom.png"), area);
-	m_Player2.setTexture(texture);
+	
+	//imageManager.Add_Resource_Directory("Resoruces/Textures/");
+
+	//texture.loadFromImage(imageManager.GetImage("Mushroom.png"));
+	//m_Player2.SetImage(imageManager.GetImage("Mushroom.png"))
 }
 
 void Game::HandleInput()
@@ -84,8 +84,8 @@ void Game::Update(sf::Time ElapsedTime)
 
 void Game::Render()
 {
-	m_Window.clear(sf::Color::White);
-	m_Window.draw(m_Player2);
+	m_Window.clear();
+	m_Window.draw(m_Player);
 	m_Window.display();
 }
 
