@@ -32,10 +32,10 @@ private:
 	sf::Texture texture;
 	TextureManager TextureManager;
 
-	bool m_IsMovingUp;
-	bool m_IsMovingDown;
-	bool m_IsMovingLeft;
-	bool m_IsMovingRight;
+	bool m_IsMovingUp = false;
+	bool m_IsMovingDown = false;
+	bool m_IsMovingLeft = false;
+	bool m_IsMovingRight = false;
 
 	float PlayerSpeed = 100;
 };
