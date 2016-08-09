@@ -13,6 +13,7 @@ public:
 
 	sf::Vector2f _position;
 	std::string _name;
+	sf::RectangleShape _bounds;
 
 };
 

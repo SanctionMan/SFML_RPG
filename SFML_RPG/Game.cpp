@@ -74,7 +74,7 @@ void Game::update(sf::Time ElapsedTime)
 
 void Game::render()
 {
-	_window.clear();
+	_window.clear(sf::Color::Magenta);
 	renderEntities();
 	_window.display();
 }
