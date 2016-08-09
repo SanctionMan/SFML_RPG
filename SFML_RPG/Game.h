@@ -2,8 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 #include "TextureManager.h"
+#include "CollisionSystem.h"
 #include "Entity.h"
 #include "Player.h"
+#include "Enemy.h"
 
 
 class Game 
@@ -34,7 +36,7 @@ private:
 
 	sf::RenderWindow _window;
 
-	TextureManager TextureManager;
+	TextureManager _TextureManager;
 
 	std::vector<Entity*> _entities;
 };

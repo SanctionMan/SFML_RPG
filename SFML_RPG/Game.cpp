@@ -3,7 +3,6 @@
 Game::Game()
 	: _window(sf::VideoMode(640, 480), "SFML_RPG")
 {
-
 }
 
 Game::~Game()
@@ -12,7 +11,10 @@ Game::~Game()
 
 void Game::Run()
 {
-	//Manager Setup:
+	//System Setup
+	CollisionSystem _CollisionSystem;
+
+	//Init Game
 	init();
 
 	sf::Clock clock;
@@ -24,6 +26,7 @@ void Game::Run()
 		{
 			handleInput();
 			update(_elapsedTime);
+			_CollisionSystem.update(_entities);
 			_elapsedTime -= sf::seconds(_frameTime);
 		}
 		render();
@@ -38,13 +41,14 @@ sf::RenderWindow* Game::GetWindow()
 void Game::init()
 {
 	//Load Textures 
-	TextureManager.loadTexture("Mushroom.png", "Resources/Textures/Mushroom.png");
+	_TextureManager.loadTexture("Mushroom.png", "Resources/Textures/Mushroom.png");
 
 	//Show Textures that are loaded into memory
-	TextureManager.showTexturesList();
+	_TextureManager.showTexturesList();
 
 	//Create Player and Set Texture
-	createEntity(new Player(TextureManager.getTexture("Mushroom.png"), sf::Vector2f(100,100)));
+	createEntity(new Player(_TextureManager.getTexture("Mushroom.png"), sf::Vector2f(100,100)));
+	createEntity(new Enemy(_TextureManager.getTexture("Mushroom.png"), sf::Vector2f(300, 300)));
 }
 
 void Game::handleInput()
@@ -74,7 +78,7 @@ void Game::update(sf::Time ElapsedTime)
 
 void Game::render()
 {
-	_window.clear(sf::Color::Magenta);
+	_window.clear();
 	renderEntities();
 	_window.display();
 }

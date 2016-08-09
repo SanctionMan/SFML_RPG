@@ -2,6 +2,7 @@
 
 #include "Game.h"
 
+class Entity;
 class CollisionSystem
 {
 public:
