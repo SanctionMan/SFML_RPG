@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "TextureManager.h"
+#include "Entity.h"
+#include "Player.h"
 
 
 class Game 
@@ -12,33 +14,28 @@ public:
 
 	void Run();
 	sf::RenderWindow* GetWindow();
+public:
+
+	void init();
+	void handleInput();
+	void update(sf::Time ElapsedTime);
+	void render();
+	void cleanUp();
+
+	void createEntity(Entity* ent);
+	void updateEntities();
+	void renderEntities();
+	void processEntities(sf::Event &event);
+
 private:
 
-	void Init();
-	void HandleInput();
-	void Update(sf::Time ElapsedTime);
-	void Render();
+	float _frameTime = 1.0f / 60.0f;
+	sf::Time _elapsedTime;
 
-	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
+	sf::RenderWindow _window;
 
-private:
-
-	sf::RenderWindow m_Window;
-
-	sf::Time ElapsedTime;
-	float FrameTime = 1.0f / 60.0f;
-
-	sf::CircleShape m_Player;
-	sf::Sprite m_Player2;
-	sf::Texture texture;
 	TextureManager TextureManager;
 
-	bool m_IsMovingUp = false;
-	bool m_IsMovingDown = false;
-	bool m_IsMovingLeft = false;
-	bool m_IsMovingRight = false;
-
-	float PlayerSpeed = 100;
-
+	std::vector<Entity*> _entities;
 };
 

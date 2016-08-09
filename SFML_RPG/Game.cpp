@@ -1,15 +1,9 @@
 #include "Game.h"
 
 Game::Game()
-	: m_Window(sf::VideoMode(640, 480), "SFML_RPG"),
-	m_Player(),
-	m_Player2()
+	: _window(sf::VideoMode(640, 480), "SFML_RPG")
 {
-	m_Player.setRadius(40.f);
-	m_Player.setPosition(50.f, 50.f);
-	//m_Player.setFillColor(sf::Color::Cyan);
 
-	m_Player2.setPosition(50.f, 50.f);
 }
 
 Game::~Game()
@@ -19,91 +13,106 @@ Game::~Game()
 void Game::Run()
 {
 	//Manager Setup:
-	Init();
+	init();
 
 	sf::Clock clock;
-	ElapsedTime = clock.getElapsedTime();
-	while (m_Window.isOpen())
+	_elapsedTime = clock.getElapsedTime();
+	while (_window.isOpen())
 	{
-		ElapsedTime += clock.restart();
-		while (ElapsedTime.asSeconds() >= FrameTime)
+		_elapsedTime += clock.restart();
+		while (_elapsedTime.asSeconds() >= _frameTime)
 		{
-			HandleInput();
-			Update(ElapsedTime);
-			ElapsedTime -= sf::seconds(FrameTime);
+			handleInput();
+			update(_elapsedTime);
+			_elapsedTime -= sf::seconds(_frameTime);
 		}
-		Render();
+		render();
 	}
 }
 
 sf::RenderWindow* Game::GetWindow()
 {
-	return &m_Window;
+	return &_window;
 }
 
-void Game::Init()
+void Game::init()
 {
-
-	//imageManager.Add_Resource_Directory("Resoruces/Textures/");
+	//Load Textures 
 	TextureManager.loadTexture("Mushroom.png", "Resources/Textures/Mushroom.png");
-	m_Player2.setTexture(*TextureManager.getTexture("Mushroom.png"));
-	m_Player.setTexture(TextureManager.getTexture("Mushroom.png"));
-	//texture.loadFromImage(imageManager.GetImage("Mushroom.png"));
-	//m_Player2.SetImage(imageManager.GetImage("Mushroom.png"))
 
+	//Show Textures that are loaded into memory
 	TextureManager.showTexturesList();
+
+	//Create Player and Set Texture
+	createEntity(new Player(TextureManager.getTexture("Mushroom.png"), sf::Vector2f(100,100)));
 }
 
-void Game::HandleInput()
+void Game::handleInput()
 {
 	sf::Event event;
-	while (m_Window.pollEvent(event))
+	while (_window.pollEvent(event))
 	{
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
-			handlePlayerInput(event.key.code, true);
+			processEntities(event);
 			break;
 		case sf::Event::KeyReleased:
-			handlePlayerInput(event.key.code, false);
+			processEntities(event);
 			break;
 		case sf::Event::Closed:
-			m_Window.close();
+			_window.close();
 			break;
 		}
 	}
 }
 
-void Game::Update(sf::Time ElapsedTime)
+void Game::update(sf::Time ElapsedTime)
 {
-	sf::Vector2f movement(0.f, 0.f);
-	if (m_IsMovingUp)
-		movement.y -= PlayerSpeed;
-	if (m_IsMovingDown)
-		movement.y += PlayerSpeed;
-	if (m_IsMovingLeft)
-		movement.x -= PlayerSpeed;
-	if (m_IsMovingRight)
-		movement.x += PlayerSpeed;
-	m_Player.move(movement * ElapsedTime.asSeconds());
+	updateEntities();
 }
 
-void Game::Render()
+void Game::render()
 {
-	m_Window.clear();
-	m_Window.draw(m_Player);
-	m_Window.draw(m_Player2);
-	m_Window.display();
+	_window.clear();
+	renderEntities();
+	_window.display();
 }
 
-void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
+void Game::cleanUp()
 {
-	if (key == sf::Keyboard::W)
-		m_IsMovingUp = isPressed;
-	else if (key == sf::Keyboard::S)
-		m_IsMovingDown = isPressed;
-	else if (key == sf::Keyboard::A)
-		m_IsMovingLeft = isPressed;
-	else if (key == sf::Keyboard::D)
-		m_IsMovingRight = isPressed;
+	for (auto &it : _entities)
+	{
+		std::cout << "Entity: " << it->_name << " Deleted!" << std::endl;
+		delete it;
+	}
+}
+
+void Game::createEntity(Entity* ent)
+{
+	_entities.push_back(ent);
+}
+
+void Game::updateEntities()
+{
+	for (auto &it : _entities)
+	{
+		it->update(_elapsedTime);
+	}
+}
+
+void Game::renderEntities()
+{
+	for (auto &it : _entities)
+	{
+		it->render(_window);
+	}
+}
+
+void Game::processEntities(sf::Event &event)
+{
+	for (auto &it : _entities)
+	{
+		it->processEvents(event);
+	}
 }
