@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "TextureManager.h"
 
+
 class Game 
 {
 public:
@@ -38,4 +39,6 @@ private:
 	bool m_IsMovingRight = false;
 
 	float PlayerSpeed = 100;
+
 };
+
