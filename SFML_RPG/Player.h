@@ -22,6 +22,6 @@ private:
 	bool _isMovingLeft = false;
 	bool _isMovingRight = false;
 
-	float _playerSpeed = 100;
+	float _playerSpeed = 200;
 };
 

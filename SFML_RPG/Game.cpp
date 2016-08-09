@@ -47,7 +47,7 @@ void Game::init()
 	_TextureManager.showTexturesList();
 
 	//Create Player and Set Texture
-	createEntity(new Player(_TextureManager.getTexture("Mushroom.png"), sf::Vector2f(100,100)));
+	createEntity(new Player(_TextureManager.getTexture("Mushroom.png"), sf::Vector2f(100, 100)));
 	createEntity(new Enemy(_TextureManager.getTexture("Mushroom.png"), sf::Vector2f(300, 300)));
 }
 
