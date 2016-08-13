@@ -1,7 +1,7 @@
 #include "Game.h"
 
 Game::Game()
-	: _window(sf::VideoMode(640, 480), "SFML_RPG")
+	: _window(sf::VideoMode(1280, 800), "SFML_RPG")
 {
 }
 
@@ -22,12 +22,12 @@ void Game::Run()
 	while (_window.isOpen())
 	{
 		_elapsedTime += clock.restart();
-		while (_elapsedTime.asSeconds() >= _frameTime)
+		while (_elapsedTime.asSeconds() > _frameTime)
 		{
 			handleInput();
 			update(_elapsedTime);
 			_CollisionSystem.update(_entities);
-			_elapsedTime -= sf::seconds(_frameTime);
+			_elapsedTime = clock.restart();
 		}
 		render();
 	}
@@ -40,15 +40,36 @@ sf::RenderWindow* Game::GetWindow()
 
 void Game::init()
 {
+	_window.setFramerateLimit(60);
+
 	//Load Textures 
-	_TextureManager.loadTexture("Mushroom.png", "Resources/Textures/Mushroom.png");
+	_TextureManager = new TextureManager();
+	//Mushroom
+	_TextureManager->loadTexture("Mushroom.png", "Resources/Textures/Entities/Misc/Mushroom.png");
+	//Map
+	_TextureManager->loadTexture("spr_tile_wall_top_left.png", "Resources/Textures/Map/spr_tile_wall_top_left.png");// Top Left Corner
+	_TextureManager->loadTexture("spr_tile_wall_bottom_left.png", "Resources/Textures/Map/spr_tile_wall_bottom_left.png");// Bottom Left Corner
+	_TextureManager->loadTexture("spr_tile_wall_top_right.png", "Resources/Textures/Map/spr_tile_wall_top_right.png");// Top Right Corner
+	_TextureManager->loadTexture("spr_tile_wall_bottom_right", "Resources/Textures/Map/spr_tile_wall_bottom_right.png");// Bottom Right Corner
+	_TextureManager->loadTexture("spr_tile_wall_top.png", "Resources/Textures/Map/spr_tile_wall_top.png");// Top/Bottom Wall
+	_TextureManager->loadTexture("spr_tile_wall_side.png", "Resources/Textures/Map/spr_tile_wall_side.png");// Right/Left Wall 
+	_TextureManager->loadTexture("spr_tile_floor_alt.png", "Resources/Textures/Map/spr_tile_floor_alt.png");// Floor Alt
+	//Player
+	_TextureManager->loadTexture("steel_armor.png", "Resources/Textures/Entities/Player/steel_armor.png");//Player Body
+	_TextureManager->loadTexture("male_head1png.png", "Resources/Textures/Entities/Player/steel_armor.png");//Player Head
 
 	//Show Textures that are loaded into memory
-	_TextureManager.showTexturesList();
+	_TextureManager->showTexturesList();
+
+	//Test tile parser! maps! wicked! anus!
+	_tileParser = new TileParser();
+	_tileParser->textureManager = _TextureManager;
+	_tileParser->Init("Maps/Map_001.txt");
+	_tileParser->Parse();
 
 	//Create Player and Set Texture
-	createEntity(new Player(_TextureManager.getTexture("Mushroom.png"), sf::Vector2f(100, 100)));
-	createEntity(new Enemy(_TextureManager.getTexture("Mushroom.png"), sf::Vector2f(300, 300)));
+	createEntity(new Player(_TextureManager->getTexture("steel_armor.png"), sf::Vector2f(100, 100)));
+	createEntity(new Enemy(_TextureManager->getTexture("Mushroom.png"), sf::Vector2f(300, 300)));
 }
 
 void Game::handleInput()
@@ -78,7 +99,13 @@ void Game::update(sf::Time ElapsedTime)
 
 void Game::render()
 {
-	_window.clear();
+	_window.clear(sf::Color::White);
+	//Draw map
+	for(std::pair<int, Tile*> tile : _tileParser->tileID)
+	{
+		tile.second->render(_window);
+	}
+	//Draw Entities
 	renderEntities();
 	_window.display();
 }

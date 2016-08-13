@@ -137,6 +137,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimatedSprite.cpp" />
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -144,17 +146,66 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Utils\TileParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimatedSprite.h" />
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GlobalRPG.hpp" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Utils\TileParser.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\Textures\Mushroom.png" />
+    <Text Include="Maps\Map_001.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Textures\Entities\Misc\Mushroom.png" />
+    <Image Include="Resources\Textures\Entities\Player\buckler.png" />
+    <Image Include="Resources\Textures\Entities\Player\clothes.png" />
+    <Image Include="Resources\Textures\Entities\Player\dagger.png" />
+    <Image Include="Resources\Textures\Entities\Player\greatbow.png" />
+    <Image Include="Resources\Textures\Entities\Player\greatstaff.png" />
+    <Image Include="Resources\Textures\Entities\Player\greatsword.png" />
+    <Image Include="Resources\Textures\Entities\Player\leather_armor.png" />
+    <Image Include="Resources\Textures\Entities\Player\longbow.png" />
+    <Image Include="Resources\Textures\Entities\Player\longsword.png" />
+    <Image Include="Resources\Textures\Entities\Player\male_head1.png" />
+    <Image Include="Resources\Textures\Entities\Player\male_head2.png" />
+    <Image Include="Resources\Textures\Entities\Player\male_head3.png" />
+    <Image Include="Resources\Textures\Entities\Player\rod.png" />
+    <Image Include="Resources\Textures\Entities\Player\shield.png" />
+    <Image Include="Resources\Textures\Entities\Player\shortbow.png" />
+    <Image Include="Resources\Textures\Entities\Player\shortsword.png" />
+    <Image Include="Resources\Textures\Entities\Player\slingshot.png" />
+    <Image Include="Resources\Textures\Entities\Player\staff.png" />
+    <Image Include="Resources\Textures\Entities\Player\steel_armor.png" />
+    <Image Include="Resources\Textures\Entities\Player\wand.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_door_locked.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_door_unlocked.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_floor.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_floor_alt.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_bottom_end.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_bottom_left.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_bottom_right.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_bottom_t.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_entrance.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_intersection.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_side.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_side_left_end.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_side_left_t.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_side_right_end.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_side_right_t.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_single.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_top.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_top_end.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_top_left.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_top_right.png" />
+    <Image Include="Resources\Textures\Map\spr_tile_wall_top_t.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

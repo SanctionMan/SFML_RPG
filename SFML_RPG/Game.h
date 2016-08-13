@@ -6,8 +6,9 @@
 #include "Entity.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "GlobalRPG.hpp"
 
-
+class TileParser;
 class Game 
 {
 public:
@@ -29,15 +30,16 @@ public:
 	void renderEntities();
 	void processEntities(sf::Event &event);
 
+	TextureManager* _TextureManager=nullptr;
 private:
-
-	float _frameTime = 1.0f / 60.0f;
+	float _frameTime = 0.1f / 60.0f;
 	sf::Time _elapsedTime;
 
 	sf::RenderWindow _window;
 
-	TextureManager _TextureManager;
+	TileParser* _tileParser=nullptr;
 
+	
 	std::vector<Entity*> _entities;
 };
 
