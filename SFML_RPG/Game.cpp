@@ -40,7 +40,7 @@ sf::RenderWindow* Game::GetWindow()
 
 void Game::init()
 {
-	_window.setFramerateLimit(60);
+	//_window.setFramerateLimit(60);
 
 	//Load Textures 
 	_TextureManager = new TextureManager();
@@ -56,7 +56,7 @@ void Game::init()
 	_TextureManager->loadTexture("spr_tile_floor_alt.png", "Resources/Textures/Map/spr_tile_floor_alt.png");// Floor Alt
 	//Player
 	_TextureManager->loadTexture("steel_armor.png", "Resources/Textures/Entities/Player/steel_armor.png");//Player Body
-	_TextureManager->loadTexture("male_head1png.png", "Resources/Textures/Entities/Player/steel_armor.png");//Player Head
+	_TextureManager->loadTexture("male_head1.png", "Resources/Textures/Entities/Player/male_head1.png");//Player Head
 
 	//Show Textures that are loaded into memory
 	_TextureManager->showTexturesList();
@@ -68,7 +68,7 @@ void Game::init()
 	_tileParser->Parse();
 
 	//Create Player and Set Texture
-	createEntity(new Player(_TextureManager->getTexture("steel_armor.png"), sf::Vector2f(100, 100)));
+	createEntity(new Player(sf::Vector2f(100, 100), _TextureManager->getTexture("male_head1.png"), _TextureManager->getTexture("steel_armor.png")));
 	createEntity(new Enemy(_TextureManager->getTexture("Mushroom.png"), sf::Vector2f(300, 300)));
 }
 

@@ -208,5 +208,8 @@
     <Image Include="Resources\Textures\Entities\Misc\Mushroom.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\Textures\Entities\Enemy\goblin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
