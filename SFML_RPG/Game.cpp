@@ -10,43 +10,47 @@ float CalculateDistance(sf::Vector2f a, sf::Vector2f b)
 }
 
 Game::Game()
-	: _window(sf::VideoMode(1280, 800), "SFML_RPG")
 {
+	_window = new sf::RenderWindow(sf::VideoMode(1280, 800), "SFML_RPG");
 	gameHandle = this;
 }
 
 Game::~Game()
 {
+	_window->close();
+	delete _window;
 }
 
 void Game::Run()
 {
-	//System Setup
-	CollisionSystem _CollisionSystem;
-
 	//Init Game
 	init();
 
+	//Init collision
+	_CollisionSystem = new CollisionSystem();
+
+	int perFrameCollision = 0;
 	sf::Clock clock;
 	_elapsedTime = clock.getElapsedTime();
-	while (_window.isOpen())
+	while (_window->isOpen())
 	{
 		_elapsedTime += clock.restart();
 		while (_elapsedTime.asSeconds() > _frameTime)
 		{
 			handleInput();
 			update(_elapsedTime);
-			//_CollisionSystem.update(_entities);
-			_CollisionSystem.check(_entities);
+			
 			_elapsedTime = clock.restart();
 		}
+		_CollisionSystem->check(_entities, 6, _window->getSize());
+
 		render();
 	}
 }
 
 sf::RenderWindow* Game::GetWindow()
 {
-	return &_window;
+	return _window;
 }
 
 void Game::init()
@@ -71,6 +75,12 @@ void Game::init()
 	//Enemy
 	_TextureManager->loadTexture("goblin.png", "Resources/Textures/Entities/Enemy/goblin.png");// Goblin
 
+	if (!font.loadFromFile("Resources/Fonts/Atarian/SF Atarian System.ttf"))
+	{
+		cout << "Loading font = error" << endl;
+	}
+	text.setFont(font);
+
 	//Show Textures that are loaded into memory
 	_TextureManager->showTexturesList();
 
@@ -83,21 +93,19 @@ void Game::init()
 	//Create Player and Set Texture
 	createEntity(new Player(sf::Vector2f(100, 100), _TextureManager->getTexture("male_head1.png"), 
 													_TextureManager->getTexture("steel_armor.png")));
-	createEntity(new Goblin(sf::Vector2f(300, 300), _TextureManager->getTexture("goblin.png")));
-	createEntity(new Goblin(sf::Vector2f(325, 300), _TextureManager->getTexture("goblin.png")));
-	createEntity(new Goblin(sf::Vector2f(300, 325), _TextureManager->getTexture("goblin.png")));
-	createEntity(new Goblin(sf::Vector2f(325, 325), _TextureManager->getTexture("goblin.png")));
+	createEntity(new Goblin(sf::Vector2f(150, 150), _TextureManager->getTexture("goblin.png")));
+
 }
 
 void Game::handleInput()
 {
 	sf::Event event;
-	while (_window.pollEvent(event))
+	while (_window->pollEvent(event))
 	{
 		switch (event.type)
 		{
 		case sf::Event::Closed:
-			_window.close();
+			_window->close();
 			break;
 		case sf::Event::Resized:
 			break;
@@ -119,20 +127,33 @@ void Game::handleInput()
 void Game::update(sf::Time ElapsedTime)
 {
 	updateEntities();
-	mousePosition = sf::Vector2f(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
+	mousePosition = sf::Vector2f(sf::Mouse::getPosition(*_window).x, sf::Mouse::getPosition(*_window).y);
+
+	string printMe =  "Entity Count: " + std::to_string(_entities.size()) + "\n";
+	printMe += "Collision Grid Info: X=" + std::to_string(_CollisionSystem->currentX) + " Y=" + std::to_string(_CollisionSystem->currentY)
+		+ " EntityCount=" + std::to_string(_CollisionSystem->gridSize);
+
+	text.setString(printMe);
+	text.setFillColor(sf::Color::Black);
 }
 
 void Game::render()
 {
-	_window.clear(sf::Color::White);
+	_window->clear(sf::Color::Magenta);
 	//Draw map
 	for(std::pair<int, Tile*> tile : _tileParser->tileID)
 	{
-		tile.second->render(_window);
+		tile.second->render(*_window);
 	}
 	//Draw Entities
 	renderEntities();
-	_window.display();
+
+	//Draw collision grid
+	_CollisionSystem->drawGrid();
+
+	//Draw UI
+	_window->draw(text);
+	_window->display();
 }
 
 void Game::cleanUp()
@@ -161,7 +182,7 @@ void Game::renderEntities()
 {
 	for (auto &it : _entities)
 	{
-		it->render(_window);
+		it->render(*_window);
 	}
 }
 
@@ -185,6 +206,11 @@ void Game::mouseClicks(sf::Event& event)
 	case sf::Mouse::Middle:
 		break;
 	}
+}
+
+sf::RenderWindow* GetGameWindow()
+{
+	return gameHandle->_window;
 }
 
 Player* GetPlayer()

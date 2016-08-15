@@ -26,13 +26,12 @@ void Enemy::aiUpdate(sf::Time _deltaTime)
 		movement.x -= _enemySpeed;
 	if (_isMovingRight)
 		movement.x += _enemySpeed;
-	//_bounds.move(movement * _deltaTime.asSeconds());
 	_shape.move(movement * _deltaTime.asSeconds());
 	
 	// Update _positions and _body
-	_position = _shape.getPosition() -_adjustment_xy;
-	_animatedBody.setPosition(_position);
-	_bounds.setPosition(_position + _adjustment_xy);
+	_position = _shape.getPosition();
+	_animatedBody.setPosition(_position + _adjustment_xy);
+	_bounds.setPosition(_position);
 
 	//// Update Animation
 	_animatedBody.play(*_currentAnimationBody);
@@ -127,7 +126,7 @@ void Enemy::aiUpdate(sf::Time _deltaTime)
 		_currentAnimationBody = &_runningAnimationDown_Right;
 		_lastAnimationState = _movingDown_Right;
 	}
-
+	
 	updateAI();
 
 }
@@ -137,7 +136,6 @@ void Enemy::aiRender(sf::RenderWindow & _window)
 	_window.draw(_bounds);
 	_window.draw(_shape);
 	_window.draw(_animatedBody);
-
 }
 
 void Enemy::aiProcessEvents(sf::Event & event)
@@ -163,18 +161,18 @@ void Enemy::constructEnemy(sf::Vector2f position, sf::Vector2f animationSize, sf
 	_mass = 1;
 	_animationSize = animationSize;
 	_textureBody = texture;
-	_adjustment_xy = sf::Vector2f(0.f, 30.f);
+	_adjustment_xy = sf::Vector2f(0.f, -30.f);
 
 	// Setup collision bounds
 	_bounds.setSize(sf::Vector2f(_animationSize.x / 4, _animationSize.y / 4));
-	_bounds.setPosition(_position + _adjustment_xy);
+	_bounds.setPosition(_position);
 	_bounds.setOrigin(_bounds.getSize() / 2.f);
-	_bounds.setOutlineThickness(1);
+	_bounds.setOutlineThickness(2);
 	_bounds.setOutlineColor(sf::Color::Green);
 	_bounds.setFillColor(sf::Color(0, 0, 0, 0));
 
 	_shape.setRadius(_radius);
-	_shape.setPosition(_position + _adjustment_xy);
+	_shape.setPosition(_position);
 	_shape.setOrigin(sf::Vector2f(_radius, _radius));
 	_shape.setOutlineThickness(2);
 	_shape.setOutlineColor(sf::Color::Red);
@@ -308,6 +306,6 @@ void Enemy::initEnemyTextures()
 	_currentAnimationBody = &_stanceAnimationDown;
 
 	// Setup animatedsprite
-	_animatedBody.setPosition(_position);
+	_animatedBody.setPosition(_position + _adjustment_xy);
 	_animatedBody.setOrigin(sf::Vector2f(_animationSize.x / 2, _animationSize.y / 2));
 }

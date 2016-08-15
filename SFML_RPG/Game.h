@@ -12,6 +12,7 @@ float CalculateDistance(sf::Vector2f a, sf::Vector2f b);
 
 class Player;
 class TileParser;
+class CollisionSystem;
 class Game 
 {
 public:
@@ -39,13 +40,19 @@ public:
 
 	std::vector<Entity*> _entities;
 	sf::Vector2f mousePosition;
+	sf::RenderWindow* _window = nullptr;
 private:
 	float _frameTime = 0.1f / 60.0f;
 	sf::Time _elapsedTime;
 
-	sf::RenderWindow _window;
+	sf::Font font;
+	sf::Text text;
+
+	//System Setup
+	CollisionSystem* _CollisionSystem;
 
 	TileParser* _tileParser=nullptr;
 };
 
+sf::RenderWindow* GetGameWindow();
 Player* GetPlayer();

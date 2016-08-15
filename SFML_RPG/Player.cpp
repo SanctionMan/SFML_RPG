@@ -9,21 +9,21 @@ Player::Player(sf::Vector2f position, sf::Texture* headTexture, sf::Texture* bod
 	_animatedBody(sf::seconds(0.2f), true, false),
 	_animationSize(128, 128)
 {
+	_adjustment_xy = sf::Vector2f(0.f, -25.f);
 	_position = position;
 	_radius = 10;
 	_mass = 5;
-	_adjustment_xy = sf::Vector2f(0.f, 25.f);
 
 	 // Setup collision bounds
 	_bounds.setSize(sf::Vector2f(_animationSize.x / 4, _animationSize.y / 4));
-	_bounds.setPosition(_position + _adjustment_xy);
+	_bounds.setPosition(_position);
 	_bounds.setOrigin(_bounds.getSize() / 2.f);
 	_bounds.setOutlineThickness(1);
 	_bounds.setOutlineColor(sf::Color::Green);
 	_bounds.setFillColor(sf::Color(0, 0, 0, 0));
 
 	_shape.setRadius(_radius);
-	_shape.setPosition(_position + _adjustment_xy);
+	_shape.setPosition(_position);
 	_shape.setOrigin(sf::Vector2f(_radius, _radius));
 	_shape.setOutlineThickness(2);
 	_shape.setOutlineColor(sf::Color::Red);
@@ -57,14 +57,13 @@ void Player::update(sf::Time _deltaTime)
 		movement.x -= _playerSpeed;
 	if (_isMovingRight)
 		movement.x += _playerSpeed;
-	//_bounds.move(movement * _deltaTime.asSeconds());
 	_shape.move(movement * _deltaTime.asSeconds());
 
 	// Update _positions and _body
-	_position = _shape.getPosition() - _adjustment_xy;
-	_animatedBody.setPosition(_position);
-	_animatedHead.setPosition(_position);
-	_bounds.setPosition(_position + _adjustment_xy);
+	_position = _shape.getPosition();
+	_animatedBody.setPosition(_position + _adjustment_xy);
+	_animatedHead.setPosition(_position + _adjustment_xy);
+	_bounds.setPosition(_position);
 
 	// Update Animation
 	_animatedBody.play(*_currentAnimationBody);
@@ -251,8 +250,8 @@ void Player::initPlayerTextures()
 	// Setup animatedsprite
 	//AnimatedSprite _animatedHead(sf::seconds(0.05), true, false);
 	//AnimatedSprite _animatedBody(sf::seconds(0.05), true, false);
-	_animatedHead.setPosition(_position);
-	_animatedBody.setPosition(_position);
+	_animatedHead.setPosition(_position + _adjustment_xy);
+	_animatedBody.setPosition(_position + _adjustment_xy);
 }
 
 void Player::initBodyTextures()
