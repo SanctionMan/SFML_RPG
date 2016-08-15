@@ -1,8 +1,18 @@
 #include "Game.h"
 
+Game* gameHandle = 0;
+
+float CalculateDistance(sf::Vector2f a, sf::Vector2f b)
+{
+	float diffy = a.y - b.y;
+	float diffx = a.x - b.x;
+	return sqrt(((diffy * diffy) + (diffy * diffy)) + ((diffx * diffx) + (diffx * diffx)));
+}
+
 Game::Game()
 	: _window(sf::VideoMode(1280, 800), "SFML_RPG")
 {
+	gameHandle = this;
 }
 
 Game::~Game()
@@ -26,7 +36,8 @@ void Game::Run()
 		{
 			handleInput();
 			update(_elapsedTime);
-			_CollisionSystem.update(_entities);
+			//_CollisionSystem.update(_entities);
+			_CollisionSystem.check(_entities);
 			_elapsedTime = clock.restart();
 		}
 		render();
@@ -55,8 +66,10 @@ void Game::init()
 	_TextureManager->loadTexture("spr_tile_wall_side.png", "Resources/Textures/Map/spr_tile_wall_side.png");// Right/Left Wall 
 	_TextureManager->loadTexture("spr_tile_floor_alt.png", "Resources/Textures/Map/spr_tile_floor_alt.png");// Floor Alt
 	//Player
-	_TextureManager->loadTexture("steel_armor.png", "Resources/Textures/Entities/Player/steel_armor.png");//Player Body
-	_TextureManager->loadTexture("male_head1.png", "Resources/Textures/Entities/Player/male_head1.png");//Player Head
+	_TextureManager->loadTexture("steel_armor.png", "Resources/Textures/Entities/Player/steel_armor.png");// Player Body
+	_TextureManager->loadTexture("male_head1.png", "Resources/Textures/Entities/Player/male_head1.png");// Player Head
+	//Enemy
+	_TextureManager->loadTexture("goblin.png", "Resources/Textures/Entities/Enemy/goblin.png");// Goblin
 
 	//Show Textures that are loaded into memory
 	_TextureManager->showTexturesList();
@@ -68,8 +81,9 @@ void Game::init()
 	_tileParser->Parse();
 
 	//Create Player and Set Texture
-	createEntity(new Player(sf::Vector2f(100, 100), _TextureManager->getTexture("male_head1.png"), _TextureManager->getTexture("steel_armor.png")));
-	createEntity(new Enemy(_TextureManager->getTexture("Mushroom.png"), sf::Vector2f(300, 300)));
+	createEntity(new Player(sf::Vector2f(100, 100), _TextureManager->getTexture("male_head1.png"), 
+													_TextureManager->getTexture("steel_armor.png")));
+	createEntity(new Goblin(sf::Vector2f(300, 300), _TextureManager->getTexture("goblin.png")));
 }
 
 void Game::handleInput()
@@ -146,4 +160,20 @@ void Game::processEntities(sf::Event &event)
 	{
 		it->processEvents(event);
 	}
+}
+
+Player* GetPlayer()
+{
+	//Loop through entities. ent = entity;
+	for(Entity* ent : gameHandle->_entities)
+	{
+		//If this is player, go in here and return it!
+		if(ent->_name == "Player")
+		{
+			return (Player*)ent; //can cast to player because player inherits from entity.
+		}
+	}
+
+	//Return null if nothing is there...
+	return 0;
 }

@@ -5,9 +5,12 @@
 #include "CollisionSystem.h"
 #include "Entity.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "Enemy.h" //Any class that inherits this needs to be included at bottom of this header.
 #include "GlobalRPG.hpp"
 
+float CalculateDistance(sf::Vector2f a, sf::Vector2f b);
+
+class Player;
 class TileParser;
 class Game 
 {
@@ -31,6 +34,8 @@ public:
 	void processEntities(sf::Event &event);
 
 	TextureManager* _TextureManager=nullptr;
+
+	std::vector<Entity*> _entities;
 private:
 	float _frameTime = 0.1f / 60.0f;
 	sf::Time _elapsedTime;
@@ -38,8 +43,6 @@ private:
 	sf::RenderWindow _window;
 
 	TileParser* _tileParser=nullptr;
-
-	
-	std::vector<Entity*> _entities;
 };
 
+Player* GetPlayer();

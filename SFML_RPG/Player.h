@@ -28,6 +28,8 @@ private:
 	bool _isMovingLeft = false;
 	bool _isMovingRight = false;
 
+	float _playerSpeed = 150;
+
 	enum animationEnum
 	{	_movingUp = 1,
 		_movingDown = 2,
@@ -45,7 +47,6 @@ private:
 	};
 
 	animationEnum _lastAnimationState;
-	float _playerSpeed = 150;
 
 	sf::Texture* _textureHead;
 	sf::Texture* _textureBody;

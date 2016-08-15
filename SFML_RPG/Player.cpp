@@ -10,14 +10,23 @@ Player::Player(sf::Vector2f position, sf::Texture* headTexture, sf::Texture* bod
 	_animationSize(128, 128)
 {
 	_position = position;
+	_radius = 10;
+	_mass = 5;
 
-	// Setup collision bounds
+	 // Setup collision bounds
 	_bounds.setSize(sf::Vector2f(_animationSize.x / 4, _animationSize.y / 4));
 	_bounds.setPosition(sf::Vector2f(_position.x, _position.y));
-	_bounds.setOrigin(sf::Vector2f(_animationSize.x / 8, _animationSize.y / 8 - 10));
+	_bounds.setOrigin(sf::Vector2f(_animationSize.x / 8, _animationSize.y / 8));
 	_bounds.setOutlineThickness(1);
 	_bounds.setOutlineColor(sf::Color::Green);
 	_bounds.setFillColor(sf::Color(0, 0, 0, 0));
+
+	_shape.setRadius(_radius);
+	_shape.setPosition(_position.x, _position.y);
+	_shape.setOrigin(sf::Vector2f(_animationSize.x / 8, _animationSize.y / 8));
+	_shape.setOutlineThickness(1);
+	_shape.setOutlineColor(sf::Color::Green);
+	_shape.setFillColor(sf::Color(0, 0, 0, 0));
 
 	// Set entitie name
 	_name = "Player";
@@ -46,12 +55,14 @@ void Player::update(sf::Time _deltaTime)
 		movement.x -= _playerSpeed;
 	if (_isMovingRight)
 		movement.x += _playerSpeed;
-	_bounds.move(movement * _deltaTime.asSeconds());
+	//_bounds.move(movement * _deltaTime.asSeconds());
+	_shape.move(movement * _deltaTime.asSeconds());
 
 	// Update _positions and _body
-	_position = _bounds.getPosition();
+	_position = _shape.getPosition();
 	_animatedBody.setPosition(_position.x, _position.y);
 	_animatedHead.setPosition(_position.x, _position.y);
+	_bounds.setPosition(_position.x, _position.y);
 
 	// Update Animation
 	_animatedBody.play(*_currentAnimationBody);
@@ -185,6 +196,7 @@ void Player::update(sf::Time _deltaTime)
 void Player::render(sf::RenderWindow &_window)
 {
 	_window.draw(_bounds);
+	_window.draw(_shape);
 	_window.draw(_animatedBody);
 	_window.draw(_animatedHead);
 }
@@ -237,8 +249,8 @@ void Player::initPlayerTextures()
 	// Setup animatedsprite
 	//AnimatedSprite _animatedHead(sf::seconds(0.05), true, false);
 	//AnimatedSprite _animatedBody(sf::seconds(0.05), true, false);
-	_animatedHead.setPosition(sf::Vector2f(50, 50));
-	_animatedBody.setPosition(sf::Vector2f(50, 50));
+	_animatedHead.setPosition(_position);
+	_animatedBody.setPosition(_position);
 }
 
 void Player::initBodyTextures()
