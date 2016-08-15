@@ -15,3 +15,9 @@ Title: Goblin
 Author: Clint Bellanger
 URL: http://opengameart.org/content/goblin
 License(s): * CC-BY 3.0 ( http://creativecommons.org/licenses/by/3.0/legalcode )
+
+#Tiles
+Title: Grassland Tileset
+Author: Clint Bellanger
+URL: http://opengameart.org/content/grassland-tileset
+License(s): * CC-BY-SA 3.0 ( http://creativecommons.org/licenses/by-sa/3.0/legalcode )
