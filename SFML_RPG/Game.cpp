@@ -29,7 +29,6 @@ void Game::Run()
 	//Init collision
 	_CollisionSystem = new CollisionSystem();
 
-	int perFrameCollision = 0;
 	sf::Clock clock;
 	_elapsedTime = clock.getElapsedTime();
 	while (_window->isOpen())
@@ -42,7 +41,7 @@ void Game::Run()
 			
 			_elapsedTime = clock.restart();
 		}
-		_CollisionSystem->check(_entities, 6, _window->getSize());
+		_CollisionSystem->update(_entities, 4, _window->getSize());
 
 		render();
 	}
@@ -55,7 +54,7 @@ sf::RenderWindow* Game::GetWindow()
 
 void Game::init()
 {
-	//_window.setFramerateLimit(60);
+	//_window->setFramerateLimit(60);
 
 	//Load Textures 
 	_TextureManager = new TextureManager();
@@ -74,12 +73,16 @@ void Game::init()
 	_TextureManager->loadTexture("male_head1.png", "Resources/Textures/Entities/Player/male_head1.png");// Player Head
 	//Enemy
 	_TextureManager->loadTexture("goblin.png", "Resources/Textures/Entities/Enemy/goblin.png");// Goblin
-
-	if (!font.loadFromFile("Resources/Fonts/Atarian/SF Atarian System.ttf"))
+	//Load Fonts
+	if (!_font.loadFromFile("Resources/Fonts/Atarian/SF Atarian System.ttf"))
 	{
 		cout << "Loading font = error" << endl;
 	}
-	text.setFont(font);
+	//Set Text
+	text.setFont(_font);
+	_FPS.setFont(_font);
+	_FPS.setPosition(500, 0);
+	_FPS.setFillColor(sf::Color::Black);
 
 	//Show Textures that are loaded into memory
 	_TextureManager->showTexturesList();
@@ -124,22 +127,23 @@ void Game::handleInput()
 	}
 }
 
-void Game::update(sf::Time ElapsedTime)
+void Game::update(sf::Time _elapsedTime)
 {
 	updateEntities();
 	mousePosition = sf::Vector2f(sf::Mouse::getPosition(*_window).x, sf::Mouse::getPosition(*_window).y);
 
-	string printMe =  "Entity Count: " + std::to_string(_entities.size()) + "\n";
-	printMe += "Collision Grid Info: X=" + std::to_string(_CollisionSystem->currentX) + " Y=" + std::to_string(_CollisionSystem->currentY)
-		+ " EntityCount=" + std::to_string(_CollisionSystem->gridSize);
+	string printme =  "Entity Count: " + std::to_string(_entities.size()) + "\n";
+	printme += "Entity Check Count: " + std::to_string(_CollisionSystem->gridSize);
 
-	text.setString(printMe);
+	text.setString(printme);
 	text.setFillColor(sf::Color::Black);
+
+	updateStatistics(_elapsedTime);
 }
 
 void Game::render()
 {
-	_window->clear(sf::Color::Magenta);
+	_window->clear(sf::Color::White);
 	//Draw map
 	for(std::pair<int, Tile*> tile : _tileParser->tileID)
 	{
@@ -153,6 +157,7 @@ void Game::render()
 
 	//Draw UI
 	_window->draw(text);
+	_window->draw(_FPS);
 	_window->display();
 }
 
@@ -191,6 +196,21 @@ void Game::processEntities(sf::Event &event)
 	for (auto &it : _entities)
 	{
 		it->processEvents(event);
+	}
+}
+
+void Game::updateStatistics(sf::Time _elapsedTime)
+{
+	_updateTime += _elapsedTime;
+	_numFrames += 1;
+
+	if (_updateTime >= sf::seconds(1.0f))
+	{
+		_FPS.setString("Frames / Second: " + to_string(_numFrames) +
+			"Time / Update = " + to_string(_updateTime.asSeconds() / _numFrames) + " us");
+
+		_updateTime -= sf::seconds(1.0f);
+		_numFrames = 0;
 	}
 }
 

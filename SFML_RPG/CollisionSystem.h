@@ -9,10 +9,12 @@ public:
 	CollisionSystem();
 	~CollisionSystem();
 
-	void update(std::vector<Entity*> _entities);
-	void check(std::vector<Entity*> _entities, int _collisionDetail, sf::Vector2u _resolution);
+	void update(std::vector<Entity*> _entities, int _collisionDetail, sf::Vector2u _resolution);
+	void check(vector<Entity*> _entities);
 	void drawGrid();
-	void doCheck(vector<Entity*> _entities);
+
+	sf::Vector2f normalize(sf::Vector2f &vector);
+
 
 	int gridWidthTemp;
 	int gridHeightTemp;
@@ -22,6 +24,5 @@ public:
 	vector<sf::Vertex> gridLines;
 	int currentX, currentY, gridSize;
 
-	sf::Vector2f normalize(sf::Vector2f &vector);
 };
 

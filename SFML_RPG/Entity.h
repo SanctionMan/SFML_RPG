@@ -11,6 +11,8 @@ public:
 	virtual void render(sf::RenderWindow &_window) = 0;
 	virtual void processEvents(sf::Event &event) = 0;
 
+	void entityEvents(sf::Event &event);
+
 	std::string _name;
 
 	sf::Vector2f _position;
@@ -18,6 +20,7 @@ public:
 	sf::RectangleShape _bounds;
 	sf::CircleShape _shape;
 
+	bool _drawBounds = false;
 	float _radius = 0.f;
 	float _mass = 1.f;
 	sf::Vector2f _adjustment_xy;

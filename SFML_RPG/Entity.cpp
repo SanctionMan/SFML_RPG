@@ -14,3 +14,21 @@ Entity::Entity():
 Entity::~Entity()
 {
 }
+
+void Entity::entityEvents(sf::Event& event)
+{
+	switch (event.type)
+	{
+	case sf::Event::KeyPressed:
+
+		break;
+	}
+	if (event.KeyPressed == sf::Keyboard::F4)
+	{
+		_drawBounds = !_drawBounds;
+	}
+	//if ((event.type == sf::Event::Keypressed) && (event.key.code == sf::Keyboard::F4)) dont work
+
+
+}
+

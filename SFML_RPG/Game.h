@@ -25,7 +25,7 @@ public:
 
 	void init();
 	void handleInput();
-	void update(sf::Time ElapsedTime);
+	void update(sf::Time _elapsedTime);
 	void render();
 	void cleanUp();
 
@@ -33,6 +33,8 @@ public:
 	void updateEntities();
 	void renderEntities();
 	void processEntities(sf::Event &event);
+
+	void updateStatistics(sf::Time _elapsedTime);
 
 	void mouseClicks(sf::Event &event);
 
@@ -45,9 +47,12 @@ private:
 	float _frameTime = 0.1f / 60.0f;
 	sf::Time _elapsedTime;
 
-	sf::Font font;
-	sf::Text text;
+	sf::Time _updateTime;
+	std::size_t _numFrames;
+	sf::Font _font;
+	sf::Text _FPS;
 
+	sf::Text text;
 	//System Setup
 	CollisionSystem* _CollisionSystem;
 

@@ -133,14 +133,17 @@ void Enemy::aiUpdate(sf::Time _deltaTime)
 
 void Enemy::aiRender(sf::RenderWindow & _window)
 {
-	_window.draw(_bounds);
-	_window.draw(_shape);
+	if (_drawBounds)
+	{
+		_window.draw(_bounds);
+		_window.draw(_shape);
+	}
 	_window.draw(_animatedBody);
 }
 
 void Enemy::aiProcessEvents(sf::Event & event)
 {
-	// Nothing at this point in time
+	entityEvents(event);
 }
 
 void Enemy::updateAI()
@@ -167,7 +170,7 @@ void Enemy::constructEnemy(sf::Vector2f position, sf::Vector2f animationSize, sf
 	_bounds.setSize(sf::Vector2f(_animationSize.x / 4, _animationSize.y / 4));
 	_bounds.setPosition(_position);
 	_bounds.setOrigin(_bounds.getSize() / 2.f);
-	_bounds.setOutlineThickness(2);
+	_bounds.setOutlineThickness(1);
 	_bounds.setOutlineColor(sf::Color::Green);
 	_bounds.setFillColor(sf::Color(0, 0, 0, 0));
 
