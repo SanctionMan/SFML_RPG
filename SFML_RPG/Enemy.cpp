@@ -30,9 +30,9 @@ void Enemy::aiUpdate(sf::Time _deltaTime)
 	_shape.move(movement * _deltaTime.asSeconds());
 	
 	// Update _positions and _body
-	_position = _shape.getPosition();
-	_animatedBody.setPosition(_position.x, _position.y);
-	_bounds.setPosition(_position.x, _position.y);
+	_position = _shape.getPosition() -_adjustment_xy;
+	_animatedBody.setPosition(_position);
+	_bounds.setPosition(_position + _adjustment_xy);
 
 	//// Update Animation
 	_animatedBody.play(*_currentAnimationBody);
@@ -163,26 +163,27 @@ void Enemy::constructEnemy(sf::Vector2f position, sf::Vector2f animationSize, sf
 	_mass = 1;
 	_animationSize = animationSize;
 	_textureBody = texture;
+	_adjustment_xy = sf::Vector2f(0.f, 30.f);
 
 	// Setup collision bounds
 	_bounds.setSize(sf::Vector2f(_animationSize.x / 4, _animationSize.y / 4));
-	_bounds.setPosition(sf::Vector2f(_position.x, _position.y));
+	_bounds.setPosition(_position + _adjustment_xy);
 	_bounds.setOrigin(_bounds.getSize() / 2.f);
 	_bounds.setOutlineThickness(1);
 	_bounds.setOutlineColor(sf::Color::Green);
 	_bounds.setFillColor(sf::Color(0, 0, 0, 0));
 
 	_shape.setRadius(_radius);
-	_shape.setPosition(_position.x, _position.y);
-	_shape.setOrigin(sf::Vector2f(_radius / 2, _radius / 2));
-	_shape.setOutlineThickness(1);
-	_shape.setOutlineColor(sf::Color::Green);
-	_shape.setFillColor(sf::Color(0, 0, 0, 0));
+	_shape.setPosition(_position + _adjustment_xy);
+	_shape.setOrigin(sf::Vector2f(_radius, _radius));
+	_shape.setOutlineThickness(2);
+	_shape.setOutlineColor(sf::Color::Red);
+	_shape.setFillColor(sf::Color::Transparent);
+	//_shape.scale(1.f, 0.55f);
 }
 
 void Enemy::initEnemyTextures()
 {
-	cout << "123123" << endl;
 	// Stance (4 frames)
 	{
 		_stanceAnimationUp.setSpriteSheet(*_textureBody);

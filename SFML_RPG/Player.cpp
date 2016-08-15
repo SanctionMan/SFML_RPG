@@ -12,21 +12,23 @@ Player::Player(sf::Vector2f position, sf::Texture* headTexture, sf::Texture* bod
 	_position = position;
 	_radius = 10;
 	_mass = 5;
+	_adjustment_xy = sf::Vector2f(0.f, 25.f);
 
 	 // Setup collision bounds
 	_bounds.setSize(sf::Vector2f(_animationSize.x / 4, _animationSize.y / 4));
-	_bounds.setPosition(sf::Vector2f(_position.x, _position.y));
-	_bounds.setOrigin(sf::Vector2f(_animationSize.x / 8, _animationSize.y / 8));
+	_bounds.setPosition(_position + _adjustment_xy);
+	_bounds.setOrigin(_bounds.getSize() / 2.f);
 	_bounds.setOutlineThickness(1);
 	_bounds.setOutlineColor(sf::Color::Green);
 	_bounds.setFillColor(sf::Color(0, 0, 0, 0));
 
 	_shape.setRadius(_radius);
-	_shape.setPosition(_position.x, _position.y);
-	_shape.setOrigin(sf::Vector2f(_animationSize.x / 8, _animationSize.y / 8));
-	_shape.setOutlineThickness(1);
-	_shape.setOutlineColor(sf::Color::Green);
+	_shape.setPosition(_position + _adjustment_xy);
+	_shape.setOrigin(sf::Vector2f(_radius, _radius));
+	_shape.setOutlineThickness(2);
+	_shape.setOutlineColor(sf::Color::Red);
 	_shape.setFillColor(sf::Color(0, 0, 0, 0));
+	//_shape.scale(1.f, 0.55f);
 
 	// Set entitie name
 	_name = "Player";
@@ -59,10 +61,10 @@ void Player::update(sf::Time _deltaTime)
 	_shape.move(movement * _deltaTime.asSeconds());
 
 	// Update _positions and _body
-	_position = _shape.getPosition();
-	_animatedBody.setPosition(_position.x, _position.y);
-	_animatedHead.setPosition(_position.x, _position.y);
-	_bounds.setPosition(_position.x, _position.y);
+	_position = _shape.getPosition() - _adjustment_xy;
+	_animatedBody.setPosition(_position);
+	_animatedHead.setPosition(_position);
+	_bounds.setPosition(_position + _adjustment_xy);
 
 	// Update Animation
 	_animatedBody.play(*_currentAnimationBody);

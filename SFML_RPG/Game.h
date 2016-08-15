@@ -33,9 +33,12 @@ public:
 	void renderEntities();
 	void processEntities(sf::Event &event);
 
+	void mouseClicks(sf::Event &event);
+
 	TextureManager* _TextureManager=nullptr;
 
 	std::vector<Entity*> _entities;
+	sf::Vector2f mousePosition;
 private:
 	float _frameTime = 0.1f / 60.0f;
 	sf::Time _elapsedTime;

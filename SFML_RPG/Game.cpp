@@ -84,6 +84,9 @@ void Game::init()
 	createEntity(new Player(sf::Vector2f(100, 100), _TextureManager->getTexture("male_head1.png"), 
 													_TextureManager->getTexture("steel_armor.png")));
 	createEntity(new Goblin(sf::Vector2f(300, 300), _TextureManager->getTexture("goblin.png")));
+	createEntity(new Goblin(sf::Vector2f(325, 300), _TextureManager->getTexture("goblin.png")));
+	createEntity(new Goblin(sf::Vector2f(300, 325), _TextureManager->getTexture("goblin.png")));
+	createEntity(new Goblin(sf::Vector2f(325, 325), _TextureManager->getTexture("goblin.png")));
 }
 
 void Game::handleInput()
@@ -93,14 +96,21 @@ void Game::handleInput()
 	{
 		switch (event.type)
 		{
+		case sf::Event::Closed:
+			_window.close();
+			break;
+		case sf::Event::Resized:
+			break;
 		case sf::Event::KeyPressed:
 			processEntities(event);
 			break;
 		case sf::Event::KeyReleased:
 			processEntities(event);
 			break;
-		case sf::Event::Closed:
-			_window.close();
+		case sf::Event::MouseButtonPressed:
+			mouseClicks(event);
+			break;
+		case sf::Event::MouseButtonReleased:
 			break;
 		}
 	}
@@ -109,6 +119,7 @@ void Game::handleInput()
 void Game::update(sf::Time ElapsedTime)
 {
 	updateEntities();
+	mousePosition = sf::Vector2f(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
 }
 
 void Game::render()
@@ -159,6 +170,20 @@ void Game::processEntities(sf::Event &event)
 	for (auto &it : _entities)
 	{
 		it->processEvents(event);
+	}
+}
+
+void Game::mouseClicks(sf::Event& event)
+{
+	switch (event.mouseButton.button)
+	{
+	case sf::Mouse::Left:
+		break;
+	case sf::Mouse::Right:
+		createEntity(new Goblin(sf::Vector2f(mousePosition), _TextureManager->getTexture("goblin.png")));
+		break;
+	case sf::Mouse::Middle:
+		break;
 	}
 }
 

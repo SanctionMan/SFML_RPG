@@ -20,5 +20,6 @@ public:
 
 	float _radius = 0.f;
 	float _mass = 1.f;
+	sf::Vector2f _adjustment_xy;
 };
 
