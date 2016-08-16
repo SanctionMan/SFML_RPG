@@ -67,16 +67,17 @@ void Game::init()
 	//Mushroom
 	_TextureManager->loadTexture("Mushroom.png", "Resources/Textures/Entities/Misc/Mushroom.png");
 	//Map
-	_TextureManager->loadTexture("spr_tile_wall_top_left.png", "Resources/Textures/Map/spr_tile_wall_top_left.png");// Top Left Corner
-	_TextureManager->loadTexture("spr_tile_wall_bottom_left.png", "Resources/Textures/Map/spr_tile_wall_bottom_left.png");// Bottom Left Corner
-	_TextureManager->loadTexture("spr_tile_wall_top_right.png", "Resources/Textures/Map/spr_tile_wall_top_right.png");// Top Right Corner
-	_TextureManager->loadTexture("spr_tile_wall_bottom_right", "Resources/Textures/Map/spr_tile_wall_bottom_right.png");// Bottom Right Corner
-	_TextureManager->loadTexture("spr_tile_wall_top.png", "Resources/Textures/Map/spr_tile_wall_top.png");// Top/Bottom Wall
-	_TextureManager->loadTexture("spr_tile_wall_side.png", "Resources/Textures/Map/spr_tile_wall_side.png");// Right/Left Wall 
-	_TextureManager->loadTexture("spr_tile_floor_alt.png", "Resources/Textures/Map/spr_tile_floor_alt.png");// Floor Alt
+	//_TextureManager->loadTexture("spr_tile_wall_top_left.png", "Resources/Textures/Map/spr_tile_wall_top_left.png");// Top Left Corner
+	//_TextureManager->loadTexture("spr_tile_wall_bottom_left.png", "Resources/Textures/Map/spr_tile_wall_bottom_left.png");// Bottom Left Corner
+	//_TextureManager->loadTexture("spr_tile_wall_top_right.png", "Resources/Textures/Map/spr_tile_wall_top_right.png");// Top Right Corner
+	//_TextureManager->loadTexture("spr_tile_wall_bottom_right", "Resources/Textures/Map/spr_tile_wall_bottom_right.png");// Bottom Right Corner
+	//_TextureManager->loadTexture("spr_tile_wall_top.png", "Resources/Textures/Map/spr_tile_wall_top.png");// Top/Bottom Wall
+	//_TextureManager->loadTexture("spr_tile_wall_side.png", "Resources/Textures/Map/spr_tile_wall_side.png");// Right/Left Wall 
+	//_TextureManager->loadTexture("spr_tile_floor_alt.png", "Resources/Textures/Map/spr_tile_floor_alt.png");// Floor Alt
 	//Player
 	_TextureManager->loadTexture("steel_armor.png", "Resources/Textures/Entities/Player/steel_armor.png");// Player Body
 	_TextureManager->loadTexture("male_head1.png", "Resources/Textures/Entities/Player/male_head1.png");// Player Head
+	_TextureManager->loadTexture("greatsword.png", "Resources/Textures/Entities/Player/greatsword.png");// Player Head
 	//Enemy
 	_TextureManager->loadTexture("goblin.png", "Resources/Textures/Entities/Enemy/goblin.png");// Goblin
 	//Load Fonts
@@ -101,7 +102,8 @@ void Game::init()
 
 	//Create Player and Set Texture
 	createEntity(new Player(sf::Vector2f(100, 100), _TextureManager->getTexture("male_head1.png"), 
-													_TextureManager->getTexture("steel_armor.png")));
+													_TextureManager->getTexture("steel_armor.png"),
+													_TextureManager->getTexture("greatsword.png")));
 	//createEntity(new Goblin(sf::Vector2f(150, 150), _TextureManager->getTexture("goblin.png")));
 
 }
@@ -120,6 +122,10 @@ void Game::handleInput()
 			break;
 		case sf::Event::KeyPressed:
 			processEntities(event);
+			if (event.key.code == sf::Keyboard::F3)
+			{
+				_isGridActive = !_isGridActive;
+			}
 			break;
 		case sf::Event::KeyReleased:
 			processEntities(event);
@@ -167,7 +173,10 @@ void Game::render()
 	renderEntities();
 
 	//Draw collision grid
-	_CollisionSystem->drawGrid();
+	if (_isGridActive) 
+	{
+		_CollisionSystem->drawGrid();
+	}
 
 	//Draw UI
 	_window->draw(text);
