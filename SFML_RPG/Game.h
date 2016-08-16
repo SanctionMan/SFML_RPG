@@ -48,6 +48,7 @@ private:
 	float _frameTime = 0.1f / 60.0f;
 	sf::Time _elapsedTime;
 
+	bool _isGridActive = false;
 
 	//Text
 	sf::Time _updateTime;
