@@ -11,18 +11,18 @@ public:
 	virtual void render(sf::RenderWindow &_window) = 0;
 	virtual void processEvents(sf::Event &event) = 0;
 
-	void entityEvents(sf::Event &event);
+	void Entity::entityEvents(sf::Event& event);
 
-	std::string _name;
-
-	sf::Vector2f _position;
-
-	sf::RectangleShape _bounds;
-	sf::CircleShape _shape;
+public:
 
 	bool _drawBounds = false;
 	float _radius = 0.f;
 	float _mass = 1.f;
+
+	std::string _name;
+	sf::Vector2f _position;
+	sf::RectangleShape _bounds;
+	sf::CircleShape _shape;
 	sf::Vector2f _adjustment_xy;
 };
 

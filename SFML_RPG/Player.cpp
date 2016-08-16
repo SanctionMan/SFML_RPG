@@ -196,14 +196,18 @@ void Player::update(sf::Time _deltaTime)
 
 void Player::render(sf::RenderWindow &_window)
 {
-	_window.draw(_bounds);
-	_window.draw(_shape);
+	if (_drawBounds)
+	{
+		_window.draw(_bounds);
+		_window.draw(_shape);
+	}
 	_window.draw(_animatedBody);
 	_window.draw(_animatedHead);
 }
 
 void Player::processEvents(sf::Event & event)
 {
+	entityEvents(event);
 	switch (event.type)
 	{
 	case sf::Event::KeyPressed:

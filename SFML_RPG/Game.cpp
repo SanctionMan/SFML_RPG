@@ -9,10 +9,16 @@ float CalculateDistance(sf::Vector2f a, sf::Vector2f b)
 	return sqrt(((diffy * diffy) + (diffy * diffy)) + ((diffx * diffx) + (diffx * diffx)));
 }
 
-Game::Game()
+Game::Game():
+	_windowWidth(900),
+	_windowHeight(600)
 {
-	_window = new sf::RenderWindow(sf::VideoMode(1280, 800), "SFML_RPG");
+	_window = new sf::RenderWindow(sf::VideoMode(_windowWidth, _windowHeight), "SFML_RPG");
 	gameHandle = this;
+	_mainView.reset(sf::FloatRect(0, 0, _windowWidth, _windowHeight));
+	_mainView.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
+	_mainView.setCenter(_windowWidth / 2, _windowHeight / 2);
+	//_mainView.rotate(45);
 }
 
 Game::~Game()
@@ -41,7 +47,7 @@ void Game::Run()
 			
 			_elapsedTime = clock.restart();
 		}
-		_CollisionSystem->update(_entities, 4, _window->getSize());
+		_CollisionSystem->update(_entities, 8, _window->getSize());
 
 		render();
 	}
@@ -96,7 +102,7 @@ void Game::init()
 	//Create Player and Set Texture
 	createEntity(new Player(sf::Vector2f(100, 100), _TextureManager->getTexture("male_head1.png"), 
 													_TextureManager->getTexture("steel_armor.png")));
-	createEntity(new Goblin(sf::Vector2f(150, 150), _TextureManager->getTexture("goblin.png")));
+	//createEntity(new Goblin(sf::Vector2f(150, 150), _TextureManager->getTexture("goblin.png")));
 
 }
 
@@ -123,6 +129,13 @@ void Game::handleInput()
 			break;
 		case sf::Event::MouseButtonReleased:
 			break;
+		case sf::Event::MouseWheelScrolled:
+			const double zoomAmount{ 1.1 };
+			if (event.mouseWheelScroll.delta > 0)
+				_mainView.zoom(zoomAmount);
+			if (event.mouseWheelScroll.delta < 0)
+				_mainView.zoom(1.0/ zoomAmount);
+			break;
 		}
 	}
 }
@@ -133,7 +146,7 @@ void Game::update(sf::Time _elapsedTime)
 	mousePosition = sf::Vector2f(sf::Mouse::getPosition(*_window).x, sf::Mouse::getPosition(*_window).y);
 
 	string printme =  "Entity Count: " + std::to_string(_entities.size()) + "\n";
-	printme += "Entity Check Count: " + std::to_string(_CollisionSystem->gridSize);
+	printme += "Entity Check Count: " + std::to_string(_CollisionSystem->collisionChecks);
 
 	text.setString(printme);
 	text.setFillColor(sf::Color::Black);
@@ -144,11 +157,12 @@ void Game::update(sf::Time _elapsedTime)
 void Game::render()
 {
 	_window->clear(sf::Color::White);
+	_window->setView(_mainView);
 	//Draw map
-	for(std::pair<int, Tile*> tile : _tileParser->tileID)
-	{
-		tile.second->render(*_window);
-	}
+	//for(std::pair<int, Tile*> tile : _tileParser->tileID)
+	//{
+	//	tile.second->render(*_window);
+	//}
 	//Draw Entities
 	renderEntities();
 

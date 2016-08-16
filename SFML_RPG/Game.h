@@ -44,15 +44,25 @@ public:
 	sf::Vector2f mousePosition;
 	sf::RenderWindow* _window = nullptr;
 private:
+	//Time
 	float _frameTime = 0.1f / 60.0f;
 	sf::Time _elapsedTime;
 
+
+	//Text
 	sf::Time _updateTime;
 	std::size_t _numFrames;
 	sf::Font _font;
 	sf::Text _FPS;
-
 	sf::Text text;
+
+	//Window 
+	int _windowWidth;
+	int _windowHeight;
+
+	//Views
+	sf::View _mainView;
+
 	//System Setup
 	CollisionSystem* _CollisionSystem;
 

@@ -10,13 +10,14 @@ public:
 	~CollisionSystem();
 
 	void update(std::vector<Entity*> _entities, int _collisionDetail, sf::Vector2u _resolution);
-	void check(vector<Entity*> _entities);
+	void check();
 	void drawGrid();
 
 	sf::Vector2f normalize(sf::Vector2f &vector);
 
 
 	int gridWidthTemp;
+	int collisionChecks;
 	int gridHeightTemp;
 	int _collisionDetailStored;
 

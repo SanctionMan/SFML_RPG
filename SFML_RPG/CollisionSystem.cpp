@@ -19,19 +19,39 @@ void CollisionSystem::update(std::vector<Entity*> _entities, int _collisionDetai
 	gridHeightTemp = _resolution.y / (_collisionDetail);
 
 	int lastHeight, lastWidth;
+	collisionChecks = 0;
 
 	for (int x = 0; x < _collisionDetail + 1; x++)
 	{
-		bool checkOrNot = false;
-
 		for (int y = 0; y < _collisionDetail + 1; y++)
 		{
 			for (Entity* ent : _entities)
 			{
-				if (ent->_name == "Player")
+				bool didPush = false;
+				if (ent->_position.x < gridWidthTemp * x && ent->_position.x > lastWidth)
 				{
-					checkOrNot = true;
+					if (ent->_position.y < gridHeightTemp * y && ent->_position.y > lastHeight)
+					{
+						currentGrid.push_back(ent);
+						didPush = true;
+					}
 				}
+				
+				lastWidth = gridWidthTemp * (x - 1);
+				lastHeight = gridHeightTemp * y;
+
+				//float distance = CalculateDistance(sf::Vector2f(ent->_position.x, ent->_position.y), sf::Vector2f(
+				//	gridWidthTemp, gridHeightTemp));
+				//float distanced = CalculateDistance(sf::Vector2f(ent->_position.x, ent->_position.y), sf::Vector2f(
+				//	lastWidth, lastHeight));
+				//distance = distanced / distance;
+
+				//cout << distance << endl;
+
+				//if(!didPush)
+				//{
+				//	currentGrid.push_back(ent);
+				//}
 			}
 
 			//DEBUG GRID TOOL
@@ -42,34 +62,24 @@ void CollisionSystem::update(std::vector<Entity*> _entities, int _collisionDetai
 				{
 					ent->_bounds.setOutlineColor(sf::Color::Red);
 				}
-				//gridSize = currentGrid.size();
 			}//DEBUG GRID TOOL
 
-			if (checkOrNot)
-			{
-				for (Entity* ent : _entities)
-				{
-					if (ent->_position.x <= gridWidthTemp * x && ent->_position.x >= lastWidth)
-					{
-						if (ent->_position.y <= gridHeightTemp * y && ent->_position.y >= lastHeight)
-						{
-							currentGrid.push_back(ent);
-							gridSize = currentGrid.size();
-						}
-					}
-				}
-				check(currentGrid);
-			}
+			gridSize = currentGrid.size();
+			check();
 
-			lastWidth = gridWidthTemp * (x - 1);
-			lastHeight = gridHeightTemp * y;
 			currentGrid.clear();
 		}
 	}
 }
 
-void CollisionSystem::check(vector<Entity*> _entities)
+void CollisionSystem::check()
 {
+	if(gridSize <= 1)
+	{
+		return;
+	}
+	collisionChecks++;
+
 	// Check Circle vs Circle Collision 
 	for (unsigned int i = 0; i < currentGrid.size(); i++)
 	{
@@ -90,9 +100,8 @@ void CollisionSystem::check(vector<Entity*> _entities)
 			{
 				//Resolve Collision!
 
-
 				float overlap = (radA + radB) - distance;
-				sf::Vector2f direction = _entities[i]->_position - currentGrid[j]->_position;
+				sf::Vector2f direction = currentGrid[i]->_position - currentGrid[j]->_position;
 				sf::Vector2f newdirection = normalize(direction) * (overlap / 2) * (currentGrid[j]->_mass / (currentGrid[i]->_mass + currentGrid[j]->_mass));
 				sf::Vector2f newdirectionB = normalize(direction) * (overlap / 2) * (currentGrid[i]->_mass / (currentGrid[j]->_mass + currentGrid[i]->_mass));
 				//cout << newdirection.x << newdirection.y << endl;
