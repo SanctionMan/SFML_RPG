@@ -1,0 +1,7 @@
+#FirstLineOnly = x size, next line = y size.
+# Assign textures to map<texture,int> and use this as texture list. Do the same with type, and anything else.
+# Setup tiles like so:
+# [texture][type][etc...]
+textures:
+[1][2][3][1]
+[1][2][3]
