@@ -1,6 +1,8 @@
 #pragma once
+#include <math.h>
 #include "Game.h"
 #include "AnimatedSprite.h"
+#include "HealthBar.h"
 
 class Enemy : public Entity
 {
@@ -15,19 +17,35 @@ public:
 	virtual void render(sf::RenderWindow &_window) = 0;
 	virtual void update(sf::Time _deltaTime) = 0;
 
-	void updateAI();
+	void updateAI(sf::Time _deltaTime);
 	void constructEnemy(sf::Vector2f position, sf::Vector2f animationSize, sf::Texture* texture);
 		
 	void initEnemyTextures();
 
 public:
 
+	// Stats
+	int _level = 1;
+
+	float _maxHealth = 100;
+	float _maxMana = 100;
+	float _health = 100;
+	float _mana = 100;
+
+	int _physical = 1;
+	int _mental = 1;
+	int _offense = 1;
+	int _defense = 1;
+
+	float _enemySpeed = 150;
+
+	HealthBar _healthBar;
+
 	bool _isMovingUp = false;
 	bool _isMovingDown = false;
 	bool _isMovingLeft = false;
 	bool _isMovingRight = false;
 
-	float _enemySpeed = 100;
 
 	enum animationEnum
 	{

@@ -4,9 +4,8 @@
 
 Entity::Entity():
 	_position(0,0),
-	_bounds(sf::Vector2f(0,0)),
 	_drawBounds(false),
-	_shape(_radius)
+	_bounds(_radius)
 {
 
 }

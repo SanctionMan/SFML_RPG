@@ -9,28 +9,26 @@ Player::Player(sf::Vector2f position, sf::Texture* headTexture, sf::Texture* bod
 	_animatedHead(sf::seconds(0.2f), true, false),
 	_animatedBody(sf::seconds(0.2f), true, false),
 	_animatedWeapon(sf::seconds(0.2f), true, false),
-	_animationSize(128, 128)
+	_animationSize(128, 128),
+	_healthBar()
 {
+	//Set Variables
 	_adjustment_xy = sf::Vector2f(0.f, -25.f);
 	_position = position;
 	_radius = 10;
 	_mass = 5;
 
-	 // Setup collision bounds
-	_bounds.setSize(sf::Vector2f(_animationSize.x / 4, _animationSize.y / 4));
-	_bounds.setPosition(_position);
-	_bounds.setOrigin(_bounds.getSize() / 2.f);
-	_bounds.setOutlineThickness(1);
-	_bounds.setOutlineColor(sf::Color::Green);
-	_bounds.setFillColor(sf::Color(0, 0, 0, 0));
+	//Set Healthbar
+	_healthBar.setAdjustment(sf::Vector2f(0, -60));
 
-	_shape.setRadius(_radius);
-	_shape.setPosition(_position);
-	_shape.setOrigin(sf::Vector2f(_radius, _radius));
-	_shape.setOutlineThickness(2);
-	_shape.setOutlineColor(sf::Color::Red);
-	_shape.setFillColor(sf::Color(0, 0, 0, 0));
-	//_shape.scale(1.f, 0.55f);
+	 // Setup collision bounds
+	_bounds.setRadius(_radius);
+	_bounds.setPosition(_position);
+	_bounds.setOrigin(sf::Vector2f(_radius, _radius));
+	_bounds.setOutlineThickness(2);
+	_bounds.setOutlineColor(sf::Color::Red);
+	_bounds.setFillColor(sf::Color(0, 0, 0, 0));
+	//_bounds.scale(1.f, 0.55f);
 
 	// Set entitie name
 	_name = "Player";
@@ -51,6 +49,14 @@ Player::~Player()
 
 void Player::update(sf::Time _deltaTime)
 {
+	// Update Health Bar
+	_healthBar.setPosition(_position);
+	_healthBar.setCurrentHealth(_health);
+	_healthBar.setMaxHealth(_maxHealth);
+	_healthBar.setCurrentMana(_mana);
+	_healthBar.setMaxMana(_maxMana);
+	_healthBar.update(_deltaTime);
+
 	// Update Movement
 	sf::Vector2f movement(0.f, 0.f);
 	if (_isMovingUp)
@@ -61,14 +67,13 @@ void Player::update(sf::Time _deltaTime)
 		movement.x -= _playerSpeed;
 	if (_isMovingRight)
 		movement.x += _playerSpeed;
-	_shape.move(movement * _deltaTime.asSeconds());
+	_bounds.move(movement * _deltaTime.asSeconds());
 
 	// Update _positions and _body
-	_position = _shape.getPosition();
+	_position = _bounds.getPosition();
 	_animatedBody.setPosition(_position + _adjustment_xy);
 	_animatedHead.setPosition(_position + _adjustment_xy);
 	_animatedWeapon.setPosition(_position + _adjustment_xy);
-	_bounds.setPosition(_position);
 
 	// Update Animation
 	_animatedHead.play(*_currentAnimationHead);
@@ -256,11 +261,12 @@ void Player::render(sf::RenderWindow &_window)
 	if (_drawBounds)
 	{
 		_window.draw(_bounds);
-		_window.draw(_shape);
 	}
 	_window.draw(_animatedBody);
 	_window.draw(_animatedHead);
 	_window.draw(_animatedWeapon);
+
+	_healthBar.render(_window);
 }
 
 void Player::processEvents(sf::Event & event)
@@ -270,6 +276,14 @@ void Player::processEvents(sf::Event & event)
 	{
 	case sf::Event::KeyPressed:
 		handlePlayerInput(event.key.code, true);
+		if (event.key.code == sf::Keyboard::Up)
+			_health += 5;
+		if (event.key.code == sf::Keyboard::Down)
+			_health -= 5;
+		if (event.key.code == sf::Keyboard::Left)
+			_mana += 5;
+		if (event.key.code == sf::Keyboard::Right)
+			_mana -= 5;
 		break;
 	case sf::Event::KeyReleased:
 		handlePlayerInput(event.key.code, false);

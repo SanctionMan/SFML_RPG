@@ -106,8 +106,8 @@ void CollisionSystem::check()
 				sf::Vector2f newdirectionB = normalize(direction) * (overlap / 2) * (currentGrid[i]->_mass / (currentGrid[j]->_mass + currentGrid[i]->_mass));
 				//cout << newdirection.x << newdirection.y << endl;
 				//Move Entities
-				currentGrid[i]->_shape.move(newdirection);
-				currentGrid[j]->_shape.move((-newdirectionB));
+				currentGrid[i]->_bounds.move(newdirection);
+				currentGrid[j]->_bounds.move((-newdirectionB));
 			}
 		}
 	}

@@ -21,8 +21,7 @@ public:
 
 	std::string _name;
 	sf::Vector2f _position;
-	sf::RectangleShape _bounds;
-	sf::CircleShape _shape;
+	sf::CircleShape _bounds;
 	sf::Vector2f _adjustment_xy;
 };
 

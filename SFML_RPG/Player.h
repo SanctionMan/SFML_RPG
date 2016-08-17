@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Game.h"
 #include "AnimatedSprite.h"
+#include  "HealthBar.h"
 
 class Player : public Entity
 {
@@ -22,6 +23,22 @@ public:
 
 
 private:
+	// Stats
+
+	int _level = 1;
+
+	float _maxHealth = 100;
+	float _maxMana = 100;
+	float _health = 100;
+	float _mana = 100;
+
+	int _physical = 1;
+	int _mental = 1;
+	int _offense = 1;
+	int _defense = 1;
+
+	HealthBar _healthBar;
+
 	// Player movement
 	bool _isCasting = false;
 	bool _isAttacking = false;

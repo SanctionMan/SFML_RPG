@@ -16,24 +16,31 @@ Enemy::~Enemy()
 
 void Enemy::aiUpdate(sf::Time _deltaTime)
 {
+	// Update Health Bar
+	_healthBar.setPosition(_position);
+	_healthBar.setCurrentHealth(_health);
+	_healthBar.setMaxHealth(_maxHealth);
+	_healthBar.setCurrentMana(_mana);
+	_healthBar.setMaxMana(_maxMana);
+	_healthBar.update(_deltaTime);
+
 	// Update Movement
-	sf::Vector2f movement(0.f, 0.f);
-	if (_isMovingUp)
-		movement.y -= _enemySpeed;
-	if (_isMovingDown)
-		movement.y += _enemySpeed;
-	if (_isMovingLeft)
-		movement.x -= _enemySpeed;
-	if (_isMovingRight)
-		movement.x += _enemySpeed;
-	_shape.move(movement * _deltaTime.asSeconds());
+	//sf::Vector2f movement(0.f, 0.f);
+	//if (_isMovingUp)
+	//	movement.y -= _enemySpeed;
+	//if (_isMovingDown)
+	//	movement.y += _enemySpeed;
+	//if (_isMovingLeft)
+	//	movement.x -= _enemySpeed;
+	//if (_isMovingRight)
+	//	movement.x += _enemySpeed;
+	//_bounds.move(movement * _deltaTime.asSeconds());
 	
 	// Update _positions and _body
-	_position = _shape.getPosition();
+	_position = _bounds.getPosition();
 	_animatedBody.setPosition(_position + _adjustment_xy);
-	_bounds.setPosition(_position);
 
-	//// Update Animation
+	// Update Animation
 	_animatedBody.play(*_currentAnimationBody);
 	_animatedBody.update(_deltaTime);
 
@@ -79,7 +86,6 @@ void Enemy::aiUpdate(sf::Time _deltaTime)
 	}
 	if (_isMovingUp)
 	{
-
 		_animatedBody.setFrameTime(sf::seconds(0.1f));
 		_currentAnimationBody = &_runningAnimationUp;
 		_lastAnimationState = _movingUp;
@@ -127,7 +133,7 @@ void Enemy::aiUpdate(sf::Time _deltaTime)
 		_lastAnimationState = _movingDown_Right;
 	}
 	
-	updateAI();
+	updateAI(_deltaTime);
 
 }
 
@@ -136,8 +142,8 @@ void Enemy::aiRender(sf::RenderWindow & _window)
 	if (_drawBounds)
 	{
 		_window.draw(_bounds);
-		_window.draw(_shape);
 	}
+	_healthBar.render(_window);
 	_window.draw(_animatedBody);
 }
 
@@ -146,16 +152,44 @@ void Enemy::aiProcessEvents(sf::Event & event)
 	entityEvents(event);
 }
 
-void Enemy::updateAI()
+void Enemy::updateAI(sf::Time _deltaTime)
 {
-	if (CalculateDistance(GetPlayer()->_position, _position) < 20)
-	{
-		cout << "Hit ya you slut!w" << endl;
-	}
+	const float  PI_F = 3.14159265358979f;
+	float _distance = CalculateDistance(GetPlayer()->_position, _position);
+	sf::Vector2f _direction = (GetPlayer()->_position - _position);
+	sf::Vector2f _unitVector = sf::Vector2f(_direction.x / _distance, _direction.y / _distance);
 
-	//cout << "player X=" << GetPlayer()->_position.x << "player Y=" << GetPlayer()->_position.y << endl;
-	//cout << "enemy X=" << _position.x << "enemy Y=" << _position.y << endl;
-}
+	float _angle = atan2(GetPlayer()->_position.y - _position.y, GetPlayer()->_position.x - _position.x);
+	_angle = (_angle * 180) / PI_F;
+
+	// Move enemy to Player
+	if (_distance < 200 && _distance < 100);
+	{
+
+		_bounds.move(_unitVector * _enemySpeed * _deltaTime.asSeconds());
+	}
+	if (_angle > -45 && _angle < 45)
+		_isMovingRight = true;
+	else
+		_isMovingRight = false;
+
+	if (_angle > 45 && _angle < 135)
+		_isMovingDown = true;
+	else
+		_isMovingDown = false;
+
+	if (_angle > 135 || _angle < -135)
+		_isMovingLeft = true;
+	else
+		_isMovingLeft = false;
+
+	if (_angle > -135 && _angle < -45)
+		_isMovingUp = true;
+	else
+		_isMovingUp = false;
+
+	cout << _angle << endl;
+}		
 
 void Enemy::constructEnemy(sf::Vector2f position, sf::Vector2f animationSize, sf::Texture* texture)
 {
@@ -166,21 +200,17 @@ void Enemy::constructEnemy(sf::Vector2f position, sf::Vector2f animationSize, sf
 	_textureBody = texture;
 	_adjustment_xy = sf::Vector2f(0.f, -30.f);
 
-	// Setup collision bounds
-	_bounds.setSize(sf::Vector2f(_animationSize.x / 4, _animationSize.y / 4));
-	_bounds.setPosition(_position);
-	_bounds.setOrigin(_bounds.getSize() / 2.f);
-	_bounds.setOutlineThickness(1);
-	_bounds.setOutlineColor(sf::Color::Green);
-	_bounds.setFillColor(sf::Color(0, 0, 0, 0));
+	_healthBar.setAdjustment(sf::Vector2f(0, -50));
 
-	_shape.setRadius(_radius);
-	_shape.setPosition(_position);
-	_shape.setOrigin(sf::Vector2f(_radius, _radius));
-	_shape.setOutlineThickness(2);
-	_shape.setOutlineColor(sf::Color::Red);
-	_shape.setFillColor(sf::Color::Transparent);
-	//_shape.scale(1.f, 0.55f);
+	// Setup collision bounds
+
+	_bounds.setRadius(_radius);
+	_bounds.setPosition(_position);
+	_bounds.setOrigin(sf::Vector2f(_radius, _radius));
+	_bounds.setOutlineThickness(2);
+	_bounds.setOutlineColor(sf::Color::Red);
+	_bounds.setFillColor(sf::Color::Transparent);
+	//_bounds.scale(1.f, 0.55f);
 }
 
 void Enemy::initEnemyTextures()
