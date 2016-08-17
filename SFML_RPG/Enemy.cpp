@@ -23,18 +23,6 @@ void Enemy::aiUpdate(sf::Time _deltaTime)
 	_healthBar.setCurrentMana(_mana);
 	_healthBar.setMaxMana(_maxMana);
 	_healthBar.update(_deltaTime);
-
-	// Update Movement
-	//sf::Vector2f movement(0.f, 0.f);
-	//if (_isMovingUp)
-	//	movement.y -= _enemySpeed;
-	//if (_isMovingDown)
-	//	movement.y += _enemySpeed;
-	//if (_isMovingLeft)
-	//	movement.x -= _enemySpeed;
-	//if (_isMovingRight)
-	//	movement.x += _enemySpeed;
-	//_bounds.move(movement * _deltaTime.asSeconds());
 	
 	// Update _positions and _body
 	_position = _bounds.getPosition();
@@ -45,7 +33,7 @@ void Enemy::aiUpdate(sf::Time _deltaTime)
 	_animatedBody.update(_deltaTime);
 
 	// Set Animation State
-	if (!_isMovingUp && !_isMovingDown && !_isMovingLeft && !_isMovingRight)
+	if (!_isMoving)
 	{
 		switch (_lastAnimationState)
 		{
@@ -108,33 +96,33 @@ void Enemy::aiUpdate(sf::Time _deltaTime)
 		_currentAnimationBody = &_runningAnimationRight;
 		_lastAnimationState = _movingRight;
 	}
-	if (_isMovingUp && _isMovingLeft)
+	if (_isMovingUp_Left)
 	{
 		_animatedBody.setFrameTime(sf::seconds(0.1f));
 		_currentAnimationBody = &_runningAnimationUp_Left;
 		_lastAnimationState = _movingUp_Left;
 	}
-	if (_isMovingUp && _isMovingRight)
+	if (_isMovingUp_Right)
 	{
 		_animatedBody.setFrameTime(sf::seconds(0.1f));
 		_currentAnimationBody = &_runningAnimationUp_Right;
 		_lastAnimationState = _movingUp_Right;
 	}
-	if (_isMovingDown && _isMovingLeft)
+	if (_isMovingDown_Left)
 	{
 		_animatedBody.setFrameTime(sf::seconds(0.1f));
 		_currentAnimationBody = &_runningAnimationDown_Left;
 		_lastAnimationState = _movingDown_Left;
 	}
-	if (_isMovingDown && _isMovingRight)
+	if (_isMovingDown_Right)
 	{
 		_animatedBody.setFrameTime(sf::seconds(0.1f));
 		_currentAnimationBody = &_runningAnimationDown_Right;
 		_lastAnimationState = _movingDown_Right;
 	}
 	
+	// Update Movement
 	updateAI(_deltaTime);
-
 }
 
 void Enemy::aiRender(sf::RenderWindow & _window)
@@ -154,6 +142,7 @@ void Enemy::aiProcessEvents(sf::Event & event)
 
 void Enemy::updateAI(sf::Time _deltaTime)
 {
+	// Calculations to get Player
 	const float  PI_F = 3.14159265358979f;
 	float _distance = CalculateDistance(GetPlayer()->_position, _position);
 	sf::Vector2f _direction = (GetPlayer()->_position - _position);
@@ -163,53 +152,59 @@ void Enemy::updateAI(sf::Time _deltaTime)
 	_angle = (_angle * 180) / PI_F;
 
 	// Move enemy to Player
-	if (_distance < 200 && _distance < 100);
+	if (_distance < 200 && _distance > 50)
 	{
-
 		_bounds.move(_unitVector * _enemySpeed * _deltaTime.asSeconds());
+		_isMoving = true;
 	}
-	// Up
-	if (_angle > -112.5 && _angle < -67.5)
-		_isMovingUp = true;
-	else
-		_isMovingUp = false;
-	// Down
-	if (_angle > 67.5 && _angle < 112.5)
-		_isMovingDown = true;
-	else
-		_isMovingDown = false;
-	// Left
-	if (_angle > 157.5 || _angle < -157.5)
-		_isMovingLeft = true;
-	else
-		_isMovingLeft = false;
-	// Right
-	if (_angle > -22.5 && _angle < 22.5)
-		_isMovingRight = true;
-	else
-		_isMovingRight = false;
-	// Up Left
-	if (_angle > -112.5 && _angle < -157.5)
-		_isMovingUp_Left = true;
-	else
-		_isMovingUp_Left = false;
-	// Up Right
-	if (_angle > -22.5 && _angle < -67.5)
-		_isMovingUp_Right = true;
-	else
-		_isMovingUp_Right = false;
-	// Down Left
-	if (_angle > 112.5 && _angle < 157.5)
-		_isMovingDown_Left = true;
-	else
-		_isMovingDown_Left = false;
-	// Down Right
-	if (_angle > 22.5 && _angle < 67.5)
-		_isMovingDown_Right = true;
-	else
-		_isMovingDown_Right = false;
+	else {
+		_isMoving = false;
+	}
 
-	//cout << _angle << endl;
+	// Set Facing Angle
+	{
+		// Up
+		if (_angle > -112.5 && _angle < -67.5 && _isMoving)
+			_isMovingUp = true;
+		else
+			_isMovingUp = false;
+		// Down
+		if (_angle > 67.5 && _angle < 112.5 && _isMoving)
+			_isMovingDown = true;
+		else
+			_isMovingDown = false;
+		// Left
+		if (_angle > 157.5  && _isMoving || _angle < -157.5 && _isMoving)
+			_isMovingLeft = true;
+		else
+			_isMovingLeft = false;
+		// Right
+		if (_angle > -22.5 && _angle < 22.5 && _isMoving)
+			_isMovingRight = true;
+		else
+			_isMovingRight = false;
+		// Up Left
+		if (_angle < -112.5 && _angle > -157.5 && _isMoving)
+			_isMovingUp_Left = true;
+		else
+			_isMovingUp_Left = false;
+		// Up Right
+		if (_angle < -22.5 && _angle > -67.5 && _isMoving)
+			_isMovingUp_Right = true;
+		else
+			_isMovingUp_Right = false;
+		// Down Left
+		if (_angle > 112.5 && _angle < 157.5 && _isMoving)
+			_isMovingDown_Left = true;
+		else
+			_isMovingDown_Left = false;
+		// Down Right
+		if (_angle > 22.5 && _angle < 67.5 && _isMoving)
+			_isMovingDown_Right = true;
+		else
+			_isMovingDown_Right = false;
+	}
+
 }		
 
 void Enemy::constructEnemy(sf::Vector2f position, sf::Vector2f animationSize, sf::Texture* texture)

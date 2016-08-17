@@ -47,7 +47,6 @@ void CollisionSystem::update(std::vector<Entity*> _entities, int _collisionDetai
 				//distance = distanced / distance;
 
 				//cout << distance << endl;
-
 				//if(!didPush)
 				//{
 				//	currentGrid.push_back(ent);
@@ -55,19 +54,19 @@ void CollisionSystem::update(std::vector<Entity*> _entities, int _collisionDetai
 			}
 
 			//DEBUG GRID TOOL
-			if (x == 2 && y == 3) {
-				currentX = x;
-				currentY = y;
-				for (Entity* ent : currentGrid)
-				{
-					ent->_bounds.setOutlineColor(sf::Color::Red);
-				}
-			}//DEBUG GRID TOOL
+			//if (x == 2 && y == 3) {
+			//	currentX = x;
+			//	currentY = y;
+			//	for (Entity* ent : currentGrid)
+			//	{
+			//		ent->_bounds.setOutlineColor(sf::Color::Red);
+			//	}
+			//}//DEBUG GRID TOOL
 
 			gridSize = currentGrid.size();
-			check();
 
 			currentGrid.clear();
+			check();
 		}
 	}
 }
@@ -79,7 +78,7 @@ void CollisionSystem::check()
 		return;
 	}
 	collisionChecks++;
-
+	cout << "HIT" << endl;
 	// Check Circle vs Circle Collision 
 	for (unsigned int i = 0; i < currentGrid.size(); i++)
 	{
@@ -104,7 +103,6 @@ void CollisionSystem::check()
 				sf::Vector2f direction = currentGrid[i]->_position - currentGrid[j]->_position;
 				sf::Vector2f newdirection = normalize(direction) * (overlap / 2) * (currentGrid[j]->_mass / (currentGrid[i]->_mass + currentGrid[j]->_mass));
 				sf::Vector2f newdirectionB = normalize(direction) * (overlap / 2) * (currentGrid[i]->_mass / (currentGrid[j]->_mass + currentGrid[i]->_mass));
-				//cout << newdirection.x << newdirection.y << endl;
 				//Move Entities
 				currentGrid[i]->_bounds.move(newdirection);
 				currentGrid[j]->_bounds.move((-newdirectionB));

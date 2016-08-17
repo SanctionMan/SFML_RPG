@@ -4,6 +4,7 @@
 
 HealthBar::HealthBar():
 	_size(sf::Vector2f(35, 6)),
+
 	_backgroundAdjustment(sf::Vector2f(0, 0)),
 	_healthAdjustment(sf::Vector2f(0, 0)),
 	_manaAdjustment(sf::Vector2f(0, 0)),

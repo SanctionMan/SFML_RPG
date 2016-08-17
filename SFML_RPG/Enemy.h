@@ -41,6 +41,7 @@ public:
 
 	HealthBar _healthBar;
 
+	bool _isMoving = false;
 	bool _isMovingUp = false;
 	bool _isMovingDown = false;
 	bool _isMovingLeft = false;
