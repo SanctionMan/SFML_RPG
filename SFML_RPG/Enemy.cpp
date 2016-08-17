@@ -188,7 +188,7 @@ void Enemy::updateAI(sf::Time _deltaTime)
 	else
 		_isMovingUp = false;
 
-	cout << _angle << endl;
+	//cout << _angle << endl;
 }		
 
 void Enemy::constructEnemy(sf::Vector2f position, sf::Vector2f animationSize, sf::Texture* texture)
