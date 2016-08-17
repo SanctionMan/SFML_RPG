@@ -168,27 +168,48 @@ void Enemy::updateAI(sf::Time _deltaTime)
 
 		_bounds.move(_unitVector * _enemySpeed * _deltaTime.asSeconds());
 	}
-	if (_angle > -45 && _angle < 45)
-		_isMovingRight = true;
-	else
-		_isMovingRight = false;
-
-	if (_angle > 45 && _angle < 135)
-		_isMovingDown = true;
-	else
-		_isMovingDown = false;
-
-	if (_angle > 135 || _angle < -135)
-		_isMovingLeft = true;
-	else
-		_isMovingLeft = false;
-
-	if (_angle > -135 && _angle < -45)
+	// Up
+	if (_angle > -112.5 && _angle < -67.5)
 		_isMovingUp = true;
 	else
 		_isMovingUp = false;
+	// Down
+	if (_angle > 67.5 && _angle < 112.5)
+		_isMovingDown = true;
+	else
+		_isMovingDown = false;
+	// Left
+	if (_angle > 157.5 || _angle < -157.5)
+		_isMovingLeft = true;
+	else
+		_isMovingLeft = false;
+	// Right
+	if (_angle > -22.5 && _angle < 22.5)
+		_isMovingRight = true;
+	else
+		_isMovingRight = false;
+	// Up Left
+	if (_angle > -112.5 && _angle < -157.5)
+		_isMovingUp_Left = true;
+	else
+		_isMovingUp_Left = false;
+	// Up Right
+	if (_angle > -22.5 && _angle < -67.5)
+		_isMovingUp_Right = true;
+	else
+		_isMovingUp_Right = false;
+	// Down Left
+	if (_angle > 112.5 && _angle < 157.5)
+		_isMovingDown_Left = true;
+	else
+		_isMovingDown_Left = false;
+	// Down Right
+	if (_angle > 22.5 && _angle < 67.5)
+		_isMovingDown_Right = true;
+	else
+		_isMovingDown_Right = false;
 
-	cout << _angle << endl;
+	//cout << _angle << endl;
 }		
 
 void Enemy::constructEnemy(sf::Vector2f position, sf::Vector2f animationSize, sf::Texture* texture)

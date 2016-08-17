@@ -243,3 +243,5 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/SFML_RPG/Dependency/SFML-2.4.0/doc
+/SFML_RPG/Dependency/SFML-2.4.0/examples

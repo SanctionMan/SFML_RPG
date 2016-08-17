@@ -45,6 +45,10 @@ public:
 	bool _isMovingDown = false;
 	bool _isMovingLeft = false;
 	bool _isMovingRight = false;
+	bool _isMovingUp_Right = false;
+	bool _isMovingUp_Left = false;
+	bool _isMovingDown_Left = false;
+	bool _isMovingDown_Right = false;
 
 
 	enum animationEnum
