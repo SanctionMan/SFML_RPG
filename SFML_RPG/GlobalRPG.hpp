@@ -4,7 +4,7 @@
 #include "Utils/TileParser.h"
 
 #include <iostream>
-//#include <string>
+#include <string>
 #include <map>
 #include <vector>
 #include <fstream>
