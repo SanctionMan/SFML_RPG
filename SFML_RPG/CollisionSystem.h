@@ -25,5 +25,6 @@ public:
 	vector<sf::Vertex> gridLines;
 	int currentX, currentY, gridSize;
 
+
 };
 
