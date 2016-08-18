@@ -178,7 +178,7 @@ void Enemy::updateAI(sf::Time _deltaTime)
 			_isMovingLeft = true;
 		else
 			_isMovingLeft = false;
-		// Rightsd
+		// Right
 		if (_angle > -22.5 && _angle < 22.5 && _isMoving)
 			_isMovingRight = true;
 		else
