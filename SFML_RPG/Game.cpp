@@ -34,6 +34,7 @@ void Game::Run()
 
 	//Init collision
 	_CollisionSystem = new CollisionSystem();
+	_CollisionSystem->loadGrid(sf::Vector2i(1000,1000));
 
 	sf::Clock clock;
 	_elapsedTime = clock.getElapsedTime();
@@ -47,7 +48,8 @@ void Game::Run()
 			
 			_elapsedTime = clock.restart();
 		}
-		_CollisionSystem->update(_entities, 8, _window->getSize());
+		//_CollisionSystem->update(_entities, 8, _window->getSize());
+		_CollisionSystem->update2(_entities);
 
 		render();
 	}
