@@ -15,21 +15,21 @@ CollisionSystem::~CollisionSystem()
 {
 }
 
-void CollisionSystem::update(std::vector<Entity*> _entities, int _collisionDetail, sf::Vector2u _resolution)
+void CollisionSystem::update(std::vector<Entity*> entities, int collisionDetail, sf::Vector2u resolution)
 {
-	_collisionDetailStored = _collisionDetail;
+	_collisionDetailStored = collisionDetail;
 
-	gridWidthTemp = _resolution.x / (_collisionDetail);
-	gridHeightTemp = _resolution.y / (_collisionDetail);
+	gridWidthTemp = resolution.x / (collisionDetail);
+	gridHeightTemp = resolution.y / (collisionDetail);
 
 	int lastHeight, lastWidth;
 	collisionChecks = 0;
 
-	for (int x = 0; x < _collisionDetail + 1; x++)
+	for (int x = 0; x < collisionDetail + 1; x++)
 	{
-		for (int y = 0; y < _collisionDetail + 1; y++)
+		for (int y = 0; y < collisionDetail + 1; y++)
 		{
-			for (Entity* ent : _entities)
+			for (Entity* ent : entities)
 			{
 				bool didPush = false;
 				if (ent->_position.x < gridWidthTemp * x && ent->_position.x > lastWidth)
@@ -75,27 +75,42 @@ void CollisionSystem::update(std::vector<Entity*> _entities, int _collisionDetai
 	}
 }
 
-void CollisionSystem::update2(std::vector<Entity*> _entities)
+void CollisionSystem::update2(std::vector<Entity*> entities)
 {
-	registerEntitys(_entities);
+	registerEntitys(entities);
 	collisionChecks = 0;
 
-	for (int i = 0; i < _cols * _rows; i++)
+	for (int i = 0; i < _cols * _rows; i++)//Loop threw all buckets
 	{
-		if (_buckets[i].size() > 1)
+		for (auto ent : _buckets[i])//Loop threw all ents in bucket
 		{
-			for (auto ent : _buckets[i])
+			vector<int> nearbyList = getNearbyList(ent);//Loop threw all nearby ents 
+			for ( auto id : nearbyList)
 			{
 				currentGrid.push_back(ent);
 			}
+			gridSize = currentGrid.size();
+			check();
 		}
-
+		currentGrid.clear();
 	}
-
-	gridSize = currentGrid.size();
-	check();
-	currentGrid.clear();
 	clearBuckets();
+	//FOR TESTING!!!!!!!!!!!!!!!!!!!
+	//sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*GetGameWindow()));
+	//if (mousePos.x <= ent->_position.x + ent->_radius && mousePos.x >= ent->_position.x - ent->_radius &&
+	//	mousePos.y <= ent->_position.y + ent->_radius && mousePos.y >= ent->_position.y - ent->_radius)
+	//{
+	//	ent->_bounds.setOutlineColor(sf::Color::Blue);
+	//}
+	//else
+	//{
+	//	ent->_bounds.setOutlineColor(sf::Color::Red);
+	//}
+
+
+
+
+
 }
 
 void CollisionSystem::check()
@@ -183,8 +198,9 @@ void CollisionSystem::drawGrid()
 	//cout << grid.getVertexCount() << endl;
 }
 
-void CollisionSystem::loadGrid(sf::Vector2i _mapSize)
+void CollisionSystem::loadGrid(sf::Vector2i mapSize)
 {
+	_mapSize = mapSize;
 	//Create Vertexs
 	sf::Vertex vertex1;
 	sf::Vertex vertex2;
@@ -242,7 +258,6 @@ void CollisionSystem::registerEntitys(std::vector<Entity*> _entities)
 		for (auto id : Ent_ID)
 		{
 			_buckets[id].push_back(ent);
-			//cout << "Check: " << id << endl;
 		}
 	}
 }
@@ -261,8 +276,9 @@ void CollisionSystem::clearBuckets()
 void CollisionSystem::addBucket(sf::Vector2f vector, float width, std::vector<int> &list)
 {
 	
-	int cellPosition = (int)((floor(vector.x / _cellSize)) + (floor(vector.y / _cellSize)) * width);
-	cout << cellPosition << endl;
+	int cellPosition = (int)(
+		(floor(vector.x / _cellSize)) + ((floor(vector.y / _cellSize)) * width));
+
 	if (!contains(list, cellPosition))
 		list.push_back(cellPosition);
 }
@@ -295,6 +311,18 @@ bool CollisionSystem::contains(std::vector<int> list, int cell_ID)
 		return true;
 	else
 		return false;
+}
+
+vector<int> CollisionSystem::getNearbyList(Entity* ent)
+{
+	vector<int> nearbyList;
+	vector<int> bucketIDs = getEntitiesIDs(ent);
+	for (auto id : bucketIDs)
+	{
+		nearbyList.push_back(id);
+
+	}
+	return nearbyList;
 }
 
 sf::Vector2f CollisionSystem::normalize(sf::Vector2f &vector)

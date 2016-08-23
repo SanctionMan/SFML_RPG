@@ -9,16 +9,18 @@ public:
 	CollisionSystem();
 	~CollisionSystem();
 
-	void update(std::vector<Entity*> _entities, int _collisionDetail, sf::Vector2u _resolution);
-	void update2(std::vector<Entity*> _entities);
+	void update(std::vector<Entity*> entities, int collisionDetail, sf::Vector2u resolution);
+	void update2(std::vector<Entity*> entities);
 	void check();
 	void drawGrid();
-	void loadGrid(sf::Vector2i _mapSize);
-	void registerEntitys(std::vector<Entity*> _entities);
+	void loadGrid(sf::Vector2i mapSize);
+	void registerEntitys(std::vector<Entity*> entities);
 	void clearBuckets();
 	void addBucket(sf::Vector2f vector, float width, std::vector<int> &list);
 	vector<int> getEntitiesIDs(Entity* ent);
 	bool contains(std::vector<int> list, int cell_ID);
+	vector<int> getNearbyList(Entity* ent);
+
 	sf::Vector2f normalize(sf::Vector2f &vector);
 	//Matts
 

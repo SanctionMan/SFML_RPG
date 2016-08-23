@@ -122,7 +122,7 @@ void Enemy::aiUpdate(sf::Time _deltaTime)
 	}
 	
 	// Update Movement
-	//updateAI(_deltaTime);
+	updateAI(_deltaTime);
 }
 
 void Enemy::aiRender(sf::RenderWindow & _window)

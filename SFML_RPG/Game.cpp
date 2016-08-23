@@ -103,7 +103,7 @@ void Game::init()
 	_tileParser->Parse();
 
 	//Create Player and Set Texture
-	createEntity(new Player(sf::Vector2f(100, 100), _TextureManager->getTexture("male_head1.png"), 
+	createEntity(new Player(sf::Vector2f(250, 750), _TextureManager->getTexture("male_head1.png"), 
 													_TextureManager->getTexture("steel_armor.png"),
 													_TextureManager->getTexture("greatsword.png")));
 	//createEntity(new Goblin(sf::Vector2f(150, 150), _TextureManager->getTexture("goblin.png")));
@@ -154,7 +154,8 @@ void Game::update(sf::Time _elapsedTime)
 	mousePosition = sf::Vector2f(sf::Mouse::getPosition(*_window).x, sf::Mouse::getPosition(*_window).y);
 
 	string printme =  "Entity Count: " + std::to_string(_entities.size()) + "\n";
-	printme += "Entity Check Count: " + std::to_string(_CollisionSystem->collisionChecks);
+	printme += "Brute Force Checks: " + std::to_string(_entities.size() * _entities.size()) + "\n";
+	printme += "Entity Spatial Checks : " + std::to_string(_CollisionSystem->collisionChecks);
 
 	text.setString(printme);
 	text.setFillColor(sf::Color::Black);
