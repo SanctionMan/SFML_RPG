@@ -154,7 +154,7 @@ void Game::update(sf::Time _elapsedTime)
 	mousePosition = sf::Vector2f(sf::Mouse::getPosition(*_window).x, sf::Mouse::getPosition(*_window).y);
 
 	string printme =  "Entity Count: " + std::to_string(_entities.size()) + "\n";
-	printme += "Brute Force Checks: " + std::to_string(_entities.size() * _entities.size()) + "\n";
+	printme += "Brute Force Checks: " + std::to_string(_entities.size() * (_entities.size() - 1)) + "\n";
 	printme += "Entity Spatial Checks : " + std::to_string(_CollisionSystem->collisionChecks);
 
 	text.setString(printme);

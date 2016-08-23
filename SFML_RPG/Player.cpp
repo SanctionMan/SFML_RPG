@@ -40,7 +40,7 @@ Player::Player(sf::Vector2f position, sf::Texture* headTexture, sf::Texture* bod
 	_animatedHead.setOrigin(sf::Vector2f(_animationSize.x / 2, _animationSize.y / 2));
 	//_animatedHead.setScale(2, 2);
 	_animatedWeapon.setOrigin(sf::Vector2f(_animationSize.x / 2, _animationSize.y / 2));
-	//_animated_animatedWeapon.setScale(2, 2);
+	//_animatedWeapon.setScale(2, 2);
 }
 
 Player::~Player()
@@ -634,6 +634,7 @@ void Player::initBodyTextures()
 		_Body_CastSpell_AnimationDown_Right.addFrame(sf::IntRect(128 * 26, 128 * 5, 128, 128));
 		_Body_CastSpell_AnimationDown_Right.addFrame(sf::IntRect(128 * 27, 128 * 5, 128, 128));
 	}
+
 	// Shoot Bow (4 frames)
 	{
 		_Body_ShootBow_AnimationUp.setSpriteSheet(*_textureBody);

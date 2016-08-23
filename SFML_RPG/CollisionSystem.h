@@ -27,9 +27,11 @@ public:
 	int _cols;
 	int _rows;
 	int _cellSize = 250;
+	bool _isBeingChecked = false;
 	sf::Vector2i _mapSize;
 	sf::VertexArray _grid;
 	map<int, vector<Entity*>> _buckets;
+	map<int, vector<Entity*>> _nearby;
 
 	int _numberOfBuckets = 0;
 

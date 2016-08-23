@@ -87,6 +87,7 @@ void CollisionSystem::update2(std::vector<Entity*> entities)
 			vector<int> nearbyList = getNearbyList(ent);//Loop threw all nearby ents 
 			for ( auto id : nearbyList)
 			{
+
 				currentGrid.push_back(ent);
 			}
 			gridSize = currentGrid.size();
@@ -155,47 +156,7 @@ void CollisionSystem::check()
 
 void CollisionSystem::drawGrid()
 {
-	
 	GetGameWindow()->draw(_grid);	
-	
-	//for (int x = 0; x < _collisionDetailStored + 1; x++)
-	//{
-	//	for (int y = 0; y < _collisionDetailStored + 1; y++)
-	//	{
-	//		//x = (x == 0) ? 1 : x;
-	//		int width = gridWidthTemp * x;
-	//		int xPos = 0;
-	//		//y = (y == 0) ? 1 : y;
-	//		int height = gridHeightTemp * y;
-	//		int yPos = 0;
-	//		sf::Vector2f vec1(x, height);
-	//		sf::Vector2f vec2(width, height);
-	//		sf::Vertex vert1(vec1);
-	//		sf::Vertex vert2(vec2);
-	//		sf::Vector2f vec3(width, height);
-	//		sf::Vector2f vec4(width, yPos);
-	//		sf::Vertex vert3(vec3);
-	//		sf::Vertex vert4(vec4);
-	//		vert1.color = sf::Color::Black;
-	//		vert2.color = sf::Color::Black;
-	//		vert3.color = sf::Color::Black;
-	//		vert4.color = sf::Color::Black;
-	//		//gridLines.push_back(vert1);
-	//		//gridLines.push_back(vert2);
-	//		grid.append(vert1);
-	//		grid.append(vert2);
-	//		//GetGameWindow()->draw(&gridLines[0], 2, sf::Lines);
-	//		//gridLines.clear();
-	//		//gridLines.push_back(vert3);
-	//		//gridLines.push_back(vert4);
-	//		grid.append(vert3);
-	//		grid.append(vert4);
-	//		//GetGameWindow()->draw(&gridLines[0], 2, sf::Lines);
-	//		//gridLines.clear();
-	//	}
-	//}
-	//GetGameWindow()->draw(grid);
-	//cout << grid.getVertexCount() << endl;
 }
 
 void CollisionSystem::loadGrid(sf::Vector2i mapSize)
