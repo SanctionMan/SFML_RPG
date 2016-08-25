@@ -2,6 +2,7 @@
 
 #include "Game.h"
 
+
 class Entity;
 class CollisionSystem
 {
@@ -19,7 +20,9 @@ public:
 	void addBucket(sf::Vector2f vector, float width, std::vector<int> &list);
 	vector<int> getEntitiesIDs(Entity* ent);
 	bool contains(std::vector<int> list, int cell_ID);
-	vector<int> getNearbyList(Entity* ent);
+    void getNearbyList(std::vector<Entity*> _entities);
+	void hover(Entity* ent);
+
 
 	sf::Vector2f normalize(sf::Vector2f &vector);
 	//Matts
@@ -31,7 +34,7 @@ public:
 	sf::Vector2i _mapSize;
 	sf::VertexArray _grid;
 	map<int, vector<Entity*>> _buckets;
-	map<int, vector<Entity*>> _nearby;
+	map<int, Entity*> _nearby;
 
 	int _numberOfBuckets = 0;
 
