@@ -25,7 +25,7 @@ public:
 
 	void init();
 	void handleInput();
-	void update(sf::Time _elapsedTime);
+	void update(sf::Time _deltaTime);
 	void render();
 	void cleanUp();
 
@@ -34,7 +34,7 @@ public:
 	void renderEntities();
 	void processEntities(sf::Event &event);
 
-	void updateStatistics(sf::Time _elapsedTime);
+	void updateStatistics(sf::Time _deltaTime);
 
 	void mouseClicks(sf::Event &event);
 
@@ -46,7 +46,7 @@ public:
 private:
 	//Time
 	float _frameTime = 0.1f / 60.0f;
-	sf::Time _elapsedTime;
+	sf::Time _deltaTime;
 
 	bool _isGridActive = false;
 
