@@ -86,11 +86,11 @@ void CollisionSystem::update2(std::vector<Entity*> entities)
 		{
 			if(_buckets[i].size() > 1)
 			{
-				ent->_bounds.setOutlineColor(sf::Color::Blue);
+				ent->_bounds.setOutlineColor(sf::Color::Red);
 				currentGrid.push_back(ent);
 			}else
 			{
-				ent->_bounds.setOutlineColor(sf::Color::Red);
+				ent->_bounds.setOutlineColor(sf::Color::Blue);
 			}
 			hover(ent);
 			gridSize = currentGrid.size();
