@@ -37,16 +37,16 @@ void Game::Run()
 	_CollisionSystem->loadGrid(sf::Vector2i(1000,1000));
 
 	sf::Clock clock;
-	_elapsedTime = clock.getElapsedTime();
+	_deltaTime = clock.getElapsedTime();
 	while (_window->isOpen())
 	{
-		_elapsedTime += clock.restart();
-		while (_elapsedTime.asSeconds() > _frameTime)
+		_deltaTime += clock.restart();
+		while (_deltaTime.asSeconds() >= _frameTime)
 		{
 			handleInput();
-			update(_elapsedTime);
+			update(_deltaTime);
 			
-			_elapsedTime = clock.restart();
+			_deltaTime = clock.restart();
 		}
 		//_CollisionSystem->update(_entities, 8, _window->getSize());
 		_CollisionSystem->update2(_entities);
@@ -148,7 +148,7 @@ void Game::handleInput()
 	}
 }
 
-void Game::update(sf::Time _elapsedTime)
+void Game::update(sf::Time _deltaTime)
 {
 	updateEntities();
 	mousePosition = sf::Vector2f(sf::Mouse::getPosition(*_window).x, sf::Mouse::getPosition(*_window).y);
@@ -160,7 +160,7 @@ void Game::update(sf::Time _elapsedTime)
 	text.setString(printme);
 	text.setFillColor(sf::Color::Black);
 
-	updateStatistics(_elapsedTime);
+	updateStatistics(_deltaTime);
 }
 
 void Game::render()
@@ -205,7 +205,7 @@ void Game::updateEntities()
 {
 	for (auto &it : _entities)
 	{
-		it->update(_elapsedTime);
+		it->update(_deltaTime);
 	}
 }
 
@@ -225,9 +225,9 @@ void Game::processEntities(sf::Event &event)
 	}
 }
 
-void Game::updateStatistics(sf::Time _elapsedTime)
+void Game::updateStatistics(sf::Time _deltaTime)
 {
-	_updateTime += _elapsedTime;
+	_updateTime += _deltaTime;
 	_numFrames += 1;
 
 	if (_updateTime >= sf::seconds(1.0f))

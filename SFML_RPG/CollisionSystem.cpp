@@ -84,34 +84,21 @@ void CollisionSystem::update2(std::vector<Entity*> entities)
 	{
 		for (auto ent : _buckets[i])//Loop threw all ents in bucket
 		{
-			vector<int> nearbyList = getNearbyList(ent);//Loop threw all nearby ents 
-			for ( auto id : nearbyList)
+			if(_buckets[i].size() > 1)
 			{
-
+				ent->_bounds.setOutlineColor(sf::Color::Red);
 				currentGrid.push_back(ent);
+			}else
+			{
+				ent->_bounds.setOutlineColor(sf::Color::Blue);
 			}
+			hover(ent);
 			gridSize = currentGrid.size();
 			check();
 		}
 		currentGrid.clear();
 	}
 	clearBuckets();
-	//FOR TESTING!!!!!!!!!!!!!!!!!!!
-	//sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*GetGameWindow()));
-	//if (mousePos.x <= ent->_position.x + ent->_radius && mousePos.x >= ent->_position.x - ent->_radius &&
-	//	mousePos.y <= ent->_position.y + ent->_radius && mousePos.y >= ent->_position.y - ent->_radius)
-	//{
-	//	ent->_bounds.setOutlineColor(sf::Color::Blue);
-	//}
-	//else
-	//{
-	//	ent->_bounds.setOutlineColor(sf::Color::Red);
-	//}
-
-
-
-
-
 }
 
 void CollisionSystem::check()
@@ -246,12 +233,13 @@ void CollisionSystem::addBucket(sf::Vector2f vector, float width, std::vector<in
 
 vector<int> CollisionSystem::getEntitiesIDs(Entity* ent)
 {
-	vector<int> listID;
 
+	vector<int> listID;
 	sf::Vector2f min = sf::Vector2f(ent->_position.x - ent->_radius, ent->_position.y - ent->_radius);
 	sf::Vector2f max = sf::Vector2f(ent->_position.x + ent->_radius, ent->_position.y + ent->_radius);
 
 	float width = _mapSize.x / _cellSize;
+
 	//TopLeft
 	addBucket(min, width, listID);
 	//TopRight
@@ -274,16 +262,20 @@ bool CollisionSystem::contains(std::vector<int> list, int cell_ID)
 		return false;
 }
 
-vector<int> CollisionSystem::getNearbyList(Entity* ent)
+void CollisionSystem::getNearbyList(std::vector<Entity*> _entities)
 {
-	vector<int> nearbyList;
-	vector<int> bucketIDs = getEntitiesIDs(ent);
-	for (auto id : bucketIDs)
+
+}
+
+void CollisionSystem::hover(Entity* ent)
+{
+	sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*GetGameWindow()));
+	if (mousePos.x <= ent->_position.x + ent->_radius && mousePos.x >= ent->_position.x - ent->_radius &&
+		mousePos.y <= ent->_position.y + ent->_radius && mousePos.y >= ent->_position.y - ent->_radius)
 	{
-		nearbyList.push_back(id);
+		ent->_bounds.setOutlineColor(sf::Color::Green);
 
 	}
-	return nearbyList;
 }
 
 sf::Vector2f CollisionSystem::normalize(sf::Vector2f &vector)
