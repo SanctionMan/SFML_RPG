@@ -7,9 +7,10 @@
 #include "Player.h"
 #include "Enemy.h" //Any class that inherits this needs to be included at bottom of this header.
 #include "GlobalRPG.hpp"
+#include "Level.h"
 
 float CalculateDistance(sf::Vector2f a, sf::Vector2f b);
-
+class Level;
 class Player;
 class TileParser;
 class CollisionSystem;
@@ -26,7 +27,7 @@ public:
 	void init();
 	void handleInput();
 	void update(sf::Time _deltaTime);
-	void render();
+	void render(Level *level);
 	void cleanUp();
 
 	void createEntity(Entity* ent);

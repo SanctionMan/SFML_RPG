@@ -9,7 +9,6 @@ int main()
 	game.cleanUp();
 
 
-
 	//system("PAUSE");
 	return 0;
 }

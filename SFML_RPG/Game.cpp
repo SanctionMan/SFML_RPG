@@ -32,6 +32,23 @@ void Game::Run()
 	//Init Game
 	init();
 
+	//Init Level
+	const int map[] =
+	{
+		0, 2, 0, 1, 0, 2, 0, 1,
+		1, 2, 0, 1, 0, 2, 0, 1,
+		2, 2, 0, 1, 0, 2, 0, 1,
+		3, 2, 0, 1, 0, 2, 0, 1,
+		4, 2, 0, 1, 0, 2, 0, 1,
+		5, 2, 0, 1, 0, 2, 0, 1,
+		6, 2, 0, 1, 0, 2, 0, 1,
+		7, 2, 0, 1, 0, 2, 0, 1,
+	};
+	Level level(_TextureManager->getTexture("tiles_0.png"));
+	level.load("Maps/Map_001.txt", sf::Vector2i(8,8), map);
+	level.printMap();
+
+
 	//Init collision
 	_CollisionSystem = new CollisionSystem();
 	_CollisionSystem->loadGrid(sf::Vector2i(1000,1000));
@@ -51,7 +68,7 @@ void Game::Run()
 		//_CollisionSystem->update(_entities, 8, _window->getSize());
 		_CollisionSystem->update2(_entities);
 
-		render();
+		render(&level);
 	}
 }
 
@@ -69,13 +86,8 @@ void Game::init()
 	//Mushroom
 	_TextureManager->loadTexture("Mushroom.png", "Resources/Textures/Entities/Misc/Mushroom.png");
 	//Map
-	//_TextureManager->loadTexture("spr_tile_wall_top_left.png", "Resources/Textures/Map/spr_tile_wall_top_left.png");// Top Left Corner
-	//_TextureManager->loadTexture("spr_tile_wall_bottom_left.png", "Resources/Textures/Map/spr_tile_wall_bottom_left.png");// Bottom Left Corner
-	//_TextureManager->loadTexture("spr_tile_wall_top_right.png", "Resources/Textures/Map/spr_tile_wall_top_right.png");// Top Right Corner
-	//_TextureManager->loadTexture("spr_tile_wall_bottom_right", "Resources/Textures/Map/spr_tile_wall_bottom_right.png");// Bottom Right Corner
-	//_TextureManager->loadTexture("spr_tile_wall_top.png", "Resources/Textures/Map/spr_tile_wall_top.png");// Top/Bottom Wall
-	//_TextureManager->loadTexture("spr_tile_wall_side.png", "Resources/Textures/Map/spr_tile_wall_side.png");// Right/Left Wall 
-	//_TextureManager->loadTexture("spr_tile_floor_alt.png", "Resources/Textures/Map/spr_tile_floor_alt.png");// Floor Alt
+	_TextureManager->loadTexture("tiles_0.png", "Resources/Textures/Map/tiles_0.png");// Sample tiles
+
 	//Player
 	_TextureManager->loadTexture("steel_armor.png", "Resources/Textures/Entities/Player/steel_armor.png");// Player Body
 	_TextureManager->loadTexture("male_head1.png", "Resources/Textures/Entities/Player/male_head1.png");// Player Head
@@ -97,10 +109,10 @@ void Game::init()
 	_TextureManager->showTexturesList();
 
 	//Test tile parser! maps! wicked! anus!
-	_tileParser = new TileParser();
-	_tileParser->textureManager = _TextureManager;
-	_tileParser->Init("Maps/Map_001.txt");
-	_tileParser->Parse();
+	//_tileParser = new TileParser();
+	//_tileParser->textureManager = _TextureManager;
+	//_tileParser->Init("Maps/Map_001.txt");
+	//_tileParser->Parse();
 
 	//Create Player and Set Texture
 	createEntity(new Player(sf::Vector2f(250, 750), _TextureManager->getTexture("male_head1.png"), 
@@ -163,15 +175,14 @@ void Game::update(sf::Time _deltaTime)
 	updateStatistics(_deltaTime);
 }
 
-void Game::render()
+void Game::render(Level *level)
 {
 	_window->clear(sf::Color::White);
 	_window->setView(_mainView);
 	//Draw map
-	//for(std::pair<int, Tile*> tile : _tileParser->tileID)
-	//{
-	//	tile.second->render(*_window);
-	//}
+	//level.render(*_window);
+	_window->draw(*level);
+
 	//Draw Entities
 	renderEntities();
 
@@ -182,7 +193,7 @@ void Game::render()
 	}
 
 	//Draw UI
-	_window->draw(text);
+	//_window->draw(text);
 	_window->draw(_FPS);
 	_window->display();
 }

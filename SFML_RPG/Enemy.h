@@ -51,6 +51,8 @@ public:
 	bool _isMovingDown_Left = false;
 	bool _isMovingDown_Right = false;
 
+	bool _isAttacking = false;
+
 
 	enum animationEnum
 	{

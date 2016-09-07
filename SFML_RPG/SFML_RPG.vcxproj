@@ -146,6 +146,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Goblin.cpp" />
     <ClCompile Include="HealthBar.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TextureManager.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="GlobalRPG.hpp" />
     <ClInclude Include="Goblin.h" />
     <ClInclude Include="HealthBar.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Utils\TileParser.h" />
@@ -191,27 +193,7 @@
     <Image Include="Resources\Textures\Entities\Player\staff.png" />
     <Image Include="Resources\Textures\Entities\Player\steel_armor.png" />
     <Image Include="Resources\Textures\Entities\Player\wand.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_door_locked.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_door_unlocked.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_floor.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_floor_alt.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_bottom_end.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_bottom_left.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_bottom_right.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_bottom_t.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_entrance.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_intersection.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_side.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_side_left_end.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_side_left_t.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_side_right_end.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_side_right_t.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_single.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_top.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_top_end.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_top_left.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_top_right.png" />
-    <Image Include="Resources\Textures\Map\spr_tile_wall_top_t.png" />
+    <Image Include="Resources\Textures\Map\tiles_0.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\Atarian\SF Atarian System.ttf" />

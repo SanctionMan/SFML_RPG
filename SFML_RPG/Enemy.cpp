@@ -160,6 +160,15 @@ void Enemy::updateAI(sf::Time _deltaTime)
 	else {
 		_isMoving = false;
 	}
+	// TESTING FOR ATTACKING NOT FINISHED
+	if (_distance <= 50)
+	{
+		_isAttacking = true;
+
+	}
+	else {
+		_isAttacking = false;
+	}
 
 	// Set Facing Angle
 	{
