@@ -7,10 +7,10 @@
 #include "Player.h"
 #include "Enemy.h" //Any class that inherits this needs to be included at bottom of this header.
 #include "GlobalRPG.hpp"
-#include "Level.h"
+#include "LevelManager.h"
 
 float CalculateDistance(sf::Vector2f a, sf::Vector2f b);
-class Level;
+class LevelManager;
 class Player;
 class TileParser;
 class CollisionSystem;
@@ -27,7 +27,7 @@ public:
 	void init();
 	void handleInput();
 	void update(sf::Time _deltaTime);
-	void render(Level *level);
+	void render(LevelManager *level);
 	void cleanUp();
 
 	void createEntity(Entity* ent);
@@ -49,7 +49,7 @@ private:
 	float _frameTime = 0.1f / 60.0f;
 	sf::Time _deltaTime;
 
-	bool _isGridActive = false;
+	bool _isGridActive = true;
 
 	//Text
 	sf::Time _updateTime;

@@ -146,11 +146,10 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Goblin.cpp" />
     <ClCompile Include="HealthBar.cpp" />
-    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TextureManager.cpp" />
-    <ClCompile Include="Utils\TileParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
@@ -162,10 +161,9 @@
     <ClInclude Include="GlobalRPG.hpp" />
     <ClInclude Include="Goblin.h" />
     <ClInclude Include="HealthBar.h" />
-    <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="TextureManager.h" />
-    <ClInclude Include="Utils\TileParser.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Maps\Map_001.txt" />
@@ -193,7 +191,9 @@
     <Image Include="Resources\Textures\Entities\Player\staff.png" />
     <Image Include="Resources\Textures\Entities\Player\steel_armor.png" />
     <Image Include="Resources\Textures\Entities\Player\wand.png" />
+    <Image Include="Resources\Textures\Map\Grass\grassland_tiles.png" />
     <Image Include="Resources\Textures\Map\tiles_0.png" />
+    <Image Include="Resources\Textures\Map\tiles_1.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\Atarian\SF Atarian System.ttf" />

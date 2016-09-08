@@ -5,7 +5,8 @@
 
 CollisionSystem::CollisionSystem():
 	_mapSize(100,100),
-	_grid(sf::Lines, 2)
+	_grid(sf::Lines, 2),
+	_cellSize(sf::Vector2i(64,32))
 {
 
 }
@@ -155,8 +156,8 @@ void CollisionSystem::loadGrid(sf::Vector2i mapSize)
 	sf::Vertex vertex3;
 	sf::Vertex vertex4;
 	//Calculate number of lines
-	_cols = (_mapSize.x / _cellSize);
-	_rows = (_mapSize.y / _cellSize);
+	_cols = (_mapSize.x / _cellSize.x);
+	_rows = (_mapSize.y / _cellSize.y);
 
 	int lines = 0;
 	for (int x = 0; x <= _cols; x++)
@@ -164,15 +165,15 @@ void CollisionSystem::loadGrid(sf::Vector2i mapSize)
 		for (int y = 0; y <= _rows; y++)
 		{
 			//Create horizontal line
-			vertex1.position = sf::Vector2f(0, y * _cellSize);
+			vertex1.position = sf::Vector2f(0, y * _cellSize.y);
 			vertex1.color = sf::Color::Black;
-			vertex2.position = sf::Vector2f(_mapSize.x, y * _cellSize);
+			vertex2.position = sf::Vector2f(_mapSize.x, y * _cellSize.y);
 			vertex2.color = sf::Color::Black;
 
 			//Create vertical line
-			vertex3.position = sf::Vector2f(y * _cellSize, 0);
+			vertex3.position = sf::Vector2f(y * _cellSize.x, 0);
 			vertex3.color = sf::Color::Black;
-			vertex4.position = sf::Vector2f(y * _cellSize, _mapSize.y);
+			vertex4.position = sf::Vector2f(y * _cellSize.x, _mapSize.y);
 			vertex4.color = sf::Color::Black;
 
 			//Add Lines to grid
@@ -225,7 +226,7 @@ void CollisionSystem::addBucket(sf::Vector2f vector, float width, std::vector<in
 {
 	
 	int cellPosition = (int)(
-		(floor(vector.x / _cellSize)) + ((floor(vector.y / _cellSize)) * width));
+		(floor(vector.x / _cellSize.x)) + ((floor(vector.y / _cellSize.y)) * width));
 
 	if (!contains(list, cellPosition))
 		list.push_back(cellPosition);
@@ -238,7 +239,7 @@ vector<int> CollisionSystem::getEntitiesIDs(Entity* ent)
 	sf::Vector2f min = sf::Vector2f(ent->_position.x - ent->_radius, ent->_position.y - ent->_radius);
 	sf::Vector2f max = sf::Vector2f(ent->_position.x + ent->_radius, ent->_position.y + ent->_radius);
 
-	float width = _mapSize.x / _cellSize;
+	float width = _mapSize.x / _cellSize.x;
 
 	//TopLeft
 	addBucket(min, width, listID);

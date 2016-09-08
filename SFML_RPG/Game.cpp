@@ -33,19 +33,8 @@ void Game::Run()
 	init();
 
 	//Init Level
-	const int map[] =
-	{
-		0, 2, 0, 1, 0, 2, 0, 1,
-		1, 2, 0, 1, 0, 2, 0, 1,
-		2, 2, 0, 1, 0, 2, 0, 1,
-		3, 2, 0, 1, 0, 2, 0, 1,
-		4, 2, 0, 1, 0, 2, 0, 1,
-		5, 2, 0, 1, 0, 2, 0, 1,
-		6, 2, 0, 1, 0, 2, 0, 1,
-		7, 2, 0, 1, 0, 2, 0, 1,
-	};
-	Level level(_TextureManager->getTexture("tiles_0.png"));
-	level.load("Maps/Map_001.txt", sf::Vector2i(10,10));
+	LevelManager level(_TextureManager->getTexture("grassland_tiles.png"));
+	level.load("Maps/Map_001.txt");
 	level.printMap();
 
 
@@ -86,7 +75,7 @@ void Game::init()
 	//Mushroom
 	_TextureManager->loadTexture("Mushroom.png", "Resources/Textures/Entities/Misc/Mushroom.png");
 	//Map
-	_TextureManager->loadTexture("tiles_0.png", "Resources/Textures/Map/tiles_0.png");// Sample tiles
+	_TextureManager->loadTexture("grassland_tiles.png", "Resources/Textures/Map/Grass/grassland_tiles.png");// Sample tiles
 
 	//Player
 	_TextureManager->loadTexture("steel_armor.png", "Resources/Textures/Entities/Player/steel_armor.png");// Player Body
@@ -175,18 +164,17 @@ void Game::update(sf::Time _deltaTime)
 	updateStatistics(_deltaTime);
 }
 
-void Game::render(Level *level)
+void Game::render(LevelManager *level)
 {
 	_window->clear(sf::Color::White);
-	_window->setView(_mainView);
 	//Draw map
-	//level.render(*_window);
 	_window->draw(*level);
 
 	//Draw Entities
 	renderEntities();
 
 	//Draw collision grid
+	_window->setView(_mainView);
 	if (_isGridActive) 
 	{
 		_CollisionSystem->drawGrid();

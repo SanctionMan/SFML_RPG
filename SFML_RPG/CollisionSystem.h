@@ -29,7 +29,7 @@ public:
 
 	int _cols;
 	int _rows;
-	int _cellSize = 250;
+	sf::Vector2i _cellSize;
 	bool _isBeingChecked = false;
 	sf::Vector2i _mapSize;
 	sf::VertexArray _grid;
