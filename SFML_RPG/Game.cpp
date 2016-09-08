@@ -45,7 +45,7 @@ void Game::Run()
 		7, 2, 0, 1, 0, 2, 0, 1,
 	};
 	Level level(_TextureManager->getTexture("tiles_0.png"));
-	level.load("Maps/Map_001.txt", sf::Vector2i(8,8), map);
+	level.load("Maps/Map_001.txt", sf::Vector2i(10,10));
 	level.printMap();
 
 

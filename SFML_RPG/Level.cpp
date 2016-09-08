@@ -3,7 +3,7 @@
 
 
 Level::Level(sf::Texture * texture):
-	_tileSize(sf::Vector2u(64,32))
+	_tileSize(sf::Vector2i(64,32))
 {
 	_texture = texture;
 }
@@ -13,7 +13,7 @@ Level::~Level()
 {
 }
 
-void Level::load(string path, sf::Vector2i size, const int* tiles)
+void Level::load(string path, sf::Vector2i size)//, const int* tiles)
 {
 	fstream file;
 	file.open(path, ios::in);
@@ -67,7 +67,8 @@ void Level::load(string path, sf::Vector2i size, const int* tiles)
 		for (unsigned int y = 0; y < _mapSize.y; y++)
 		{
 			// get the current tile number
-			int tileNumber = tiles[x + y * _mapSize.x];
+			/*int tileNumber = *_map[x + y * _mapSize.x];*/
+			int tileNumber = _map[x][y];
 
 			// find its position in the tileset texture
 			int tu = tileNumber % (_texture->getSize().x / _tileSize.x);
@@ -76,12 +77,31 @@ void Level::load(string path, sf::Vector2i size, const int* tiles)
 			// get a pointer to the current tile's quad
 			sf::Vertex* quad = &_vertices[(x + y * _mapSize.x) * 4];
 
-			// define its 4 corners
-			quad[0].position = sf::Vector2f(x *       _tileSize.x, y *       _tileSize.y);//TL   0,0   32,16
-			quad[1].position = sf::Vector2f((x + 1) * _tileSize.x, y *       _tileSize.y);//TR  64,0   
-			quad[2].position = sf::Vector2f((x + 1) * _tileSize.x, (y + 1) * _tileSize.y);//BR  64,32
-			quad[3].position = sf::Vector2f(x *       _tileSize.x, (y + 1) * _tileSize.y);//BL   0,32
+			//isometric adjustment for drawing in a diamond
 
+			//float offset_x = x  * (_tileSize.x / 2);
+			//float offset_y = x  * (_tileSize.y / 2);
+
+			//// define its 4 corners
+			//quad[0].position = sf::Vector2f(x * _tileSize.x - offset_x,       y * _tileSize.y + offset_y);       //TL   0,0   32,16
+			//quad[1].position = sf::Vector2f((x + 1) * _tileSize.x - offset_x, y * _tileSize.y + offset_y);       //TR  64,0   
+			//quad[2].position = sf::Vector2f((x + 1) * _tileSize.x - offset_x, (y + 1) * _tileSize.y + offset_y); //BR  64,32
+			//quad[3].position = sf::Vector2f(x * _tileSize.x - offset_x,       (y + 1) * _tileSize.y + offset_y); //BL   0,32
+
+			float offset_x = (y * _tileSize.x / 2) + (x * _tileSize.y / 2) - (_tileSize.x / 2);
+			float offset_y = (y * _tileSize.x / 2) + (x * _tileSize.y / 2);
+			sf::Vector2f offSet = sf::Vector2f(-offset_x, offset_y);
+			sf::Vector2f topL = sf::Vector2f(x * _tileSize.x, y * _tileSize.y);
+			sf::Vector2f topR = sf::Vector2f((x + 1) * _tileSize.x,y * _tileSize.y);
+			sf::Vector2f bottomR = sf::Vector2f((x + 1) * _tileSize.x, (y + 1) * _tileSize.y);
+			sf::Vector2f bottomL = sf::Vector2f(x * _tileSize.x,(y + 1) * _tileSize.y);
+
+			quad[0].position = topL + offSet;    //TL
+			quad[1].position = topR + offSet;    //TR
+			quad[2].position = bottomR + offSet; //BR
+			quad[3].position = bottomL + offSet; //BL
+
+			// define its 4 corners
 			// define its 4 texture coordinates
 			quad[0].texCoords = sf::Vector2f(tu *       _tileSize.x, tv *       _tileSize.y);
 			quad[1].texCoords = sf::Vector2f((tu + 1) * _tileSize.x, tv *       _tileSize.y);
@@ -99,9 +119,9 @@ void Level::render(sf::RenderWindow & _window)
 
 void Level::printMap()
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < _mapSize.x; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (int j = 0; j < _mapSize.y; j++)
 		{
 			cout << _map[i][j];
 		}
