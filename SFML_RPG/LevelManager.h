@@ -8,42 +8,43 @@
 
 using namespace std;
 
-class LevelManager : public sf::Drawable, public sf::Transformable
+class LevelManager
 {
 public:
-	LevelManager(sf::Texture * texture);
+	LevelManager(sf::Texture *texture);
 	~LevelManager();
 
 	void load(string path);
-	void render(sf::RenderWindow &_window);
+	void renderFloor(sf::RenderWindow &_window);
+	void renderLayer1(sf::RenderWindow &_window);
 	void printMap();
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
 private:
 
 	void loadMapData();
 	bool loadMapLayers(string &line, string &type);
 
-	void setupMapVertices(string layer);
+	template <size_t rows, size_t cols>
+	void setupMapVertices(int (&_mapArray)[rows][cols], sf::VertexArray &_vertexArray);
 
 private:
 
-	enum {
-		size
-	};
+	const int test = 10;
 
 	bool _isFloorLoaded = false;
 	bool _isLayerLoaded = false;
 
 	sf::Texture* _texture;
+	int *p_mapArray[10][10];
+	int _floor[10][10];
+	int _layer1[10][10];
 
-	int _map[10][10];
-	int _layer2[10][10];
+	sf::VertexArray _floorVertices;
+	sf::VertexArray _layer1Vertices;
 
-
-	sf::Vector2i _tileSize;
 	sf::Vector2i _mapSize;
-	sf::VertexArray _vertices;
-	sf::VertexArray _vertices2;
+	sf::Vector2i _tileSize;
+
 
 	int _lineNumber = 0;
 	string _filepath;

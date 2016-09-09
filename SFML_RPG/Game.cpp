@@ -33,9 +33,9 @@ void Game::Run()
 	init();
 
 	//Init Level
-	LevelManager level(_TextureManager->getTexture("grassland_tiles.png"));
-	level.load("Maps/Map_001.txt");
-	level.printMap();
+	_LevelManager = new LevelManager(_TextureManager->getTexture("grassland_tiles.png"));
+	_LevelManager->load("Maps/Map_001.txt");
+	_LevelManager->printMap();
 
 
 	//Init collision
@@ -57,7 +57,7 @@ void Game::Run()
 		//_CollisionSystem->update(_entities, 8, _window->getSize());
 		_CollisionSystem->update2(_entities);
 
-		render(&level);
+		render(_LevelManager);
 	}
 }
 
@@ -167,11 +167,10 @@ void Game::update(sf::Time _deltaTime)
 void Game::render(LevelManager *level)
 {
 	_window->clear(sf::Color::White);
-	//Draw map
-	_window->draw(*level);
 
-	//Draw Entities
+	_LevelManager->renderFloor(*_window);
 	renderEntities();
+	_LevelManager->renderLayer1(*_window);
 
 	//Draw collision grid
 	_window->setView(_mainView);
@@ -210,10 +209,29 @@ void Game::updateEntities()
 
 void Game::renderEntities()
 {
-	for (auto &it : _entities)
+	for (int i = 0; i < _entities.size(); i++)
 	{
-		it->render(*_window);
+		for (int j = 0; j < _entities.size(); j++)
+		{
+			//if (j == i)
+			//	continue;
+
+			if (_entities[i]->_position.y > _entities[j]->_position.y && _entities[i]->_position.x < _entities[j]->_position.x)
+			{
+				_entities[j]->render(*_window);
+				_entities[i]->render(*_window);
+			}
+			else
+			{
+				_entities[i]->render(*_window);
+				_entities[j]->render(*_window);
+			}
+		}
 	}
+	//for (auto &it : _entities)
+	//{
+	//	it->render(*_window);
+	//}
 }
 
 void Game::processEntities(sf::Event &event)

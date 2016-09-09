@@ -21,50 +21,47 @@ void LevelManager::load(string path)
 	//load the map data from file
 	loadMapData();
 
-	//setup map vertices for rendering
-	setupMapVertices("layer1");
-	setupMapVertices("layer2");
+	//setup floor vertices for rendering
+	//int **p_mapArray[10][10];
+
+
+	setupMapVertices(_floor, _floorVertices);
+
+	//setup layer 1 vertices for rendering;
+	
+	setupMapVertices(_layer1, _layer1Vertices);
 
 }
 
-void LevelManager::render(sf::RenderWindow & _window)
+void LevelManager::renderFloor(sf::RenderWindow &_window)
 {
-	_window.draw(_vertices);
+	_window.draw(_floorVertices, _texture);
+}
+
+void LevelManager::renderLayer1(sf::RenderWindow& _window)
+{
+	_window.draw(_layer1Vertices, _texture);
 }
 
 void LevelManager::printMap()
 {
-	cout << "Layer1" << endl;
+	cout << "_floor" << endl;
 	for (int i = 0; i < _mapSize.x; i++)
 	{
 		for (int j = 0; j < _mapSize.y; j++)
 		{
-			cout << _map[i][j];
+			cout << _floor[i][j];
 		}
 		cout << endl;
 	}
-	cout << "Layer2" << endl;
+	cout << "_layer1" << endl;
 	for (int i = 0; i < _mapSize.x; i++)
 	{
 		for (int j = 0; j < _mapSize.y; j++)
 		{
-			cout << _layer2[i][j];
+			cout << _layer1[i][j];
 		}
 		cout << endl;
-	}
-}
-
-void LevelManager::draw(sf::RenderTarget & target, sf::RenderStates states) const
-{
-	{
-		// apply the transform
-		states.transform *= getTransform();
-
-		// apply the tileset texture
-		states.texture = _texture;
-
-		// draw the vertex array
-		target.draw(_vertices, states);
 	}
 }
 
@@ -121,7 +118,7 @@ void LevelManager::loadMapData()
 				{
 					stream >> ctemp;
 					stream >> num;
-					_map[_lineNumber][x] = num;
+					_floor[_lineNumber][x] = num;
 					x++;
 				}
 				if (_lineNumber >= _mapSize.x - 1)
@@ -144,7 +141,7 @@ void LevelManager::loadMapData()
 				{
 					stream >> ctemp;
 					stream >> num;
-					_layer2[_lineNumber][x] = num;
+					_layer1[_lineNumber][x] = num;
 					x++;
 				}
 				if (_lineNumber >= _mapSize.x - 1)
@@ -173,7 +170,7 @@ bool LevelManager::loadMapLayers(string &line, string &type)
 		{
 			stream >> ctemp;
 			stream >> num;
-			_layer2[_lineNumber][x] = num;
+			_layer1[_lineNumber][x] = num;
 			x++;
 		}
 		return true;
@@ -182,11 +179,12 @@ bool LevelManager::loadMapLayers(string &line, string &type)
 	return false;
 }
 
-void LevelManager::setupMapVertices(string layers)
+template <size_t rows, size_t cols>
+void LevelManager::setupMapVertices(int (&_mapArray)[rows][cols], sf::VertexArray &_vertexArray)
 {
 	//resize the vertex array to fit the level size
-	_vertices.setPrimitiveType(sf::Quads);
-	_vertices.resize(_mapSize.x * _mapSize.y * 4);
+	_vertexArray.setPrimitiveType(sf::Quads);
+	_vertexArray.resize(_mapSize.x * _mapSize.y * 4);
 
 	// populate the vertex array, with one quad per tile
 	for (int x = 0; x < _mapSize.x; x++)
@@ -194,34 +192,14 @@ void LevelManager::setupMapVertices(string layers)
 		for (int y = 0; y < _mapSize.y; y++)
 		{
 			// get the current tile number
-			/*int tileNumber = *_map[x + y * _mapSize.x]; This is for single array map[20]*/
-			//
-			int tileNumber = 0;
-			if (layers == "layer1")
-			{
-				tileNumber = _map[y][x];
-			}
-			else 
-			{
-				tileNumber = _layer2[y][x];
-			}
+			int tileNumber = _mapArray[y][x];
 
 			// find its position in the tileset texture
 			int tu = tileNumber % (_texture->getSize().x / _tileSize.x);
 			int tv = tileNumber / (_texture->getSize().x / _tileSize.x);
 
 			// get a pointer to the current tile's quad
-			sf::Vertex* quad = &_vertices[(x + y * _mapSize.x) * 4];
-			if (layers == "layer1")
-			{
-				quad = &_vertices[(x + y * _mapSize.x) * 4];
-
-			}
-			else
-			{
-				quad = &_vertices2[(x + y * _mapSize.x) * 4];
-			}
-
+			sf::Vertex* quad = &_vertexArray[(x + y * _mapSize.x) * 4];
 
 			// Find screen offset
 			float tileWidthHalf = _tileSize.x / 2;

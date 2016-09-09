@@ -102,7 +102,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>olutionDir)\SFML_RPG\Dependency\SFML-2.4.0\lib;C:\Users\Flaggm\Documents\Visual Studio 2015\Projects\SFML_RPG\SFML_RPG\Dependency\SFML-2.4.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib;sfml-network-d.lib;sfml-audio-d.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib;sfml-network-d.lib;sfml-audio-d.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

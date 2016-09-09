@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/OpenGL.hpp>
+
 #include "TextureManager.h"
 #include "CollisionSystem.h"
 #include "Entity.h"
@@ -39,7 +41,8 @@ public:
 
 	void mouseClicks(sf::Event &event);
 
-	TextureManager* _TextureManager=nullptr;
+	TextureManager* _TextureManager = nullptr;
+	LevelManager* _LevelManager;
 
 	std::vector<Entity*> _entities;
 	sf::Vector2f mousePosition;
