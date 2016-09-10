@@ -170,7 +170,7 @@ void Game::render(LevelManager *level)
 
 	_LevelManager->renderFloor(*_window);
 	renderEntities();
-	_LevelManager->renderLayer1(*_window);
+	//_LevelManager->renderLayer1(*_window);
 
 	//Draw collision grid
 	_window->setView(_mainView);
@@ -209,29 +209,11 @@ void Game::updateEntities()
 
 void Game::renderEntities()
 {
-	for (int i = 0; i < _entities.size(); i++)
+	std::sort(_entities.begin(), _entities.end(), [](const Entity* a, const Entity* b) {return a->_position.y < b->_position.y; });
+	for (auto &it : _entities)
 	{
-		for (int j = 0; j < _entities.size(); j++)
-		{
-			//if (j == i)
-			//	continue;
-
-			if (_entities[i]->_position.y > _entities[j]->_position.y && _entities[i]->_position.x < _entities[j]->_position.x)
-			{
-				_entities[j]->render(*_window);
-				_entities[i]->render(*_window);
-			}
-			else
-			{
-				_entities[i]->render(*_window);
-				_entities[j]->render(*_window);
-			}
-		}
+		it->render(*_window);
 	}
-	//for (auto &it : _entities)
-	//{
-	//	it->render(*_window);
-	//}
 }
 
 void Game::processEntities(sf::Event &event)

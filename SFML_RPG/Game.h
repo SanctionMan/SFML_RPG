@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 
+#include <algorithm>
+
 #include "TextureManager.h"
 #include "CollisionSystem.h"
 #include "Entity.h"
