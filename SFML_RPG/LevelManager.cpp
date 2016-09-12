@@ -228,6 +228,8 @@ void LevelManager::setupMapVertices(int (&_mapArray)[rows][cols], sf::VertexArra
 			quad[1].texCoords = sf::Vector2f((tu + 1) * _tileSize.x, tv *       _tileSize.y);
 			quad[2].texCoords = sf::Vector2f((tu + 1) * _tileSize.x, (tv + 1) * _tileSize.y);
 			quad[3].texCoords = sf::Vector2f(tu *       _tileSize.x, (tv + 1) * _tileSize.y);
+
+
 		}
 	}
 }

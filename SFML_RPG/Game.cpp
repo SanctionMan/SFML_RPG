@@ -33,7 +33,8 @@ void Game::Run()
 	init();
 
 	//Init Level
-	_LevelManager = new LevelManager(_TextureManager->getTexture("grassland_tiles.png"));
+	//_LevelManager = new LevelManager(_TextureManager->getTexture("grassland_tiles.png"));
+	_LevelManager = new LevelManager(_TextureManager->getTexture("tiles_0.png"));
 	_LevelManager->load("Maps/Map_001.txt");
 	_LevelManager->printMap();
 
@@ -75,7 +76,8 @@ void Game::init()
 	//Mushroom
 	_TextureManager->loadTexture("Mushroom.png", "Resources/Textures/Entities/Misc/Mushroom.png");
 	//Map
-	_TextureManager->loadTexture("grassland_tiles.png", "Resources/Textures/Map/Grass/grassland_tiles.png");// Sample tiles
+	//_TextureManager->loadTexture("grassland_tiles.png", "Resources/Textures/Map/Grass/grassland_tiles.png");// Sample tiles
+	_TextureManager->loadTexture("tiles_0.png", "Resources/Textures/Map/tiles_0.png");
 
 	//Player
 	_TextureManager->loadTexture("steel_armor.png", "Resources/Textures/Entities/Player/steel_armor.png");// Player Body
