@@ -22,15 +22,10 @@ void LevelManager::load(string path)
 	loadMapData();
 
 	//setup floor vertices for rendering
-	//int **p_mapArray[10][10];
-
-
 	setupMapVertices(_floor, _floorVertices);
 
 	//setup layer 1 vertices for rendering;
-	
 	setupMapVertices(_layer1, _layer1Vertices);
-
 }
 
 void LevelManager::update(sf::Time _deltaTime)
@@ -43,17 +38,18 @@ void LevelManager::update(sf::Time _deltaTime)
 	map_x = (mousePos.x / 32 + mousePos.y / 16) / 2;
 	map_y = (mousePos.y / 16 - (mousePos.x / 32)) / 2;
 
-	cout << "X: " << map_x << "Y: " << map_y << endl;
+	//cout << "X: " << map_x << "Y: " << map_y << endl;
+	//cout << "X: " << mousePos.x << "Y: " << mousePos.y << endl;
 
 
-	if (map_x > 0 && map_x < _mapSize.x && map_y > 0 && map_y < _mapSize.y)
-	{
-		sf::Vertex* quad = &_floorVertices[(map_x + map_y * _mapSize.x) * 4];
-		quad[0].color = sf::Color::Red;
-		quad[1].color = sf::Color::Red;
-		quad[2].color = sf::Color::Red;
-		quad[3].color = sf::Color::Red;
-	}
+	//if (map_x > 0 && map_x < _mapSize.x && map_y > 0 && map_y < _mapSize.y)
+	//{
+	//	sf::Vertex* quad = &_floorVertices[(map_x + map_y * _mapSize.x) * 4];
+	//	quad[0].color = sf::Color::Red;
+	//	quad[1].color = sf::Color::Red;
+	//	quad[2].color = sf::Color::Red;
+	//	quad[3].color = sf::Color::Red;
+	//}
 
 
 }
@@ -233,7 +229,7 @@ void LevelManager::setupMapVertices(int (&_mapArray)[rows][cols], sf::VertexArra
 			// Find screen offset
 			float tileWidthHalf = _tileSize.x / 2;
 			float tileHeightHalf = _tileSize.y / 2;
-			sf::Vector2f screenOffset = sf::Vector2f(_mapSize.x * tileWidthHalf, _mapSize.y * tileHeightHalf);
+			sf::Vector2f screenOffset = sf::Vector2f(_mapSize.x * tileWidthHalf, 0);
 
 			//Isometric adjustment for drawing in a diamond
 			//float diamond_x = (x - y) * tileWidthHalf;

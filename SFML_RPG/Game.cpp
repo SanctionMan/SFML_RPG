@@ -36,12 +36,12 @@ void Game::Run()
 	//_LevelManager = new LevelManager(_TextureManager->getTexture("grassland_tiles.png"));
 	_LevelManager = new LevelManager(_TextureManager->getTexture("tiles_0.png"));
 	_LevelManager->load("Maps/Map_001.txt");
-	_LevelManager->printMap();
+	//_LevelManager->printMap();
 
 
 	//Init collision
 	_CollisionSystem = new CollisionSystem();
-	_CollisionSystem->loadGrid(sf::Vector2i(1000,1000));
+	_CollisionSystem->loadGrid(sf::Vector2i(50 * 64,50 * 32));
 
 	sf::Clock clock;
 	_deltaTime = clock.getElapsedTime();
@@ -56,7 +56,7 @@ void Game::Run()
 			_deltaTime = clock.restart();
 		}
 		//_CollisionSystem->update(_entities, 8, _window->getSize());
-		_CollisionSystem->update2(_entities);
+		_CollisionSystem->update(_entities);
 		_LevelManager->update(_deltaTime);
 
 		render(_LevelManager);
@@ -99,12 +99,6 @@ void Game::init()
 
 	//Show Textures that are loaded into memory
 	_TextureManager->showTexturesList();
-
-	//Test tile parser! maps! wicked! anus!
-	//_tileParser = new TileParser();
-	//_tileParser->textureManager = _TextureManager;
-	//_tileParser->Init("Maps/Map_001.txt");
-	//_tileParser->Parse();
 
 	//Create Player and Set Texture
 	createEntity(new Player(sf::Vector2f(250, 750), _TextureManager->getTexture("male_head1.png"), 
@@ -165,26 +159,37 @@ void Game::update(sf::Time _deltaTime)
 	text.setFillColor(sf::Color::Black);
 
 	updateStatistics(_deltaTime);
+
+	// Set MainView center to player position
+	_mainView.setCenter(GetPlayer()->_position);
 }
 
 void Game::render(LevelManager *level)
 {
+	// Window Clear
 	_window->clear(sf::Color::White);
 
+	// Set Window View (MainView)
+	_window->setView(_mainView);
+
+	// Render Map
 	_LevelManager->renderFloor(*_window);
+	//_LevelManager->renderLayer1(*_window);
 	renderEntities();
-	_LevelManager->renderLayer1(*_window);
 
 	//Draw collision grid
-	_window->setView(_mainView);
 	if (_isGridActive) 
 	{
 		_CollisionSystem->drawGrid();
 	}
 
+	// Set Window View (DefaultView)
+	_window->setView(_window->getDefaultView());
 	//Draw UI
-	//_window->draw(text);
+	_window->draw(text);
 	_window->draw(_FPS);
+
+	// Window Display
 	_window->display();
 }
 

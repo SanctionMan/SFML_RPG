@@ -6,7 +6,7 @@
 CollisionSystem::CollisionSystem():
 	_mapSize(100,100),
 	_grid(sf::Lines, 2),
-	_cellSize(sf::Vector2i(64,32))
+	_cellSize(sf::Vector2i(64 * 4,32 * 4))
 {
 
 }
@@ -16,67 +16,7 @@ CollisionSystem::~CollisionSystem()
 {
 }
 
-void CollisionSystem::update(std::vector<Entity*> entities, int collisionDetail, sf::Vector2u resolution)
-{
-	_collisionDetailStored = collisionDetail;
-
-	gridWidthTemp = resolution.x / (collisionDetail);
-	gridHeightTemp = resolution.y / (collisionDetail);
-
-	int lastHeight, lastWidth;
-	collisionChecks = 0;
-
-	for (int x = 0; x < collisionDetail + 1; x++)
-	{
-		for (int y = 0; y < collisionDetail + 1; y++)
-		{
-			for (Entity* ent : entities)
-			{
-				bool didPush = false;
-				if (ent->_position.x < gridWidthTemp * x && ent->_position.x > lastWidth)
-				{
-					if (ent->_position.y < gridHeightTemp * y && ent->_position.y > lastHeight)
-					{
-						currentGrid.push_back(ent);
-						didPush = true;
-					}
-				}
-				
-				lastWidth = gridWidthTemp * (x - 1);
-				lastHeight = gridHeightTemp * y;
-
-				//float distance = CalculateDistance(sf::Vector2f(ent->_position.x, ent->_position.y), sf::Vector2f(
-				//	gridWidthTemp, gridHeightTemp));
-				//float distanced = CalculateDistance(sf::Vector2f(ent->_position.x, ent->_position.y), sf::Vector2f(
-				//	lastWidth, lastHeight));
-				//distance = distanced / distance;
-
-				//cout << distance << endl;
-				//if(!didPush)
-				//{
-				//	currentGrid.push_back(ent);
-				//}
-			}
-
-			//DEBUG GRID TOOL
-			//if (x == 2 && y == 3) {
-			//	currentX = x;
-			//	currentY = y;
-			//	for (Entity* ent : currentGrid)
-			//	{
-			//		ent->_bounds.setOutlineColor(sf::Color::Red);
-			//	}
-			//}//DEBUG GRID TOOL
-
-			gridSize = currentGrid.size();
-
-			currentGrid.clear();
-			check();
-		}
-	}
-}
-
-void CollisionSystem::update2(std::vector<Entity*> entities)
+void CollisionSystem::update(std::vector<Entity*> entities)
 {
 	registerEntitys(entities);
 	collisionChecks = 0;

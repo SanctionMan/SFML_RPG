@@ -10,8 +10,7 @@ public:
 	CollisionSystem();
 	~CollisionSystem();
 
-	void update(std::vector<Entity*> entities, int collisionDetail, sf::Vector2u resolution);
-	void update2(std::vector<Entity*> entities);
+	void update(std::vector<Entity*> entities);
 	void check();
 	void drawGrid();
 	void loadGrid(sf::Vector2i mapSize);

@@ -36,9 +36,9 @@ private:
 	bool _isLayerLoaded = false;
 
 	sf::Texture* _texture;
-	int *p_mapArray[10][10];
-	int _floor[10][10];
-	int _layer1[10][10];
+	int *p_mapArray[50][50];
+	int _floor[50][50];
+	int _layer1[50][50];
 
 	sf::VertexArray _floorVertices;
 	sf::VertexArray _layer1Vertices;
