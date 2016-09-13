@@ -6,7 +6,7 @@
 CollisionSystem::CollisionSystem():
 	_mapSize(100,100),
 	_grid(sf::Lines, 2),
-	_cellSize(sf::Vector2i(64 * 4,32 * 4))
+	_cellSize(sf::Vector2i(160,160))
 {
 
 }
@@ -99,34 +99,37 @@ void CollisionSystem::loadGrid(sf::Vector2i mapSize)
 	_cols = (_mapSize.x / _cellSize.x);
 	_rows = (_mapSize.y / _cellSize.y);
 
-	int lines = 0;
+	int vertexNumber = 0;
 	for (int x = 0; x <= _cols; x++)
 	{
+		//Create vertical line / col
+		vertex3.position = sf::Vector2f(x * _cellSize.x, 0);
+		vertex3.color = sf::Color::White;
+		vertex4.position = sf::Vector2f(x * _cellSize.x, _mapSize.y);
+		vertex4.color = sf::Color::White;
+		_grid.append(vertex3);
+		_grid.append(vertex4);
+
 		for (int y = 0; y <= _rows; y++)
 		{
-			//Create horizontal line
+			//Create horizontal line / rows
 			vertex1.position = sf::Vector2f(0, y * _cellSize.y);
-			vertex1.color = sf::Color::Black;
+			vertex1.color = sf::Color::White;
 			vertex2.position = sf::Vector2f(_mapSize.x, y * _cellSize.y);
-			vertex2.color = sf::Color::Black;
+			vertex2.color = sf::Color::White;
 
-			//Create vertical line
-			vertex3.position = sf::Vector2f(y * _cellSize.x, 0);
-			vertex3.color = sf::Color::Black;
-			vertex4.position = sf::Vector2f(y * _cellSize.x, _mapSize.y);
-			vertex4.color = sf::Color::Black;
 
 			//Add Lines to grid
 			_grid.append(vertex1);
 			_grid.append(vertex2);
-			_grid.append(vertex3);
-			_grid.append(vertex4);
 
-			lines += 2; //Count the number of lines added to grid
+			vertexNumber += 2; //Count the number of vertexs added to grid
 		}
+
+		vertexNumber += 2; //Count the number of vertexs added to grid
 	}
 	//Resize grid to fit the number of lines
-	_grid.resize(lines);
+	_grid.resize(vertexNumber);
 	//cout << lines << endl;
 	//cout << grid.getVertexCount() << endl;
 

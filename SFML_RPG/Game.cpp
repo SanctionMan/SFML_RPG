@@ -34,7 +34,7 @@ void Game::Run()
 
 	//Init Level
 	//_LevelManager = new LevelManager(_TextureManager->getTexture("grassland_tiles.png"));
-	_LevelManager = new LevelManager(_TextureManager->getTexture("tiles_0.png"));
+	_LevelManager = new LevelManager(_TextureManager->getTexture("grassland_tiles.png"));
 	_LevelManager->load("Maps/Map_001.txt");
 	//_LevelManager->printMap();
 
@@ -78,7 +78,7 @@ void Game::init()
 	_TextureManager->loadTexture("Mushroom.png", "Resources/Textures/Entities/Misc/Mushroom.png");
 	//Map
 	//_TextureManager->loadTexture("grassland_tiles.png", "Resources/Textures/Map/Grass/grassland_tiles.png");// Sample tiles
-	_TextureManager->loadTexture("tiles_0.png", "Resources/Textures/Map/tiles_0.png");
+	_TextureManager->loadTexture("grassland_tiles.png", "Resources/Textures/Map/Grass/grassland_tiles.png");
 
 	//Player
 	_TextureManager->loadTexture("steel_armor.png", "Resources/Textures/Entities/Player/steel_armor.png");// Player Body
@@ -93,9 +93,10 @@ void Game::init()
 	}
 	//Set Text
 	text.setFont(_font);
+	text.setFillColor(sf::Color::White);
 	_FPS.setFont(_font);
 	_FPS.setPosition(500, 0);
-	_FPS.setFillColor(sf::Color::Black);
+	_FPS.setFillColor(sf::Color::White);
 
 	//Show Textures that are loaded into memory
 	_TextureManager->showTexturesList();
@@ -149,14 +150,15 @@ void Game::handleInput()
 void Game::update(sf::Time _deltaTime)
 {
 	updateEntities();
-	mousePosition = sf::Vector2f(sf::Mouse::getPosition(*_window).x, sf::Mouse::getPosition(*_window).y);
 
+	mousePosition = sf::Vector2f(sf::Mouse::getPosition(*_window).x, sf::Mouse::getPosition(*_window).y);
+	//sf::Vector2i worldPos = _window->mapPixelToCoords(mousePosition, _mainView);
 	string printme =  "Entity Count: " + std::to_string(_entities.size()) + "\n";
 	printme += "Brute Force Checks: " + std::to_string(_entities.size() * (_entities.size() - 1)) + "\n";
 	printme += "Entity Spatial Checks : " + std::to_string(_CollisionSystem->collisionChecks);
 
 	text.setString(printme);
-	text.setFillColor(sf::Color::Black);
+
 
 	updateStatistics(_deltaTime);
 
@@ -167,7 +169,7 @@ void Game::update(sf::Time _deltaTime)
 void Game::render(LevelManager *level)
 {
 	// Window Clear
-	_window->clear(sf::Color::White);
+	_window->clear(sf::Color::Black);
 
 	// Set Window View (MainView)
 	_window->setView(_mainView);
