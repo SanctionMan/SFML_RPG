@@ -57,6 +57,7 @@ void Game::Run()
 		}
 		//_CollisionSystem->update(_entities, 8, _window->getSize());
 		_CollisionSystem->update2(_entities);
+		_LevelManager->update(_deltaTime);
 
 		render(_LevelManager);
 	}
@@ -172,7 +173,7 @@ void Game::render(LevelManager *level)
 
 	_LevelManager->renderFloor(*_window);
 	renderEntities();
-	//_LevelManager->renderLayer1(*_window);
+	_LevelManager->renderLayer1(*_window);
 
 	//Draw collision grid
 	_window->setView(_mainView);

@@ -33,6 +33,31 @@ void LevelManager::load(string path)
 
 }
 
+void LevelManager::update(sf::Time _deltaTime)
+{
+	sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*GetGameWindow()));
+
+	float map_x = 0;
+	float map_y = 0;
+
+	map_x = (mousePos.x / 32 + mousePos.y / 16) / 2;
+	map_y = (mousePos.y / 16 - (mousePos.x / 32)) / 2;
+
+	cout << "X: " << map_x << "Y: " << map_y << endl;
+
+
+	if (map_x > 0 && map_x < _mapSize.x && map_y > 0 && map_y < _mapSize.y)
+	{
+		sf::Vertex* quad = &_floorVertices[(map_x + map_y * _mapSize.x) * 4];
+		quad[0].color = sf::Color::Red;
+		quad[1].color = sf::Color::Red;
+		quad[2].color = sf::Color::Red;
+		quad[3].color = sf::Color::Red;
+	}
+
+
+}
+
 void LevelManager::renderFloor(sf::RenderWindow &_window)
 {
 	_window.draw(_floorVertices, _texture);
@@ -192,7 +217,11 @@ void LevelManager::setupMapVertices(int (&_mapArray)[rows][cols], sf::VertexArra
 		for (int y = 0; y < _mapSize.y; y++)
 		{
 			// get the current tile number
-			int tileNumber = _mapArray[y][x];
+			int tileNumber = _mapArray[x][y];
+			if (tileNumber > 0)
+			{
+				tileNumber - 1;
+			}
 
 			// find its position in the tileset texture
 			int tu = tileNumber % (_texture->getSize().x / _tileSize.x);
@@ -204,12 +233,15 @@ void LevelManager::setupMapVertices(int (&_mapArray)[rows][cols], sf::VertexArra
 			// Find screen offset
 			float tileWidthHalf = _tileSize.x / 2;
 			float tileHeightHalf = _tileSize.y / 2;
-			sf::Vector2f screenOffset = sf::Vector2f(0, _mapSize.y * tileHeightHalf);
+			sf::Vector2f screenOffset = sf::Vector2f(_mapSize.x * tileWidthHalf, _mapSize.y * tileHeightHalf);
 
 			//Isometric adjustment for drawing in a diamond
-			float diamond_x = (x * tileWidthHalf) - (y * tileWidthHalf);
-			float diamond_y = (x * tileHeightHalf) + (y * tileHeightHalf);
+			//float diamond_x = (x - y) * tileWidthHalf;
+			//float diamond_y = (x + y) * tileHeightHalf;
+			float diamond_x = (x * tileWidthHalf) + (y * tileWidthHalf);
+			float diamond_y = (y * tileHeightHalf) - (x * tileHeightHalf);
 
+			//sf::Vector2f diamondOffSet = sf::Vector2f(-diamond_x, -diamond_y);
 			sf::Vector2f diamondOffSet = sf::Vector2f(-diamond_x, -diamond_y);
 
 			sf::Vector2f topL = sf::Vector2f(x * _tileSize.x, y * _tileSize.y);
@@ -224,11 +256,27 @@ void LevelManager::setupMapVertices(int (&_mapArray)[rows][cols], sf::VertexArra
 			quad[3].position = bottomL + diamondOffSet + screenOffset; //BL
 
 			// define its 4 texture coordinates
-			quad[0].texCoords = sf::Vector2f(tu *       _tileSize.x, tv *       _tileSize.y);
-			quad[1].texCoords = sf::Vector2f((tu + 1) * _tileSize.x, tv *       _tileSize.y);
-			quad[2].texCoords = sf::Vector2f((tu + 1) * _tileSize.x, (tv + 1) * _tileSize.y);
-			quad[3].texCoords = sf::Vector2f(tu *       _tileSize.x, (tv + 1) * _tileSize.y);
 
+			if (tileNumber > 0)
+			{
+				quad[0].texCoords = sf::Vector2f(tu *       _tileSize.x, tv *       _tileSize.y);
+				quad[1].texCoords = sf::Vector2f((tu + 1) * _tileSize.x, tv *       _tileSize.y);
+				quad[2].texCoords = sf::Vector2f((tu + 1) * _tileSize.x, (tv + 1) * _tileSize.y);
+				quad[3].texCoords = sf::Vector2f(tu *       _tileSize.x, (tv + 1) * _tileSize.y);
+			}
+			else
+			{
+				quad[0].texCoords = sf::Vector2f(1 * _tileSize.x, 1 * _tileSize.y);
+				quad[1].texCoords = sf::Vector2f((1 + 1) * _tileSize.x, 1 * _tileSize.y);
+				quad[2].texCoords = sf::Vector2f((1 + 1) * _tileSize.x, (1 + 1) * _tileSize.y);
+				quad[3].texCoords = sf::Vector2f(1 * _tileSize.x, (1 + 1) * _tileSize.y);
+
+				quad[0].color = sf::Color::Transparent;
+				quad[1].color = sf::Color::Transparent;
+				quad[2].color = sf::Color::Transparent;
+				quad[3].color = sf::Color::Transparent;
+
+			}
 
 		}
 	}

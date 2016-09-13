@@ -15,6 +15,7 @@ public:
 	~LevelManager();
 
 	void load(string path);
+	void update(sf::Time _deltaTime);
 	void renderFloor(sf::RenderWindow &_window);
 	void renderLayer1(sf::RenderWindow &_window);
 	void printMap();
