@@ -131,7 +131,7 @@ void Enemy::aiRender(sf::RenderWindow & _window)
 	{
 		_window.draw(_bounds);
 	}
-	_healthBar.render(_window);
+	//_healthBar.render(_window);
 	_window.draw(_animatedBody);
 }
 

@@ -212,7 +212,7 @@ void Player::update(sf::Time _deltaTime)
 		_animatedWeapon.setFrameTime(sf::seconds(0.1f));
 		_currentAnimationHead = &_Head_Running_AnimationUp_Right;
 		_currentAnimationBody = &_Body_Running_AnimationUp_Right;
-		_currentAnimationWeapon = &_Weapon_Running_AnimationUp_Left;
+		_currentAnimationWeapon = &_Weapon_Running_AnimationUp_Right;
 		_lastAnimationState = _movingUp_Right;
 	}
 	if (_isMovingDown && _isMovingLeft)
@@ -266,7 +266,7 @@ void Player::render(sf::RenderWindow &_window)
 	_window.draw(_animatedHead);
 	_window.draw(_animatedWeapon);
 
-	_healthBar.render(_window);
+	//_healthBar.render(_window);
 }
 
 void Player::processEvents(sf::Event & event)
@@ -311,7 +311,11 @@ void Player::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	}
 	else if (key == sf::Keyboard::Space)
 	{
-		_isAttacking = isPressed;
+	//	if (!_doingAttack) 
+		//{
+			_isAttacking = isPressed;
+			_doingAttack = (_isAttacking == true) ? true : false; 
+	//	}
 	}
 	else if (key == sf::Keyboard::R)
 	{
@@ -341,124 +345,51 @@ void Player::initPlayerTextures()
 void Player::initBodyTextures()
 {
 	// Stance (4 frames)
-	{
-		_Body_Stance_AnimationUp.setSpriteSheet(*_textureBody);
-		_Body_Stance_AnimationUp.addFrame(sf::IntRect(128 * 0, 128 * 2, 128, 128));
-		_Body_Stance_AnimationUp.addFrame(sf::IntRect(128 * 1, 128 * 2, 128, 128));
-		_Body_Stance_AnimationUp.addFrame(sf::IntRect(128 * 2, 128 * 2, 128, 128));
-		_Body_Stance_AnimationUp.addFrame(sf::IntRect(128 * 3, 128 * 2, 128, 128));
-		_Body_Stance_AnimationDown.setSpriteSheet(*_textureBody);
-		_Body_Stance_AnimationDown.addFrame(sf::IntRect(128 * 0, 128 * 6, 128, 128));
-		_Body_Stance_AnimationDown.addFrame(sf::IntRect(128 * 1, 128 * 6, 128, 128));
-		_Body_Stance_AnimationDown.addFrame(sf::IntRect(128 * 2, 128 * 6, 128, 128));
-		_Body_Stance_AnimationDown.addFrame(sf::IntRect(128 * 3, 128 * 6, 128, 128));
-		_Body_Stance_AnimationLeft.setSpriteSheet(*_textureBody);
-		_Body_Stance_AnimationLeft.addFrame(sf::IntRect(128 * 0, 128 * 0, 128, 128));
-		_Body_Stance_AnimationLeft.addFrame(sf::IntRect(128 * 1, 128 * 0, 128, 128));
-		_Body_Stance_AnimationLeft.addFrame(sf::IntRect(128 * 2, 128 * 0, 128, 128));
-		_Body_Stance_AnimationLeft.addFrame(sf::IntRect(128 * 3, 128 * 0, 128, 128));
-		_Body_Stance_AnimationRight.setSpriteSheet(*_textureBody);
-		_Body_Stance_AnimationRight.addFrame(sf::IntRect(128 * 0, 128 * 4, 128, 128));
-		_Body_Stance_AnimationRight.addFrame(sf::IntRect(128 * 1, 128 * 4, 128, 128));
-		_Body_Stance_AnimationRight.addFrame(sf::IntRect(128 * 2, 128 * 4, 128, 128));
-		_Body_Stance_AnimationRight.addFrame(sf::IntRect(128 * 3, 128 * 4, 128, 128));
-		_Body_Stance_AnimationUp_Left.setSpriteSheet(*_textureBody);
-		_Body_Stance_AnimationUp_Left.addFrame(sf::IntRect(128 * 0, 128 * 0, 128, 128));
-		_Body_Stance_AnimationUp_Left.addFrame(sf::IntRect(128 * 1, 128 * 0, 128, 128));
-		_Body_Stance_AnimationUp_Left.addFrame(sf::IntRect(128 * 2, 128 * 0, 128, 128));
-		_Body_Stance_AnimationUp_Left.addFrame(sf::IntRect(128 * 3, 128 * 0, 128, 128));
-		_Body_Stance_AnimationUp_Right.setSpriteSheet(*_textureBody);
-		_Body_Stance_AnimationUp_Right.addFrame(sf::IntRect(128 * 0, 128 * 3, 128, 128));
-		_Body_Stance_AnimationUp_Right.addFrame(sf::IntRect(128 * 1, 128 * 3, 128, 128));
-		_Body_Stance_AnimationUp_Right.addFrame(sf::IntRect(128 * 2, 128 * 3, 128, 128));
-		_Body_Stance_AnimationUp_Right.addFrame(sf::IntRect(128 * 3, 128 * 3, 128, 128));
-		_Body_Stance_AnimationDown_Left.setSpriteSheet(*_textureBody);
-		_Body_Stance_AnimationDown_Left.addFrame(sf::IntRect(128 * 0, 128 * 7, 128, 128));
-		_Body_Stance_AnimationDown_Left.addFrame(sf::IntRect(128 * 1, 128 * 7, 128, 128));
-		_Body_Stance_AnimationDown_Left.addFrame(sf::IntRect(128 * 2, 128 * 7, 128, 128));
-		_Body_Stance_AnimationDown_Left.addFrame(sf::IntRect(128 * 3, 128 * 7, 128, 128));
-		_Body_Stance_AnimationDown_Right.setSpriteSheet(*_textureBody);
-		_Body_Stance_AnimationDown_Right.addFrame(sf::IntRect(128 * 0, 128 * 5, 128, 128));
-		_Body_Stance_AnimationDown_Right.addFrame(sf::IntRect(128 * 1, 128 * 5, 128, 128));
-		_Body_Stance_AnimationDown_Right.addFrame(sf::IntRect(128 * 2, 128 * 5, 128, 128));
-		_Body_Stance_AnimationDown_Right.addFrame(sf::IntRect(128 * 3, 128 * 5, 128, 128));
+	{	// Set texture for each animation
+		_Animations["_Body_Stance_AnimationUp"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Stance_AnimationDown"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Stance_AnimationLeft"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Stance_AnimationRight"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Stance_AnimationUp_Left"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Stance_AnimationUp_Right"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Stance_AnimationDown_Left"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Stance_AnimationDown_Right"].setSpriteSheet(*_textureBody);
+		for (int a= 0; a < 4; a++)
+		{	// Set each frame for animations
+			_Animations["_Body_Stance_AnimationUp"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Up, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Stance_AnimationDown"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Down, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Stance_AnimationLeft"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Left, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Stance_AnimationRight"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Right, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Stance_AnimationUp_Left"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Up_Left, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Stance_AnimationUp_Right"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Up_Right, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Stance_AnimationDown_Left"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Down_Left, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Stance_AnimationDown_Right"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Down_Right, _animationSize.x, _animationSize.x));
+		}
 	}
 
 	// Running (8 frames)
-	{
-		_Body_Running_AnimationUp.setSpriteSheet(*_textureBody);
-		_Body_Running_AnimationUp.addFrame(sf::IntRect(128 * 4, 128 * 2, 128, 128)); //Done
-		_Body_Running_AnimationUp.addFrame(sf::IntRect(128 * 5, 128 * 2, 128, 128));
-		_Body_Running_AnimationUp.addFrame(sf::IntRect(128 * 6, 128 * 2, 128, 128));
-		_Body_Running_AnimationUp.addFrame(sf::IntRect(128 * 7, 128 * 2, 128, 128));
-		_Body_Running_AnimationUp.addFrame(sf::IntRect(128 * 8, 128 * 2, 128, 128));
-		_Body_Running_AnimationUp.addFrame(sf::IntRect(128 * 9, 128 * 2, 128, 128));
-		_Body_Running_AnimationUp.addFrame(sf::IntRect(128 * 10, 128 * 2, 128, 128));
-		_Body_Running_AnimationUp.addFrame(sf::IntRect(128 * 11, 128 * 2, 128, 128));
-		_Body_Running_AnimationDown.setSpriteSheet(*_textureBody);
-		_Body_Running_AnimationDown.addFrame(sf::IntRect(128 * 4, 128 * 6, 128, 128)); //Done
-		_Body_Running_AnimationDown.addFrame(sf::IntRect(128 * 5, 128 * 6, 128, 128));
-		_Body_Running_AnimationDown.addFrame(sf::IntRect(128 * 6, 128 * 6, 128, 128));
-		_Body_Running_AnimationDown.addFrame(sf::IntRect(128 * 7, 128 * 6, 128, 128));
-		_Body_Running_AnimationDown.addFrame(sf::IntRect(128 * 8, 128 * 6, 128, 128));
-		_Body_Running_AnimationDown.addFrame(sf::IntRect(128 * 9, 128 * 6, 128, 128));
-		_Body_Running_AnimationDown.addFrame(sf::IntRect(128 * 10, 128 * 6, 128, 128));
-		_Body_Running_AnimationDown.addFrame(sf::IntRect(128 * 11, 128 * 6, 128, 128));
-		_Body_Running_AnimationLeft.setSpriteSheet(*_textureBody);
-		_Body_Running_AnimationLeft.addFrame(sf::IntRect(128 * 4, 128 * 0, 128, 128)); //Done
-		_Body_Running_AnimationLeft.addFrame(sf::IntRect(128 * 5, 128 * 0, 128, 128));
-		_Body_Running_AnimationLeft.addFrame(sf::IntRect(128 * 6, 128 * 0, 128, 128));
-		_Body_Running_AnimationLeft.addFrame(sf::IntRect(128 * 7, 128 * 0, 128, 128));
-		_Body_Running_AnimationLeft.addFrame(sf::IntRect(128 * 8, 128 * 0, 128, 128));
-		_Body_Running_AnimationLeft.addFrame(sf::IntRect(128 * 9, 128 * 0, 128, 128));
-		_Body_Running_AnimationLeft.addFrame(sf::IntRect(128 * 10, 128 * 0, 128, 128));
-		_Body_Running_AnimationLeft.addFrame(sf::IntRect(128 * 11, 128 * 0, 128, 128));
-		_Body_Running_AnimationRight.setSpriteSheet(*_textureBody);
-		_Body_Running_AnimationRight.addFrame(sf::IntRect(128 * 4, 128 * 4, 128, 128)); //Done
-		_Body_Running_AnimationRight.addFrame(sf::IntRect(128 * 5, 128 * 4, 128, 128));
-		_Body_Running_AnimationRight.addFrame(sf::IntRect(128 * 6, 128 * 4, 128, 128));
-		_Body_Running_AnimationRight.addFrame(sf::IntRect(128 * 7, 128 * 4, 128, 128));
-		_Body_Running_AnimationRight.addFrame(sf::IntRect(128 * 8, 128 * 4, 128, 128));
-		_Body_Running_AnimationRight.addFrame(sf::IntRect(128 * 9, 128 * 4, 128, 128));
-		_Body_Running_AnimationRight.addFrame(sf::IntRect(128 * 10, 128 * 4, 128, 128));
-		_Body_Running_AnimationRight.addFrame(sf::IntRect(128 * 11, 128 * 4, 128, 128));
-		_Body_Running_AnimationUp_Left.setSpriteSheet(*_textureBody);
-		_Body_Running_AnimationUp_Left.addFrame(sf::IntRect(128 * 4, 128 * 1, 128, 128)); //DONE
-		_Body_Running_AnimationUp_Left.addFrame(sf::IntRect(128 * 5, 128 * 1, 128, 128));
-		_Body_Running_AnimationUp_Left.addFrame(sf::IntRect(128 * 6, 128 * 1, 128, 128));
-		_Body_Running_AnimationUp_Left.addFrame(sf::IntRect(128 * 7, 128 * 1, 128, 128));
-		_Body_Running_AnimationUp_Left.addFrame(sf::IntRect(128 * 8, 128 * 1, 128, 128));
-		_Body_Running_AnimationUp_Left.addFrame(sf::IntRect(128 * 9, 128 * 1, 128, 128));
-		_Body_Running_AnimationUp_Left.addFrame(sf::IntRect(128 * 10, 128 * 1, 128, 128));
-		_Body_Running_AnimationUp_Left.addFrame(sf::IntRect(128 * 11, 128 * 1, 128, 128));
-		_Body_Running_AnimationUp_Right.setSpriteSheet(*_textureBody);
-		_Body_Running_AnimationUp_Right.addFrame(sf::IntRect(128 * 4, 128 * 3, 128, 128)); //Done
-		_Body_Running_AnimationUp_Right.addFrame(sf::IntRect(128 * 5, 128 * 3, 128, 128));
-		_Body_Running_AnimationUp_Right.addFrame(sf::IntRect(128 * 6, 128 * 3, 128, 128));
-		_Body_Running_AnimationUp_Right.addFrame(sf::IntRect(128 * 7, 128 * 3, 128, 128));
-		_Body_Running_AnimationUp_Right.addFrame(sf::IntRect(128 * 8, 128 * 3, 128, 128));
-		_Body_Running_AnimationUp_Right.addFrame(sf::IntRect(128 * 9, 128 * 3, 128, 128));
-		_Body_Running_AnimationUp_Right.addFrame(sf::IntRect(128 * 10, 128 * 3, 128, 128));
-		_Body_Running_AnimationUp_Right.addFrame(sf::IntRect(128 * 11, 128 * 3, 128, 128));
-		_Body_Running_AnimationDown_Left.setSpriteSheet(*_textureBody);
-		_Body_Running_AnimationDown_Left.addFrame(sf::IntRect(128 * 4, 128 * 7, 128, 128)); //Done
-		_Body_Running_AnimationDown_Left.addFrame(sf::IntRect(128 * 5, 128 * 7, 128, 128));
-		_Body_Running_AnimationDown_Left.addFrame(sf::IntRect(128 * 6, 128 * 7, 128, 128));
-		_Body_Running_AnimationDown_Left.addFrame(sf::IntRect(128 * 7, 128 * 7, 128, 128));
-		_Body_Running_AnimationDown_Left.addFrame(sf::IntRect(128 * 8, 128 * 7, 128, 128));
-		_Body_Running_AnimationDown_Left.addFrame(sf::IntRect(128 * 9, 128 * 7, 128, 128));
-		_Body_Running_AnimationDown_Left.addFrame(sf::IntRect(128 * 10, 128 * 7, 128, 128));
-		_Body_Running_AnimationDown_Left.addFrame(sf::IntRect(128 * 11, 128 * 7, 128, 128));
-		_Body_Running_AnimationDown_Right.setSpriteSheet(*_textureBody);
-		_Body_Running_AnimationDown_Right.addFrame(sf::IntRect(128 * 4, 128 * 5, 128, 128)); //Done
-		_Body_Running_AnimationDown_Right.addFrame(sf::IntRect(128 * 5, 128 * 5, 128, 128));
-		_Body_Running_AnimationDown_Right.addFrame(sf::IntRect(128 * 6, 128 * 5, 128, 128));
-		_Body_Running_AnimationDown_Right.addFrame(sf::IntRect(128 * 7, 128 * 5, 128, 128));
-		_Body_Running_AnimationDown_Right.addFrame(sf::IntRect(128 * 8, 128 * 5, 128, 128));
-		_Body_Running_AnimationDown_Right.addFrame(sf::IntRect(128 * 9, 128 * 5, 128, 128));
-		_Body_Running_AnimationDown_Right.addFrame(sf::IntRect(128 * 10, 128 * 5, 128, 128));
-		_Body_Running_AnimationDown_Right.addFrame(sf::IntRect(128 * 11, 128 * 5, 128, 128));
+	{	// Set texture for each animation
+		_Animations["_Body_Running_AnimationUp"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Running_AnimationDown"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Running_AnimationLeft"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Running_AnimationRight"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Running_AnimationUp_Left"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Running_AnimationUp_Right"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Running_AnimationDown_Left"].setSpriteSheet(*_textureBody);
+		_Animations["_Body_Running_AnimationDown_Right"].setSpriteSheet(*_textureBody);
+		for (int a = 0; a < 8; a++)
+		{	// Set each frame for animations
+			_Animations["_Body_Running_AnimationUp"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Up, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Running_AnimationDown"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Down, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Running_AnimationLeft"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Left, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Running_AnimationRight"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Right, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Running_AnimationUp_Left"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Up_Left, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Running_AnimationUp_Right"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Up_Right, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Running_AnimationDown_Left"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Down_Left, _animationSize.x, _animationSize.x));
+			_Animations["_Body_Running_AnimationDown_Right"].addFrame(sf::IntRect(_animationSize.x * a, _animationSize.x * Down_Right, _animationSize.x, _animationSize.x));
+		}
 	}
+
 	// Melee Swing (4 frames)
 	{
 		_Body_MeleeSwing_AnimationUp.setSpriteSheet(*_textureBody);

@@ -152,7 +152,9 @@ void Game::update(sf::Time _deltaTime)
 	updateEntities();
 
 	mousePosition = sf::Vector2f(sf::Mouse::getPosition(*_window).x, sf::Mouse::getPosition(*_window).y);
-	//sf::Vector2i worldPos = _window->mapPixelToCoords(mousePosition, _mainView);
+	sf::Vector2f newMousePosition = _window->mapPixelToCoords(sf::Vector2i(mousePosition.x, mousePosition.y), _mainView);
+	mousePosition = newMousePosition;
+
 	string printme =  "Entity Count: " + std::to_string(_entities.size()) + "\n";
 	printme += "Brute Force Checks: " + std::to_string(_entities.size() * (_entities.size() - 1)) + "\n";
 	printme += "Entity Spatial Checks : " + std::to_string(_CollisionSystem->collisionChecks);
@@ -190,7 +192,7 @@ void Game::render(LevelManager *level)
 	//Draw UI
 	_window->draw(text);
 	_window->draw(_FPS);
-
+	_window->setView(_mainView);
 	// Window Display
 	_window->display();
 }

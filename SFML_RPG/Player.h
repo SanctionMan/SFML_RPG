@@ -42,8 +42,9 @@ private:
 	// Player movement
 	bool _isCasting = false;
 	bool _isAttacking = false;
+	bool _doingAttack = false;
 	bool _isMovingUp = false;
-	bool _isMovingDown = false;
+	bool _isMovingDown = true;
 	bool _isMovingLeft = false;
 	bool _isMovingRight = false;
 
@@ -59,11 +60,20 @@ private:
 		_movingDown_Left = 7,
 		_movingDown_Right = 8,
 	};
-
-	struct AnimationState
+	enum Direction
 	{
-
+		Up = 1,
+		Down = 6,
+		Left = 0,
+		Right = 4,
+		Up_Left = 1,
+		Up_Right = 3,
+		Down_Left = 7,
+		Down_Right = 5,
 	};
+
+
+
 	// Last Animation State;
 	animationEnum _lastAnimationState;
 	// Textures
@@ -75,12 +85,16 @@ private:
 	AnimatedSprite _animatedBody;
 	AnimatedSprite _animatedWeapon;
 	// Animation size
-	sf::Vector2f _animationSize;
+	sf::Vector2i _animationSize;
 	// Animation pointers
 	Animation* _currentAnimationBody;
 	Animation* _currentAnimationHead;
 	Animation* _currentAnimationWeapon;
+	//map<string, Animation> animations; animations["animUp"]; animations["animUp"] = Animation(up); 
 	// Body Animations
+	
+	map<string, Animation> _Animations;
+
 	Animation _Body_Stance_AnimationUp;
 	Animation _Body_Stance_AnimationDown;
 	Animation _Body_Stance_AnimationLeft;

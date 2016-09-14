@@ -24,6 +24,8 @@ public:
 	sf::Time getFrameTime() const;
 	void setFrame(std::size_t newFrame, bool resetTime = true);
 
+	sf::Time GetMaxTime();
+
 private:
 	const Animation* _animation;
 	sf::Time _frameTime;

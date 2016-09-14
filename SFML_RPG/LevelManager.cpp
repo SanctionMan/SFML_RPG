@@ -22,34 +22,55 @@ void LevelManager::load(string path)
 	loadMapData();
 
 	//setup floor vertices for rendering
+	//int **p_mapArray[10][10];
+
+
 	setupMapVertices(_floor, _floorVertices);
 
 	//setup layer 1 vertices for rendering;
+	
 	setupMapVertices(_layer1, _layer1Vertices);
+
 }
 
 void LevelManager::update(sf::Time _deltaTime)
 {
 	sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*GetGameWindow()));
+	sf::Vector2f newMousePosition = GetGameWindow()->mapPixelToCoords(sf::Vector2i(mousePos.x, mousePos.y), GetGameWindow()->getView());
+	mousePos = sf::Vector2f(newMousePosition.x, newMousePosition.y);
 
-	float map_x = 0;
-	float map_y = 0;
+	cout << "X: " << mousePos.x << " Y: " << mousePos.y << endl;
+	//quad[0].position = topL + diamondOffSet + screenOffset;    //TL
+	//quad[1].position = topR + diamondOffSet + screenOffset;    //TR
+	//quad[2].position = bottomR + diamondOffSet + screenOffset; //BR
+	//quad[3].position = bottomL + diamondOffSet + screenOffset; //BL
+	sf::Vertex* quad = &_floorVertices[0];
+	for (int x = 0; x < _mapSize.x; x++)
+	{
+		for (int y = 0; y < _mapSize.y; y++)
+		{
+			quad = &_floorVertices[(x + y * _mapSize.x) * 4];
 
-	map_x = (mousePos.x / 32 + mousePos.y / 16) / 2;
-	map_y = (mousePos.y / 16 - (mousePos.x / 32)) / 2;
-
-	//cout << "X: " << map_x << "Y: " << map_y << endl;
-	//cout << "X: " << mousePos.x << "Y: " << mousePos.y << endl;
-
-
-	//if (map_x > 0 && map_x < _mapSize.x && map_y > 0 && map_y < _mapSize.y)
-	//{
-	//	sf::Vertex* quad = &_floorVertices[(map_x + map_y * _mapSize.x) * 4];
-	//	quad[0].color = sf::Color::Red;
-	//	quad[1].color = sf::Color::Red;
-	//	quad[2].color = sf::Color::Red;
-	//	quad[3].color = sf::Color::Red;
-	//}
+			if(mousePos.x >= quad[0].position.x && mousePos.x <= quad[1].position.x &&
+				mousePos.y >= quad[0].position.y && mousePos.y <= quad[2].position.y)
+			{
+				quad[0].color = sf::Color::Red;
+				quad[1].color = sf::Color::Red;
+				quad[2].color = sf::Color::Red;
+				quad[3].color = sf::Color::Red;
+			}
+			else
+			{
+				if(quad[0].color != sf::Color::Transparent)
+				{
+					quad[0].color = sf::Color::White;
+					quad[1].color = sf::Color::White;
+					quad[2].color = sf::Color::White;
+					quad[3].color = sf::Color::White;	
+				}
+			}
+		}
+	}
 
 
 }

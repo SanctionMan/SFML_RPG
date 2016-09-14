@@ -160,6 +160,11 @@ void AnimatedSprite::setFrame(std::size_t newFrame, bool resetTime)
 		_currentTime = sf::Time::Zero;
 }
 
+sf::Time AnimatedSprite::GetMaxTime()
+{
+	return _frameTime;
+}
+
 void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (_animation && _texture)
