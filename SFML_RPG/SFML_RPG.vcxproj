@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\Entities\Enemy\goblin.png" />
+    <Image Include="Resources\Textures\Entities\Enemy\skeleton_0.png" />
     <Image Include="Resources\Textures\Entities\Misc\Mushroom.png" />
     <Image Include="Resources\Textures\Entities\Player\buckler.png" />
     <Image Include="Resources\Textures\Entities\Player\clothes.png" />

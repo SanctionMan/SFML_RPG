@@ -10,20 +10,20 @@ public:
 	Enemy();
 	~Enemy();
 
-	void aiUpdate(sf::Time _deltaTime);
-	void aiRender(sf::RenderWindow &_window);
-	void aiProcessEvents(sf::Event &event);
+	void enemyUpdate(sf::Time _deltaTime);
+	void enemyRender(sf::RenderWindow &_window);
+	void enemyProcessEvents(sf::Event &event);
 	
 	virtual void render(sf::RenderWindow &_window) = 0;
 	virtual void update(sf::Time _deltaTime) = 0;
 
-	void updateAI(sf::Time _deltaTime);
-	void constructEnemy(sf::Vector2f position, sf::Vector2f animationSize, sf::Texture* texture);
-		
-	void initEnemyTextures();
+	void enemyAI(sf::Time _deltaTime);
+	void constructEnemy(sf::Vector2f position, sf::Vector2f animationSize, 
+						sf::Texture* texture, sf::Vector2f adjustment_xy);
+	
 
 public:
-
+	HealthBar _healthBar;
 	// Stats
 	int _level = 1;
 
@@ -37,10 +37,25 @@ public:
 	int _offense = 1;
 	int _defense = 1;
 
-	float _enemySpeed = 150;
+	// AI stats
+	float _AggroRange = 300;
+	float _distance;
 
-	HealthBar _healthBar;
+	// Enemy Actions
+	bool _isAggro = false;
 
+
+	bool _isStanding = false;
+	bool _isRunning = false;
+	bool _isAttacking = false;
+	bool _isCharging = false;
+	bool _isCasting = false;
+	bool _isShooting = false;
+	bool _isBlocking = false;
+	bool _isTakingHit = false;
+	bool _isDying = false;
+
+	// Enemy movement
 	bool _isMoving = false;
 	bool _isMovingUp = false;
 	bool _isMovingDown = false;
@@ -51,48 +66,45 @@ public:
 	bool _isMovingDown_Left = false;
 	bool _isMovingDown_Right = false;
 
-	bool _isAttacking = false;
+	float _speed = 150;
 
-
-	enum animationEnum
+	enum Direction
 	{
-		_movingUp = 1,
-		_movingDown = 2,
-		_movingLeft = 3,
-		_movingRight = 4,
-		_movingUp_Left = 5,
-		_movingUp_Right = 6,
-		_movingDown_Left = 7,
-		_movingDown_Right = 8,
+		Up = 2,
+		Down = 6,
+		Left = 0,
+		Right = 4,
+		Up_Left = 1,
+		Up_Right = 3,
+		Down_Left = 7,
+		Down_Right = 5,
 	};
 
-	animationEnum _lastAnimationState;
+	enum AI_States
+	{
+		Wander = 0,
+		Chase = 1,
+		Attack = 2,
+		Runaway = 3,
+	};
 
+	// Last Animation Direction;
+	Direction _lastAnimationDirection;
+
+	// Textures pointer
 	sf::Texture* _textureBody;
-	sf::Vector2f _animationSize;
 
-	Animation* _currentAnimationBody;
-
+	// Animation sprites
 	AnimatedSprite _animatedBody;
 
-	Animation _stanceAnimationUp;
-	Animation _stanceAnimationDown;
-	Animation _stanceAnimationLeft;
-	Animation _stanceAnimationRight;
-	Animation _stanceAnimationUp_Left;
-	Animation _stanceAnimationUp_Right;
-	Animation _stanceAnimationDown_Left;
-	Animation _stanceAnimationDown_Right;
+	// Animation size
+	sf::Vector2f _animationSize;
 
-	Animation _runningAnimationUp;
-	Animation _runningAnimationDown;
-	Animation _runningAnimationLeft;
-	Animation _runningAnimationRight;
-	Animation _runningAnimationUp_Left;
-	Animation _runningAnimationUp_Right;
-	Animation _runningAnimationDown_Left;
-	Animation _runningAnimationDown_Right;
+	// Animation pointer
+	Animation* _currentAnimationBody;
 
+	// Animation map<>
+	map<string, Animation> _Animations;
 };
 
 #include "Goblin.h"

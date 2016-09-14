@@ -169,6 +169,9 @@
     <Image Include="Resources\Textures\Map\tiles_1.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\Textures\Entities\Enemy\skeleton_0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\Atarian\SF Atarian System.ttf" />

@@ -14,6 +14,7 @@ public:
 	void Entity::entityEvents(sf::Event& event);
 
 public:
+	const double  Pi = 3.14159265358979f;
 
 	bool _drawBounds = false;
 	float _radius = 0.f;
