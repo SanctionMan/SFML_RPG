@@ -51,6 +51,12 @@
     <ClCompile Include="LevelManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -87,6 +93,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LevelManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -170,6 +182,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Resources\Textures\Entities\Enemy\skeleton_0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Textures\Menu\menu_background.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

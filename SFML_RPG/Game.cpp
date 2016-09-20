@@ -23,6 +23,14 @@ Game::Game():
 
 Game::~Game()
 {
+
+	// Delete game States
+	while (!this->_states.empty())
+	{
+		popState();
+	}
+
+	// Delete window
 	_window->close();
 	delete _window;
 }
@@ -50,16 +58,18 @@ void Game::Run()
 		_deltaTime += clock.restart();
 		while (_deltaTime.asSeconds() >= _frameTime)
 		{
-			handleInput();
-			update(_deltaTime);
-			
+			//handleInput();
+			//update(_deltaTime);
+			if (currentState() == nullptr) continue;
+			currentState()->handleInput();
+			currentState()->update(_deltaTime);
 			_deltaTime = clock.restart();
 		}
 		//_CollisionSystem->update(_entities, 8, _window->getSize());
 		_CollisionSystem->update(_entities);
 		_LevelManager->update(_deltaTime);
-
-		render(_LevelManager);
+		//render(_LevelManager);
+		currentState()->render(_deltaTime);
 	}
 }
 
@@ -74,8 +84,10 @@ void Game::init()
 
 	//Load Textures 
 	_TextureManager = new TextureManager();
-	//Mushroom
-	_TextureManager->loadTexture("Mushroom.png", "Resources/Textures/Entities/Misc/Mushroom.png");
+	
+	//Menu Background
+	_TextureManager->loadTexture("menu_background.png", "Resources/Textures/Menu/menu_background.png");
+	_background->setTexture(_TextureManager->getTexture("menu_background.png"));
 	//Map
 	//_TextureManager->loadTexture("grassland_tiles.png", "Resources/Textures/Map/Grass/grassland_tiles.png");// Sample tiles
 	_TextureManager->loadTexture("grassland_tiles.png", "Resources/Textures/Map/Grass/grassland_tiles.png");
@@ -204,6 +216,38 @@ void Game::cleanUp()
 		std::cout << "Entity: " << it->_name << " Deleted!" << std::endl;
 		delete it;
 	}
+}
+
+void Game::pushState(GameState* state)
+{
+	this->_states.push(state);
+	return;
+}
+
+void Game::popState()
+{
+	delete this->_states.top();
+	this->_states.pop();
+	return;
+}
+
+void Game::changeState(GameState* state)
+{
+	if (!this->_states.empty())
+	{
+		popState();
+		pushState(state);
+	}
+	return;
+}
+
+GameState* Game::currentState()
+{
+	if (this->_states.empty())
+	{
+		return nullptr;
+	}
+	return this->_states.top();
 }
 
 void Game::createEntity(Entity* ent)
