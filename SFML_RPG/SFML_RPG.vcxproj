@@ -149,8 +149,9 @@
     <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="GameMenuState.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="GamePlayState.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,8 +166,9 @@
     <ClInclude Include="Goblin.h" />
     <ClInclude Include="HealthBar.h" />
     <ClInclude Include="LevelManager.h" />
-    <ClInclude Include="MenuState.h" />
+    <ClInclude Include="GameMenuState.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="GamePlayState.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <ItemGroup>

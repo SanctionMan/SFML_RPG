@@ -45,7 +45,9 @@ void Game::Run()
 	_LevelManager = new LevelManager(_TextureManager->getTexture("grassland_tiles.png"));
 	_LevelManager->load("Maps/Map_001.txt");
 	//_LevelManager->printMap();
-
+	_background.setTexture(_TextureManager->getTexture("menu_background.png"));
+	_background.setPosition(0, 0);
+	_background.setSize(sf::Vector2f(_window->getSize()));
 
 	//Init collision
 	_CollisionSystem = new CollisionSystem();
@@ -58,17 +60,13 @@ void Game::Run()
 		_deltaTime += clock.restart();
 		while (_deltaTime.asSeconds() >= _frameTime)
 		{
-			//handleInput();
-			//update(_deltaTime);
 			if (currentState() == nullptr) continue;
 			currentState()->handleInput();
 			currentState()->update(_deltaTime);
 			_deltaTime = clock.restart();
 		}
-		//_CollisionSystem->update(_entities, 8, _window->getSize());
-		_CollisionSystem->update(_entities);
-		_LevelManager->update(_deltaTime);
-		//render(_LevelManager);
+		//_CollisionSystem->update(_entities);
+		//_LevelManager->update(_deltaTime);
 		currentState()->render(_deltaTime);
 	}
 }
@@ -87,7 +85,8 @@ void Game::init()
 	
 	//Menu Background
 	_TextureManager->loadTexture("menu_background.png", "Resources/Textures/Menu/menu_background.png");
-	_background->setTexture(_TextureManager->getTexture("menu_background.png"));
+	_background.setTexture(_TextureManager->getTexture("menu_background.png"));
+
 	//Map
 	//_TextureManager->loadTexture("grassland_tiles.png", "Resources/Textures/Map/Grass/grassland_tiles.png");// Sample tiles
 	_TextureManager->loadTexture("grassland_tiles.png", "Resources/Textures/Map/Grass/grassland_tiles.png");

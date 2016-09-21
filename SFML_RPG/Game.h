@@ -59,8 +59,9 @@ public:
 	sf::RenderWindow* _window = nullptr;
 
 	// Menu
-	sf::RectangleShape* _background;
-private:
+	sf::RectangleShape _background;
+	bool _isGridActive = true;
+public:
 	// Game States
 	stack<GameState*> _states;
 
@@ -68,7 +69,6 @@ private:
 	float _frameTime = 0.1f / 60.0f;
 	sf::Time _deltaTime;
 
-	bool _isGridActive = true;
 
 	// Text
 	sf::Time _updateTime;

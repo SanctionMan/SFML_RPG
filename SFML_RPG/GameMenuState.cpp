@@ -1,8 +1,8 @@
-#include "MenuState.h"
+#include "GameMenuState.h"
 
 
 
-MenuState::MenuState(Game* game)
+GameMenuState::GameMenuState(Game* game)
 {
 	this->_game = game;
 	sf::Vector2f windowSize = sf::Vector2f(this->_game->_window->getSize());
@@ -12,11 +12,11 @@ MenuState::MenuState(Game* game)
 }
 
 
-MenuState::~MenuState()
+GameMenuState::~GameMenuState()
 {
 }
 
-void MenuState::handleInput()
+void GameMenuState::handleInput()
 {
 	sf::Event event;
 
@@ -34,15 +34,18 @@ void MenuState::handleInput()
 			case sf::Event::Resized:
 			{
 				this->_view.setSize(event.size.width, event.size.height);
-				this->_game->_background->setPosition(this->_game->_window->mapPixelToCoords(sf::Vector2i(0, 0)));
-				this->_game->_background->setScale(
-					float(event.size.width) / float(this->_game->_background->getTexture()->getSize().x),
-					float(event.size.height) / float(this->_game->_background->getTexture()->getSize().y));
+				this->_game->_background.setPosition(this->_game->_window->mapPixelToCoords(sf::Vector2i(0, 0)));
+				this->_game->_background.setScale(
+					float(event.size.width) / float(this->_game->_background.getTexture()->getSize().x),
+					float(event.size.height) / float(this->_game->_background.getTexture()->getSize().y));
 				break;
 			}
 			case sf::Event::KeyPressed:
 			{
 				if (event.key.code == sf::Keyboard::Escape) this->_game->_window->close();
+				else if (event.key.code == sf::Keyboard::Space) 
+					this->loadGame();
+					cout << "WTF" << endl;
 				break;
 			}
 			default: break;
@@ -51,21 +54,28 @@ void MenuState::handleInput()
 	}
 }
 
-void MenuState::update(sf::Time deltaTime)
+void GameMenuState::update(sf::Time deltaTime)
 {
-	this->_view.setCenter(GetPlayer()->_position);
-	this->_game->updateEntities();
+
 }
 
-void MenuState::render(sf::Time deltaTime)
+void GameMenuState::render(sf::Time deltaTime)
 {
 	this->_game->_window->setView(this->_view);
-
 	this->_game->_window->clear(sf::Color::Black);
-	this->_game->_window->draw((*_game->_background));
-	//this->_game->_TextureManager->getTexture("menu_background.png");
-	this->_game->renderEntities();
+
+	this->_game->_window->draw(_game->_background);
+
+
 	this->_game->_window->display();
 	return;
 }
+
+void GameMenuState::loadGame()
+{
+	this->_game->pushState(new GamePlayState(this->_game));
+	return;
+}
+
+
 

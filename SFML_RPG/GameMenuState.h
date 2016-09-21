@@ -1,20 +1,23 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
 #include "GameState.h"
+#include "GamePlayState.h"
 
-class MenuState : public GameState
+class GameMenuState : public GameState
 {
 public:
-	MenuState(Game* game);
-	~MenuState();
+	GameMenuState(Game* game);
+	~GameMenuState();
 
 	virtual void handleInput();
 	virtual void update(sf::Time deltaTime);
 	virtual void render(sf::Time deltaTime);
 
+	void loadGame();
+
 private:
 
 	sf::View _view;
+
 };
 
