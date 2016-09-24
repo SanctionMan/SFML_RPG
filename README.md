@@ -1,5 +1,7 @@
 # SFML_RPG
 This is a project for learning game programming!
+You can see pictures and videos of my progression at the following link:
+https://1drv.ms/f/s!Ass38G5C8oO-qUMvnV904RM0r5IX
 
 #Credits
 
