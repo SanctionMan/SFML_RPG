@@ -35,7 +35,7 @@ Player::Player(sf::Vector2f position, sf::Texture* headTexture, sf::Texture* bod
 
 	// Set player textures for animations
 	initPlayerTextures();
-	_animatedBody.setOrigin(sf::Vector2f(_animationSize.x / 2, _animationSize.y / 2));
+	_animatedBody.setOrigin(sf::Vector2f(float(_animationSize.x / 2), float(_animationSize.y / 2)));
 	//_animatedBody.setScale(2, 2);
 	_animatedHead.setOrigin(sf::Vector2f(_animationSize.x / 2, _animationSize.y / 2));
 	//_animatedHead.setScale(2, 2);

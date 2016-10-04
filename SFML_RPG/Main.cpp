@@ -9,14 +9,15 @@ int main()
 	Game game;
 
 	// Create Game Menu state
-	game.pushState(new GameMenuState(&game));
+	game.pushState(new GamePlayState(&game));
 
-	// Run Game
+	//Run Game
 	game.Run();
 
 	// Clean up Game
 	game.cleanUp();
 
-	//system("PAUSE");
 	return 0;
 }
+
+
