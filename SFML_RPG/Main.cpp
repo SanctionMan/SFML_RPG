@@ -5,7 +5,7 @@
 
 int main()
 {
-	// Create Game class
+	// Create Game classsds
 	Game game;
 
 	// Create Game Menu state
