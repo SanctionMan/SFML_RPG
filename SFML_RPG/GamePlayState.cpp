@@ -26,7 +26,7 @@ void GamePlayState::handleInput()
 		{
 			/* Close the window */
 		case sf::Event::Closed:
-			_game->_window->close();
+			this->_game->_window->close();
 			break;
 		/* Resize the window */
 		case sf::Event::Resized:
@@ -67,17 +67,18 @@ void GamePlayState::update(sf::Time deltaTime)
 	this->_game->_CollisionSystem->update(this->_game->_entities);
 	this->_game->_LevelManager->update(deltaTime);
 	this->_view.setCenter(GetPlayer()->_position);
-	cout << "updating" << endl;
+	//cout << "updating" << endl;
 }
 
 void GamePlayState::render(sf::Time deltaTime)
 {
-	this->_game->_window->setView(this->_view);
 	this->_game->_window->clear(sf::Color::Black);
+	this->_game->_window->setView(this->_view);
 
 	this->_game->_LevelManager->renderFloor(*this->_game->_window);
 	this->_game->renderEntities();
 
 	this->_game->_window->display();
+	cout << "updating" << endl;
 	return;
 }

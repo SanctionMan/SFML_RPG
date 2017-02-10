@@ -275,7 +275,7 @@ void Player::processEvents(sf::Event & event)
 		if (event.key.code == sf::Keyboard::Down)
 			_health -= 5;
 		if (event.key.code == sf::Keyboard::Left)
-			_mana += 5;
+			_mana += 5;                                                                              
 		if (event.key.code == sf::Keyboard::Right)
 			_mana -= 5;
 		break;

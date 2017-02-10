@@ -60,14 +60,17 @@ void Game::Run()
 		_deltaTime += clock.restart();
 		while (_deltaTime.asSeconds() >= _frameTime)
 		{
-			if (currentState() == nullptr) continue;
-			currentState()->handleInput();
-			currentState()->update(_deltaTime);
+			//if (currentState() == nullptr) continue;
+			//currentState()->handleInput();
+			//currentState()->update(_deltaTime);
+			handleInput();
+			update(_deltaTime);
 			_deltaTime = clock.restart();
 		}
-		//_CollisionSystem->update(_entities);
-		//_LevelManager->update(_deltaTime);
-		currentState()->render(_deltaTime);
+		_CollisionSystem->update(_entities);
+		_LevelManager->update(_deltaTime);
+		//currentState()->render(_deltaTime);
+		render(_LevelManager);
 	}
 }
 

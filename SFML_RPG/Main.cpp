@@ -9,7 +9,7 @@ int main()
 	Game game;
 
 	// Create Game Menu state
-	game.pushState(new GamePlayState(&game));
+	//game.pushState(new GameMenuState(&game));
 
 	//Run Game
 	game.Run();

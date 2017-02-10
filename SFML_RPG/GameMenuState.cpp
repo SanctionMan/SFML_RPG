@@ -43,7 +43,7 @@ void GameMenuState::handleInput()
 			case sf::Event::KeyPressed:
 			{
 				if (event.key.code == sf::Keyboard::Escape) this->_game->_window->close();
-				else if (event.key.code == sf::Keyboard::Space) 
+				if (event.key.code == sf::Keyboard::Space) 
 					this->loadGame();
 					cout << "WTF" << endl;
 				break;
@@ -61,8 +61,8 @@ void GameMenuState::update(sf::Time deltaTime)
 
 void GameMenuState::render(sf::Time deltaTime)
 {
-	this->_game->_window->setView(this->_view);
 	this->_game->_window->clear(sf::Color::Black);
+	this->_game->_window->setView(this->_view);
 
 	this->_game->_window->draw(_game->_background);
 
@@ -74,6 +74,7 @@ void GameMenuState::render(sf::Time deltaTime)
 void GameMenuState::loadGame()
 {
 	this->_game->pushState(new GamePlayState(this->_game));
+	//this->_game->changeState(new GamePlayState(this->_game));
 	return;
 }
 
